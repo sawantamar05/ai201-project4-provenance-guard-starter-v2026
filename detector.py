@@ -1,59 +1,25 @@
-"""
-Signal one: the model signal.
+"""Local GPT-2 predictability signal; a heuristic, not proof of authorship.
 
-This is the signal that "reads the text for meaning". It runs a language model
-on your own machine and asks one question: **how predictable is this text?**
-
-The idea is the one every AI-detection product is built on. A language model
-writes by repeatedly picking a likely next word, so text a model produced tends
-to be text a model finds easy to predict. Human writing wanders more — odd word
-choices, abrupt turns, the specific rather than the typical.
-
-The measure is called **perplexity**. Low perplexity means "I could have
-guessed this"; high perplexity means "that surprised me". This module turns
-that into a 0–1 score where **higher means more likely AI**.
-
-    from detector import model_signal
-    score = model_signal("some text")     # 0.0 human-ish … 1.0 AI-ish
-
-Everything runs locally. No account, no key, no card.
-
-⚠️ **The blind spot, which you have to name in Milestone 1.**
-
-Predictability is not the same thing as authorship. What this signal actually
-rewards is **common words in short, ordinary sentences** — and plenty of real
-people write that way.
-
-Someone writing in a second language, sticking to vocabulary they're sure of.
-A younger writer. Anyone writing plainly on purpose. Measured against gpt2,
-writing like that scores about as machine-like as machine writing does.
-
-The reverse trips people up too: dense, ornate prose full of rare words often
-scores as *human* on this signal, because rare words are exactly what a
-language model fails to predict. Formality on its own doesn't decide it.
-
-So the writers this signal is most likely to accuse are the ones with the
-least room to argue back. That is structural rather than a bug you can fix,
-and it is the person Milestone 1 asks you to follow through your service.
-
-Don't take that on trust — it's a claim you can check. Milestone 4 has you run
-four calibration inputs. Add a plainly-written human paragraph to them and see
-for yourself where it lands.
+Low perplexity raises the AI score. Plain human language can be predictable;
+unusual generated wording can be surprising. The first 400 tokens are used.
+The model is loaded once per process and inference runs locally.
 """
 
 import math
+import threading
 
 import config
 
 _model = None
 _tokenizer = None
+_load_lock = threading.Lock()
 
 
 class DetectorUnavailable(RuntimeError):
     """The model couldn't be loaded — no download yet, or no disk."""
 
 
-def _load():
+def _load_unlocked():
     """Load the model once and keep it. First call downloads ~550 MB."""
     global _model, _tokenizer
     if _model is not None:
@@ -80,6 +46,11 @@ def _load():
         ) from exc
 
     return _model, _tokenizer
+
+
+def _load():
+    with _load_lock:
+        return _load_unlocked()
 
 
 def perplexity(text: str) -> float:
@@ -110,7 +81,10 @@ def perplexity(text: str) -> float:
         output = model(input_ids, labels=input_ids)
 
     # The model's loss here IS mean negative log-likelihood per token.
-    return float(math.exp(output.loss.item()))
+    loss = float(output.loss.item())
+    if not math.isfinite(loss):
+        raise DetectorUnavailable("The model returned a non-finite loss.")
+    return math.exp(min(loss, 700.0))
 
 
 def model_signal(text: str) -> float:
@@ -131,7 +105,8 @@ def model_signal(text: str) -> float:
     steepness = 1.6    # how sharply the score moves either side of it
 
     # Logistic on log-perplexity. Low perplexity -> high AI score.
-    score = 1.0 / (1.0 + (ppl / midpoint) ** steepness)
+    log_odds = steepness * (math.log(ppl) - math.log(midpoint))
+    score = 0.0 if log_odds > 700 else 1.0 / (1.0 + math.exp(log_odds))
     return round(min(max(score, 0.0), 1.0), 4)
 
 

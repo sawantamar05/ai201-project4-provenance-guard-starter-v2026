@@ -1,0 +1,45 @@
+{
+  "standalone_signals": [
+    {
+      "id": "ai-01",
+      "model_score": 0.6223
+    },
+    {
+      "id": "human-03",
+      "model_score": 0.3532
+    },
+    {
+      "id": "calibration-short-uncertain",
+      "model_score": 0.461
+    }
+  ],
+  "submit_status": 200,
+  "submit": {
+    "combined_score": 0.6223,
+    "confidence": 0.6223,
+    "content_id": "2e3fbaf2-1b16-47e8-998d-e99ee749d75e",
+    "creator_id": "one-signal-check",
+    "guess": "unsure",
+    "label": "One-signal route check.",
+    "model_score": 0.6223,
+    "status": "decided",
+    "style_score": null,
+    "timestamp": "2026-10-30T16:33:04+00:00"
+  },
+  "log": {
+    "count": 1,
+    "entries": [
+      {
+        "combined_score": 0.6223,
+        "content_id": "2e3fbaf2-1b16-47e8-998d-e99ee749d75e",
+        "creator_id": "one-signal-check",
+        "guess": "unsure",
+        "label": "One-signal route check.",
+        "model_score": 0.6223,
+        "status": "decided",
+        "style_score": null,
+        "timestamp": "2026-10-30T16:33:04+00:00"
+      }
+    ]
+  }
+}
