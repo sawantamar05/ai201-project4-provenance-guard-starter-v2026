@@ -218,7 +218,8 @@ def check_detector_model():
     """Is the ~550 MB model already downloaded?"""
     from pathlib import Path as _P
 
-    cache = _P.home() / ".cache" / "huggingface" / "hub"
+    import config
+    cache = _P(os.environ.get("HF_HUB_CACHE", str(_P(os.environ["HF_HOME"]) / "hub")))
     if cache.exists() and any("gpt2" in p.name for p in cache.iterdir()):
         return report("PASS", "Detector model", "already downloaded")
     report(

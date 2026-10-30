@@ -54,7 +54,19 @@ def request_too_large(exc):
     return _reject('request_too_large', 'Request body must not exceed 65,536 bytes.', 413)
 
 
+def _valid_unicode(value):
+    if not isinstance(value, str):
+        return False
+    try:
+        value.encode('utf-8')
+    except UnicodeEncodeError:
+        return False
+    return True
+
+
 def _json_object():
+    if request.content_length is not None and request.content_length > config.MAX_REQUEST_BYTES:
+        return None, _reject('request_too_large', 'Request body must not exceed 65,536 bytes.', 413)
     if not request.is_json:
         return None, _reject('json_required', 'Send an application/json request body.', 415)
     payload = request.get_json(silent=True)
@@ -92,13 +104,13 @@ def submit():
     if error is not None:
         return error
     text, creator_id = payload.get('text'), payload.get('creator_id')
-    if not isinstance(text, str) or not text.strip():
+    if not _valid_unicode(text) or not text.strip():
         return _reject('invalid_text', 'text must be a nonempty string.', 400)
     if len(text) > config.MAX_TEXT_CHARS:
         return _reject('text_too_large', 'text must not exceed 10,000 characters.', 413)
     if len(text.strip()) < config.MIN_TEXT_CHARS or len(stylometry.words(text)) < config.MIN_TEXT_WORDS:
         return _reject('text_too_short', 'text needs at least 20 characters and 5 word tokens.', 400)
-    if not isinstance(creator_id, str) or not creator_id.strip() or len(creator_id) > config.MAX_CREATOR_CHARS:
+    if not _valid_unicode(creator_id) or not creator_id.strip() or len(creator_id) > config.MAX_CREATOR_CHARS:
         return _reject('invalid_creator_id', 'creator_id must be a nonempty string of at most 128 characters.', 400)
 
     content_id = str(uuid.uuid4())
@@ -148,7 +160,7 @@ def appeal():
     content_id, reasoning = payload.get('content_id'), payload.get('reasoning')
     if not isinstance(content_id, str) or not content_id.strip():
         return _reject('invalid_content_id', 'content_id must be a nonempty UUID string.', 400)
-    if not isinstance(reasoning, str) or not reasoning.strip():
+    if not _valid_unicode(reasoning) or not reasoning.strip():
         return _reject('invalid_reasoning', 'reasoning must be a nonempty string.', 400)
     if len(reasoning) > config.MAX_REASONING_CHARS:
         return _reject('reasoning_too_large', 'reasoning must not exceed 2,000 characters.', 413)

@@ -1,118 +1,122 @@
+"""Frozen development scenarios for the submission-only ``run_eval.py`` runner.
+
+Human passages are sourced historical writing, not the submitter's own prose.
+AI passages and their generation provenance live in data/evaluation_inputs.json.
+Criterion 4 requires submission IDs followed by appeals, so it is exercised by
+scripts/verify_project.py rather than this runner. That script also covers raw
+malformed JSON, content types, and the full 18-group validation matrix.
+
+These scenarios preserve corpus membership and do not assert detector outcomes.
+The label inputs are candidates; actual responses determine label coverage.
 """
-What your test runs. ← UNIT 8, MILESTONE 3
 
-Each of your five criteria needs something run against it. A criterion about
-false positives needs your own writing. One about label coverage needs inputs
-across the score range. One about the appeal path needs a real content_id.
+import json
+from pathlib import Path
 
-Working that out is Milestone 3's first step, and this file is where you write
-it down. `run_eval.py` runs everything here three times.
 
-Two are filled in as examples. Replace them with what your criteria actually
-need — these are a shape, not a set.
+_CORPUS_PATH = Path(__file__).resolve().parent / "data" / "evaluation_inputs.json"
+_CORPUS = json.loads(_CORPUS_PATH.read_text(encoding="utf-8"))
+_HUMAN = _CORPUS["human"]
+_AI = _CORPUS["ai"]
+_CALIBRATION = _CORPUS["calibration"]
+_BY_ID = {item["id"]: item for item in _HUMAN + _AI + _CALIBRATION}
+_SPREAD_HUMAN = _CORPUS["metadata"]["score_spread_human_ids"]
+_SPREAD_AI = _CORPUS["metadata"]["score_spread_ai_ids"]
+_LABEL_IDS = ["human-03", "ai-01", "ai-03", "calibration-short-uncertain"]
+_VALID_TEXT = _HUMAN[4]["text"]
 
-A scenario carries **either** of these:
+_BAD_SUBMISSIONS = [
+    ("missing text", {"creator_id": "scenario-missing-text"}, 400),
+    ("empty text", {"text": "", "creator_id": "scenario-empty"}, 400),
+    ("whitespace text", {"text": " " * 30, "creator_id": "scenario-whitespace"}, 400),
+    ("null text", {"text": None, "creator_id": "scenario-null"}, 400),
+    ("numeric text", {"text": 42, "creator_id": "scenario-number"}, 400),
+    ("array text", {"text": ["word"] * 5, "creator_id": "scenario-array"}, 400),
+    ("too few characters", {"text": "one two three four", "creator_id": "scenario-short"}, 400),
+    ("too few words", {"text": "alphabet" * 5, "creator_id": "scenario-few-words"}, 400),
+    ("oversized text", {"text": "x" * 10001, "creator_id": "scenario-long"}, 413),
+    ("missing creator", {"text": _VALID_TEXT}, 400),
+    ("empty creator", {"text": _VALID_TEXT, "creator_id": ""}, 400),
+    ("whitespace creator", {"text": _VALID_TEXT, "creator_id": "  "}, 400),
+    ("numeric creator", {"text": _VALID_TEXT, "creator_id": 42}, 400),
+    ("oversized creator", {"text": _VALID_TEXT, "creator_id": "x" * 129}, 400),
+    ("oversized body", {"text": _VALID_TEXT, "creator_id": "scenario-body", "padding": "x" * 65536}, 413),
+]
 
-    "texts"   a list of strings. Each is sent as {"text": ..., "creator_id": ...}
-              with a creator_id made up for you. Use this for most criteria.
 
-    "bodies"  a list of whole request bodies, sent exactly as written. Use this
-              when the malformed request IS the point — empty text, no `text`
-              field at all, something enormous. A bad-input criterion needs it,
-              because you cannot express "the field is missing" as a string.
-"""
+def _texts(ids):
+    return [_BY_ID[input_id]["text"] for input_id in ids]
+
 
 SCENARIOS = [
     {
-        "name": "my own writing",
+        "name": "sourced human false positives",
         "criterion": 1,
-        # ⚠️ PUT YOUR OWN WRITING HERE. Not AI text, not a sample from the web —
-        # things you actually wrote. This is the criterion that matters most and
-        # it's meaningless with someone else's prose.
-        "texts": [
-            "REPLACE ME with a paragraph you wrote yourself.",
-            "REPLACE ME with another one. Ten pieces is the usual number.",
-        ],
+        "input_ids": [item["id"] for item in _HUMAN],
+        "texts": [item["text"] for item in _HUMAN],
+        "target": "At most one high-confidence AI guess among the ten sourced human passages per trial.",
     },
     {
-        "name": "label coverage",
+        "name": "score spread human group",
         "criterion": 2,
-        # Inputs spread across your score range, so you can check all three
-        # labels are actually reachable.
-        "texts": [
-            "REPLACE ME with something you're confident is AI-generated.",
-            "REPLACE ME with something you're confident is human-written.",
-            "REPLACE ME with something genuinely borderline.",
-        ],
+        "input_ids": list(_SPREAD_HUMAN),
+        "texts": _texts(_SPREAD_HUMAN),
+        "target": "Compare this four-input median with the generated-AI group; required gap is at least 0.20.",
     },
-    # A bad-input criterion looks like this. Uncomment and adjust if that's one
-    # of your five — these are raw request bodies, sent exactly as written.
-    #
-    # {
-    #     "name": "bad input",
-    #     "criterion": 3,
-    #     "bodies": [
-    #         {"text": "", "creator_id": "eval_bad_empty"},
-    #         {"creator_id": "eval_bad_missing"},          # no text field at all
-    #         {"text": "word " * 50000, "creator_id": "eval_bad_huge"},
-    #         {"text": None, "creator_id": "eval_bad_null"},
-    #     ],
-    # },
-
-    # TODO: add what your remaining criteria need.
-    #
-    # A criterion about the appeal path can't be tested by sending text alone;
-    # it needs a submission first and then an appeal against the content_id
-    # that came back. You'll need to test that one by hand, or extend this file
-    # and run_eval.py to do it. Saying which you did is part of the write-up.
+    {
+        "name": "score spread AI group",
+        "criterion": 2,
+        "input_ids": list(_SPREAD_AI),
+        "texts": _texts(_SPREAD_AI),
+        "target": "The generated-AI median must exceed the human-group median by at least 0.20.",
+    },
+    {
+        "name": "label demonstration candidates",
+        "criterion": 3,
+        "input_ids": list(_LABEL_IDS),
+        "texts": _texts(_LABEL_IDS),
+        "target": "Observe human, unsure, and AI guesses; the complete score sweep is in scripts/verify_project.py.",
+    },
+    {
+        "name": "invalid submission bodies",
+        "criterion": 5,
+        "case_names": [name for name, _, _ in _BAD_SUBMISSIONS],
+        "bodies": [body for _, body, _ in _BAD_SUBMISSIONS],
+        "expected_status_codes": [status for _, _, status in _BAD_SUBMISSIONS],
+        "target": "Reject every listed body with its expected JSON error; full validation is in scripts/verify_project.py.",
+    },
 ]
 
 
 def validate() -> list[str]:
-    """
-    Complain about anything malformed, before a long run rather than during.
-
-    A "bodies" scenario is deliberately exempt from the empty check — an empty
-    string is the whole point of a bad-input case, and refusing to run one
-    would make that criterion untestable.
-    """
+    """Check runner input shape without invoking the detector or sending HTTP."""
     problems = []
-    for i, scenario in enumerate(SCENARIOS, 1):
-        if not scenario.get("name"):
-            problems.append(f"scenario {i} has no name")
-
-        texts = scenario.get("texts")
-        bodies = scenario.get("bodies")
-
-        if texts and bodies:
-            problems.append(
-                f"scenario {i} ('{scenario.get('name')}') has both texts and "
-                f"bodies — pick one"
-            )
+    for index, scenario in enumerate(SCENARIOS, 1):
+        prefix = f"scenario {index}"
+        if not isinstance(scenario.get("name"), str) or not scenario["name"].strip():
+            problems.append(f"{prefix} needs a nonempty name")
+        criterion = scenario.get("criterion")
+        if isinstance(criterion, bool) or not isinstance(criterion, int) or criterion < 1:
+            problems.append(f"{prefix} needs a positive integer criterion")
+        has_texts = "texts" in scenario
+        has_bodies = "bodies" in scenario
+        if has_texts == has_bodies:
+            problems.append(f"{prefix} needs exactly one of texts or bodies")
             continue
-
-        if bodies:
-            for j, body in enumerate(bodies, 1):
-                if not isinstance(body, dict):
-                    problems.append(
-                        f"scenario {i}, body {j} is not a dict — bodies are whole "
-                        f"request bodies, like {{'text': '', 'creator_id': 'x'}}"
-                    )
+        field = "texts" if has_texts else "bodies"
+        values = scenario[field]
+        if not isinstance(values, list) or not values:
+            problems.append(f"{prefix} needs a nonempty {field} list")
             continue
-
-        if not texts:
-            problems.append(f"scenario {i} has no texts and no bodies")
-            continue
-
-        for j, text in enumerate(texts, 1):
-            if not str(text).strip():
-                problems.append(
-                    f"scenario {i}, text {j} is empty — if an empty submission is what "
-                    f"you're testing, use 'bodies' instead of 'texts'"
-                )
-            elif str(text).startswith("REPLACE ME"):
-                problems.append(
-                    f"scenario {i} ('{scenario.get('name')}'), text {j} is still "
-                    f"the placeholder"
-                )
+        for number, value in enumerate(values, 1):
+            if has_texts and (not isinstance(value, str) or not value.strip()):
+                problems.append(f"{prefix}, text {number} needs a nonempty string")
+            elif has_bodies and not isinstance(value, dict):
+                problems.append(f"{prefix}, body {number} needs a JSON object")
+        if has_texts and len(scenario.get("input_ids", [])) != len(values):
+            problems.append(f"{prefix} input IDs must match its text count")
+        if has_bodies:
+            for metadata_field in ("case_names", "expected_status_codes"):
+                if len(scenario.get(metadata_field, [])) != len(values):
+                    problems.append(f"{prefix} {metadata_field} must match its body count")
     return problems
