@@ -48,3 +48,13 @@ The initial runner checked workflow targets once; the final runner checks every 
 https://github.com/sawantamar05/ai201-project4-provenance-guard-starter-v2026
 
 The acceptance targets and design were committed before implementation and detector measurements. Frozen evaluation inputs were committed before model evaluation. The same repository can be reused for the next unit.
+
+
+## Writer-perspective exercises
+
+The Milestone 2 false-positive and Milestone 5 label-feedback exercises are
+recorded in [feedback.md](feedback.md), including the prompts, fictional
+AI-generated responses, and engineering decisions. The requested AI-assisted
+[criteria review](criteria_review.md) restates the existing five targets and
+check procedures after the initial results. These documentation exercises
+introduce no new model measurements and do not alter the original evidence.

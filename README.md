@@ -71,6 +71,12 @@ median was 0.4281: a gap of **0.2470**. These small development samples do not
 estimate real-world accuracy. Input sources and generation provenance are
 recorded in [data/README.md](data/README.md).
 
+The [criteria review](docs/criteria_review.md) restates the five existing targets
+with plain-language rationales and check procedures. The working-alone
+[writer-perspective exercise](docs/feedback.md) records feedback on the
+false-positive target and the engineering response.
+
+
 ## Label Variants
 
 | Label | Complete score range | Exact reader-facing text |
@@ -82,6 +88,14 @@ recorded in [data/README.md](data/README.md).
 The unsure label says what is unknown without accusing the writer, then offers
 a next step. All 10,001 four-decimal scores map to exactly one label; 0.51 is
 unsure and 0.95 is AI-like.
+
+The [label feedback exercise](docs/feedback.md) records a simulated writer's
+interpretation of all three labels. To request review, send the returned
+`content_id` and a nonempty `reasoning` string to `POST /appeal`. A successful
+response confirms `under_review`; `GET /content/<id>` shows the current status.
+The original estimate remains in the history. A recorded appeal does not mean
+a human reviewer has been assigned or a review has been completed.
+
 
 Actual submissions reached human at **0.1628**, unsure at **0.6086**, and AI at
 **0.9615**. The human-labeled input was deliberately unusual **AI-generated**
@@ -247,3 +261,11 @@ and a runner that repeated submissions but only checked appeals/validation
 once. The changes validate Unicode before inference, reject oversized bodies
 early, add regression tests, and repeat all five criterion checks across
 three trials. All 29 automated tests passed, alongside the real HTTP checks.
+
+
+**Writer-perspective exercises.** Codex also generated the assignment's
+working-alone feedback on the false-positive criterion and all three labels.
+The prompts and fictional writer responses are preserved in
+[the feedback record](docs/feedback.md). They led to clearer appeal instructions;
+the targets, thresholds, and label sentences were retained. This is simulated
+AI feedback, not independent human validation.
