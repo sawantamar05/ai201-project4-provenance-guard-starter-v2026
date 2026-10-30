@@ -17,7 +17,7 @@ without asking the model to decide whether the target is right.
 > On a frozen set of 10 human-written passages published before 1920, at most
 > 1 passage per trial may receive the high-confidence AI label. Include literature,
 > first-person prose, and formal nonfiction, with traceable public-domain sources.
-> 
+>
 > My system allows this rate of wrongly flagging human writing as AI-generated. Write the message a real writer would send me if they were one of the people that rate allows. Don't tell me whether my number is right.
 
 ### Simulated writer response
@@ -44,11 +44,11 @@ think and do next. It explicitly asks for a writer's perspective and no rewrites
 ### Prompt
 
 > Here are three labels a website might show on something I wrote. For each one, tell me what I would think it is saying about me and what I would do next. Answer as the writer, not as an engineer. Don't rewrite the labels.
-> 
+>
 > high-confidence AI: This writing shows patterns often found in AI-generated text. This estimate can be wrong and is not proof of AI use. You can request a review.
-> 
+>
 > high-confidence human: This writing looks more consistent with human writing. This estimate does not verify who wrote it.
-> 
+>
 > unsure: We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.
 
 ### Simulated writer responses
