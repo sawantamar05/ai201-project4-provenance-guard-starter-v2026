@@ -1,105 +1,76 @@
-"""
-Turning two numbers into one, and one number into something a person can read.
-← YOU BUILD THIS IN MILESTONES 4 AND 5
+"""Combine two AI-leaning signals and map every valid score to one label."""
 
-Two functions live here, and both are stubs.
-
-`combine_signals` is where your false-positive decision from Milestone 1
-actually gets made. Everything above it — the labels, the appeal path — is
-downstream of a number this function produced.
-
-`score_to_label` is where you stop writing for a machine and start writing for
-a person. A score of 0.62 means nothing to a writer.
-
-⚠️ Your README's **Signals and Scoring** section has to name the file and
-function holding your combining rule. The grader checks your code against what
-you claim, so that line should read `scoring.py::combine_signals`.
-"""
+import math
+from numbers import Real
 
 import config
 
+HUMAN_LABEL = (
+    "This writing looks more consistent with human writing. "
+    "This estimate does not verify who wrote it."
+)
+UNSURE_LABEL = (
+    "We cannot confidently tell how this writing was created. "
+    "No conclusion about the writer should be drawn from this result. "
+    "You can request a review."
+)
+AI_LABEL = (
+    "This writing shows patterns often found in AI-generated text. "
+    "This estimate can be wrong and is not proof of AI use. "
+    "You can request a review."
+)
+
+
+def _validated_score(value: float, name: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError(f"{name} must be a finite number between 0 and 1.")
+    number = float(value)
+    if not math.isfinite(number) or not 0.0 <= number <= 1.0:
+        raise ValueError(f"{name} must be a finite number between 0 and 1.")
+    return number
+
 
 def combine_signals(model_score: float, style_score: float) -> float:
+    """Weight model/style 80/20; keep large disagreements in the unsure band.
+
+    The returned value is an AI-leaning score, not a calibrated probability.
+    Weights, disagreement cutoff, and clamp boundaries are held in config.py.
     """
-    Combine two 0–1 signals into one 0–1 score. ← TODO (Milestone 4)
-
-    Both inputs point the same way: higher means more likely AI. Your output
-    should too.
-
-    Args:
-        model_score: from `detector.model_signal` — how predictable the text is.
-        style_score: from `stylometry.style_signal` — the shape of the text.
-
-    Returns:
-        A float from 0.0 (confidently human) to 1.0 (confidently AI).
-
-    ⚠️ **Write the rule down before you code it, and put the numbers in your
-    README.** A weighted average is the obvious choice and it is not the only
-    one. Things worth thinking about:
-
-      - **What happens when they disagree?** One signal at 0.9 and the other at
-        0.1 averages to 0.5 — "unsure". Is that what you want? It might be
-        exactly right: two methods disagreeing IS uncertainty. Or you might
-        decide one signal is more trustworthy when they split.
-
-      - **Which way do you want to be wrong?** Weighting toward the signal that
-        reads more human means fewer false accusations and more AI text
-        getting through. There's no weighting that avoids the trade.
-
-      - Milestone 4 asks you to find a case where your two signals split and
-        write it down. That case is what this rule exists to handle.
-
-    The weights in config.py are placeholders. Change them, or ignore them and
-    write a different rule.
-    """
-    # TODO: replace this
-    return (
+    model_score = _validated_score(model_score, "model_score")
+    style_score = _validated_score(style_score, "style_score")
+    combined = (
         config.WEIGHT_MODEL_SIGNAL * model_score
         + config.WEIGHT_STYLE_SIGNAL * style_score
     )
+    gap = abs(model_score - style_score)
+    cutoff = config.SIGNAL_DISAGREEMENT_THRESHOLD
+    if gap >= cutoff or math.isclose(gap, cutoff, rel_tol=0.0, abs_tol=1e-12):
+        combined = min(
+            config.DISAGREEMENT_SCORE_MAX,
+            max(config.DISAGREEMENT_SCORE_MIN, combined),
+        )
+    return round(_validated_score(combined, "combined_score"), 4)
 
 
 def score_to_label(score: float) -> tuple[str, str]:
-    """
-    Turn a score into a guess and the text a reader actually sees.
-    ← TODO (Milestone 5)
-
-    Returns:
-        (guess, label_text) — where `guess` is a short machine-readable string
-        like "ai" / "human" / "unsure", and `label_text` is the full sentence
-        shown to a person.
-
-    ⚠️ Write the label text for someone who has never heard the word
-    "threshold".
-
-        ✗ "human, 0.81 confidence"
-        ✓ "We think this was probably written by a person."
-
-    All three labels have to be **reachable**. If no score can produce one of
-    them, your ranges have a gap — and Milestone 5 asks you to submit text that
-    produces each one, which is how you'd find out.
-
-    The hardest one to write is "unsure". It has to admit uncertainty without
-    sounding like an accusation, because the person reading it may well have
-    written every word themselves. Your breakout asks your group what they'd
-    think if they got it on their own work. That question is the whole
-    milestone.
-    """
-    # TODO: replace this — thresholds are in config.py
-    if score >= config.AI_THRESHOLD:
-        return "ai", "PLACEHOLDER — write the high-confidence AI label."
+    """Map [0, 1] completely, with inclusive human and AI outer boundaries."""
+    score = _validated_score(score, "score")
     if score <= config.HUMAN_THRESHOLD:
-        return "human", "PLACEHOLDER — write the high-confidence human label."
-    return "unsure", "PLACEHOLDER — write the unsure label."
+        return "human", HUMAN_LABEL
+    if score >= config.AI_THRESHOLD:
+        return "ai", AI_LABEL
+    return "unsure", UNSURE_LABEL
 
 
 def label_ranges() -> list[tuple[str, str]]:
-    """
-    The score range each label covers. Your README needs these beside the
-    label text — given to you so the numbers can't drift apart from config.py.
-    """
+    """Show non-overlapping interval notation matching score_to_label."""
     return [
-        ("high-confidence human", f"0.00 – {config.HUMAN_THRESHOLD:.2f}"),
-        ("unsure", f"{config.HUMAN_THRESHOLD:.2f} – {config.AI_THRESHOLD:.2f}"),
-        ("high-confidence AI", f"{config.AI_THRESHOLD:.2f} – 1.00"),
+        ("high-confidence human", f"[0.00, {config.HUMAN_THRESHOLD:.2f}]"),
+        ("unsure", f"({config.HUMAN_THRESHOLD:.2f}, {config.AI_THRESHOLD:.2f})"),
+        ("high-confidence AI", f"[{config.AI_THRESHOLD:.2f}, 1.00]"),
     ]
+
+
+if __name__ == "__main__":
+    for name, interval in label_ranges():
+        print(f"{name}: {interval}")

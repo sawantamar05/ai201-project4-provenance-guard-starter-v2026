@@ -1,25 +1,7 @@
-"""
-The audit log.
-
-Every decision your service makes gets written here as one JSON object per
-line. Not `print()` — a file you can read back.
-
-The reason is next unit: you run an attack against this service, and **an
-attack you can't see in a log is an attack you can't diagnose.** An input that
-slipped past your detector leaves no other trace.
-
-All nine fields the unit 8 rubric requires are in the entry shape from the
-start, even though unit 7 only fills some of them. That's deliberate — adding
-fields later means your early entries and your late ones have different shapes,
-and the one you most want to compare is the one from before the change.
-
-    from audit import log_decision, read_entries
-
-    log_decision(content_id=..., creator_id=..., guess="ai", ...)
-    entries = read_entries(limit=50)
-"""
+"""Append-only JSONL decisions, appeals, and rejections for the local service."""
 
 import json
+import os
 import threading
 from datetime import datetime, timezone
 
@@ -118,6 +100,8 @@ def _append(entry: dict) -> dict:
     with _lock:
         with config.AUDIT_LOG.open("a", encoding="utf-8") as f:
             f.write(line + "\n")
+            f.flush()
+            os.fsync(f.fileno())
     return entry
 
 
@@ -132,12 +116,16 @@ def read_entries(limit: int | None = None) -> list[dict]:
         return []
 
     entries = []
-    for line in config.AUDIT_LOG.read_text(encoding="utf-8").splitlines():
+    with _lock:
+        lines = config.AUDIT_LOG.read_text(encoding="utf-8").splitlines()
+    for line in lines:
         line = line.strip()
         if not line:
             continue
         try:
-            entries.append(json.loads(line))
+            entry = json.loads(line)
+            if isinstance(entry, dict):
+                entries.append(entry)
         except json.JSONDecodeError:
             continue
 

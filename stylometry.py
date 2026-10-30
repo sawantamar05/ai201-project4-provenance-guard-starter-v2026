@@ -1,142 +1,106 @@
-"""
-Signal two: the style signal. ← YOU BUILD THIS IN MILESTONE 4
+"""Surface-pattern signal: sentence variation, vocabulary, and punctuation.
 
-Signal one reads the text for meaning. This one measures it *as text* — the
-shape of it, without understanding a word.
-
-Three measures are stubbed below because the brief names those three. They are
-stubs, not implementations: what they compute is yours, and so is how you
-combine them.
-
-    sentence_length_spread   do sentences vary in length, or march in step?
-    type_token_ratio         how much of the vocabulary repeats?
-    punctuation_density      how much punctuation, and how varied?
-
-Why these might differ between human and AI writing: generated prose tends
-toward even, mid-length sentences and a narrower band of vocabulary, because
-that's what "most likely next word" produces on average. Human writing is
-lumpier — a three-word sentence next to a forty-word one.
-
-⚠️ **The blind spot, which you have to name in Milestone 1.**
-
-This signal cannot read. It has no idea what the text says. Anything that
-changes the shape without changing the substance moves it — adding typos,
-breaking up sentences, pasting in a quotation. That is a very cheap thing for
-someone to do on purpose, and unit 8's attack set will do it to you.
-
-Build each function on its own and call it from a terminal before you wire
-anything together:
-
-    python stylometry.py "some text to look at"
+These are heuristics about form, not evidence of who wrote a passage. Unicode
+word and punctuation handling avoids treating non-ASCII writing as empty text.
 """
 
+import json
 import re
 import statistics
+import unicodedata
+
+import config
 
 
 def sentences(text: str) -> list[str]:
-    """Split into sentences. Rough and good enough — given to you."""
-    parts = re.split(r"(?<=[.!?])\s+", text.strip())
-    return [p for p in parts if p.strip()]
+    """Split after sentence punctuation and optional closing quotes.
+
+    Decimal points without following whitespace remain inside their sentence.
+    This deliberately small tokenizer does not resolve abbreviations or genre.
+    """
+    parts = re.split(r"(?<=[.!?。！？])(?:[\"'”’\)\]]*)\s+", text.strip())
+    return [part for part in parts if part.strip()]
 
 
 def words(text: str) -> list[str]:
-    """Split into lowercase words, punctuation stripped. Given to you."""
-    return re.findall(r"[a-z0-9']+", text.lower())
+    """Return Unicode words, retaining internal straight or curly apostrophes."""
+    normalized = unicodedata.normalize("NFC", text).casefold()
+    return re.findall(r"[^\W_]+(?:['’][^\W_]+)*", normalized)
 
-
-# ── The three measures — YOU BUILD THESE ─────────────────────────────────────
 
 def sentence_length_spread(text: str) -> float:
-    """
-    How much sentence length varies. ← TODO
-
-    Returns:
-        A float. Decide yourself what scale it's on and which direction means
-        "more human" — then write that down, because your combining rule
-        depends on knowing it.
-
-    A hint on what you're reaching for: the standard deviation of sentence
-    lengths, probably divided by the mean so a long text and a short one are
-    comparable. `statistics.stdev` is imported for you.
-
-    Watch the edge case: a one-sentence submission has no spread at all, and
-    `stdev` raises on fewer than two values. Decide what that should return
-    before the attack set decides for you.
-    """
-    # TODO: replace this
-    return 0.0
+    """Population standard deviation / mean word count; zero if unavailable."""
+    lengths = [len(words(part)) for part in sentences(text)]
+    lengths = [length for length in lengths if length]
+    if len(lengths) < 2:
+        return 0.0
+    return statistics.pstdev(lengths) / statistics.mean(lengths)
 
 
 def type_token_ratio(text: str) -> float:
-    """
-    Unique words over total words. ← TODO
-
-    Returns:
-        A float between 0 and 1. Higher means more varied vocabulary.
-
-    Worth knowing before you rely on it: this measure falls as text gets
-    longer, because common words repeat. Two texts of different lengths aren't
-    directly comparable on it, and if your test inputs vary a lot in length,
-    that alone can look like a signal.
-    """
-    # TODO: replace this
-    return 0.0
+    """Unique lowercase word tokens / all word tokens; zero for no words."""
+    tokens = words(text)
+    return len(set(tokens)) / len(tokens) if tokens else 0.0
 
 
 def punctuation_density(text: str) -> float:
-    """
-    How much punctuation, relative to length. ← TODO
-
-    Returns:
-        A float. Whether you count all punctuation or only some kinds — commas,
-        semicolons, dashes — is a real choice. Semicolons and em dashes are
-        more interesting than full stops, because they vary more between
-        writers.
-    """
-    # TODO: replace this
-    return 0.0
+    """Unicode punctuation characters / all nonspace characters."""
+    characters = [character for character in text if not character.isspace()]
+    if not characters:
+        return 0.0
+    punctuation = sum(unicodedata.category(c).startswith("P") for c in characters)
+    return punctuation / len(characters)
 
 
-# ── Combining them ───────────────────────────────────────────────────────────
+def _clamp(value: float) -> float:
+    return min(1.0, max(0.0, value))
+
+
+def component_metrics(text: str) -> dict[str, float | int]:
+    """Return independently inspectable measurements and normalized components."""
+    tokens = words(text)
+    sentence_count = sum(bool(words(part)) for part in sentences(text))
+    spread = sentence_length_spread(text)
+    variety = type_token_ratio(text)
+    punctuation = punctuation_density(text)
+    evenness = (
+        _clamp(1.0 - spread / config.STYLE_SPREAD_SCALE)
+        if sentence_count >= config.STYLE_MIN_SENTENCES else 0.5
+    )
+    repetition = _clamp(
+        (config.STYLE_TTR_BASELINE - variety) / config.STYLE_TTR_SCALE
+    )
+    simplicity = _clamp(1.0 - punctuation / config.STYLE_PUNCTUATION_SCALE)
+    score = (
+        config.STYLE_WEIGHT_EVENNESS * evenness
+        + config.STYLE_WEIGHT_REPETITION * repetition
+        + config.STYLE_WEIGHT_SIMPLICITY * simplicity
+    )
+    if len(tokens) < config.STYLE_MIN_WORDS:
+        score = 0.5
+    return {
+        "word_count": len(tokens),
+        "sentence_count": sentence_count,
+        "sentence_length_spread": spread,
+        "type_token_ratio": variety,
+        "punctuation_density": punctuation,
+        "evenness": evenness,
+        "repetition": repetition,
+        "punctuation_simplicity": simplicity,
+        "style_score": round(_clamp(score), 4),
+    }
+
 
 def style_signal(text: str) -> float:
-    """
-    The style signal as a 0–1 score. **Higher means more likely AI.** ← TODO
-
-    Combine your three measures into one number. Same direction as
-    `detector.model_signal`, so that `scoring.combine_signals` can treat them
-    the same way — if one of your signals runs backwards, everything above it
-    is wrong in a way that's hard to see.
-
-    Two things to decide and write down:
-
-      1. Which direction each measure points. Low spread means more AI-ish, so
-         it needs flipping. Work out which of your three need that.
-      2. How to get each onto a comparable scale. A raw type-token ratio sits
-         between 0 and 1; a raw punctuation count doesn't. Adding them
-         unscaled means whichever has the bigger numbers wins by default.
-
-    Test it on the four calibration inputs from Milestone 4 — clearly AI,
-    clearly human, plain conventional human writing, lightly-edited AI — before
-    you trust it. Plain and ordinary, not formal: formal prose reads as *human*
-    to signal one, and it is plain writing that gets accused.
-    """
-    # TODO: replace this
-    return 0.5
+    """Return a 0–1 AI-leaning style score, with neutral short-text handling."""
+    return float(component_metrics(text)["style_score"])
 
 
 if __name__ == "__main__":
     import sys
 
-    text = " ".join(sys.argv[1:]) or (
+    sample = " ".join(sys.argv[1:]) or (
         "The system works well. It handles most cases correctly and provides "
         "good results. Users generally find it easy to use and understand."
     )
-
-    print(f"{len(sentences(text))} sentences, {len(words(text))} words\n")
-    print(f"sentence_length_spread   {sentence_length_spread(text)}")
-    print(f"type_token_ratio         {type_token_ratio(text)}")
-    print(f"punctuation_density      {punctuation_density(text)}")
-    print(f"style_signal             {style_signal(text)}   (higher = more likely AI)")
-    print("\nAll zeros? These are stubs — Milestone 4 is where you build them.")
+    print(json.dumps(component_metrics(sample), indent=2, ensure_ascii=False))
