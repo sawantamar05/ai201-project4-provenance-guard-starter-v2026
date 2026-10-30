@@ -42,3 +42,9 @@ This is a small development sample. Historical prose and generated examples
 do not estimate performance for modern writing, multilingual writers, poems,
 or an independently authored attack set. Repeating these inputs in three trials
 checks consistency; it does not create additional independent samples.
+
+
+`label_demonstrations.json` is a separate, later reachability set. It retains
+Carroll's sourced *Jabberwocky* and explicitly generated rare-vocabulary stress
+prose. Neither changes the frozen metric corpus. The unusual generated prose
+receives a human-like label, demonstrating evasion rather than correctness.

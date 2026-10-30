@@ -1,0 +1,47 @@
+{
+  "method": "Stopped service process 28806 and started fresh process 53959 with the same audit log.",
+  "health_after_restart": {
+    "detector_loaded": false,
+    "detector_model": "gpt2",
+    "log_entries": 105,
+    "ok": true,
+    "rate_limiting": false
+  },
+  "content_after_restart": {
+    "appeals": [
+      {
+        "content_id": "d562e6be-8e0d-4321-b32c-dcadf7930899",
+        "creator_id": "demo-writer",
+        "event": "appeal",
+        "reasoning": "Development appeal: please review this estimate.",
+        "status": "under_review",
+        "timestamp": "2026-10-30T17:50:06+00:00"
+      }
+    ],
+    "combined_score": 0.6086,
+    "confidence": 0.6086,
+    "content_id": "d562e6be-8e0d-4321-b32c-dcadf7930899",
+    "creator_id": "demo-writer",
+    "detector_model": "gpt2",
+    "guess": "unsure",
+    "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+    "model_score": 0.6223,
+    "status": "under_review",
+    "style_metrics": {
+      "evenness": 0.7627491255431172,
+      "punctuation_density": 0.016643550624133148,
+      "punctuation_simplicity": 0.8613037447988905,
+      "repetition": 0,
+      "sentence_count": 7,
+      "sentence_length_spread": 0.18980069956550624,
+      "style_score": 0.5536,
+      "type_token_ratio": 0.90625,
+      "word_count": 96
+    },
+    "style_score": 0.5536,
+    "text_length": 816,
+    "timestamp": "2026-10-30T17:50:06+00:00"
+  },
+  "original_sample": "results/sample_run.json",
+  "passed": true
+}
