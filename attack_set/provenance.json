@@ -1,0 +1,27 @@
+{
+  "source": "User-provided /Users/amarsawant/Downloads/attack_set.zip, supplied as the course attack set. Inputs were not authored or edited by this implementation.",
+  "copied_at_utc": "2026-11-08T21:41:13.337145+00:00",
+  "archive_sha256": "2d122805ef92092fcadcc8307d38fe6b4e44f26c0726fc991a4d31d0e800a33b",
+  "files": {
+    "attacks_malformed_requests.csv": {
+      "sha256": "9f0ea9aaf4ec5cefc2e04d09987b203f23c76c792e3450c030dd14f730334cfa",
+      "header": [
+        "id",
+        "family",
+        "targets",
+        "raw_body",
+        "send_as",
+        "content_type"
+      ]
+    },
+    "attacks.csv": {
+      "sha256": "b28bd0987337815a41d46be95442c89b6828d50f0de1dc258e1e7b3d43d1deb2",
+      "header": [
+        "id",
+        "family",
+        "targets",
+        "text"
+      ]
+    }
+  }
+}

@@ -10,7 +10,7 @@ service's decisions. Declare per-creator limiting before implementation.
 | Milestone | State | Evidence |
 |---|---|---|
 | 1. Limit and log | Complete | Flood15: ten 200s, five 429s; nine-field decisions and rejections verified; 33 tests pass |
-| 2. Full attack baseline | Pending | Official Downloads/attack_set.zip is ready to open after the milestone 1 commit |
+| 2. Full attack baseline | Complete | 56/56 sent; 43 HELD, 13 BROKE; all rows reviewed; 12 audit entries in README including 2 rejections |
 | 3. Five criteria, three trials | Pending | Complete scenarios and before report against unchanged targets |
 | 4. Verdicts and diagnoses | Pending | All misses and broken attacks need a stage and mechanism |
 | 5. One improvement | Pending | Choose after baseline; run both full suites again |
