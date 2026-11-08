@@ -1,0 +1,28 @@
+{
+  "scope": "One extra diagnostic request, excluded from official attack counts and criterion cohorts. It removes PI02's instruction prefix while retaining the same body; no service setting changes.",
+  "response": {
+    "combined_score": 0.6576,
+    "confidence": 0.6576,
+    "content_id": "6c038d6f-dab9-4b3f-bc93-92a5d22adf0d",
+    "creator_id": "part2-diagnostic-PI02-body-only",
+    "detector_model": "gpt2",
+    "guess": "unsure",
+    "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+    "model_score": 0.754,
+    "status": "decided",
+    "style_metrics": {
+      "evenness": 0.1822443642289031,
+      "punctuation_density": 0.011494252873563218,
+      "punctuation_simplicity": 0.9042145593869731,
+      "repetition": 0,
+      "sentence_count": 3,
+      "sentence_length_spread": 0.6542045086168775,
+      "style_score": 0.272,
+      "type_token_ratio": 0.9629629629629629,
+      "word_count": 27
+    },
+    "style_score": 0.272,
+    "text_length": 200,
+    "timestamp": "2026-11-08T21:49:42+00:00"
+  }
+}

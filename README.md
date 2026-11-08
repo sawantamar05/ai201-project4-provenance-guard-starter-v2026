@@ -809,3 +809,49 @@ checks, 10,001-score sweep, and exact-status validation cases are in the JSON.
 Fresh-process checks show all ten appealed items under review with the detector
 unloaded. Isolated service tests separately assert zero detector calls for
 appeals and invalid input; a JSON response alone cannot establish call counts.
+
+
+### Verdict decisions and diagnoses
+
+- **Criterion1 — MET:** 0/10 historical-human items labeled AI in every trial,
+  against the original ceiling1/10. The staff set's three false positives show
+  that this development corpus is too narrow to establish modern-writer safety.
+- **Criterion2 — MET:** median gap0.2470 exceeds0.20 in every trial.
+- **Criterion3 — MET:** three labels and10,001 mapped scores in every trial.
+  The synthetic human-labeled item demonstrates reachability and evasion.
+- **Criterion4 — MET:**10/10 appeals in every trial, exact reasoning and
+  original decisions preserved, fresh-process status checks passed.
+- **Criterion5 — MISSED:**36/37,26/37,26/37 exact responses. Every miss is429.
+  **Stage:** rate-limit/route ordering. **Mechanism:** missing or invalid IDs
+  share one address bucket, so the limiter rejects before the validation
+  handler can return the specified400/404/413/415. Successful events are unchanged.
+
+Every broken attack has a stage and mechanism below; these are the reviewed
+before outcomes, without changing the signals to fit individual attacks.
+
+| ID | Stage | Measured mechanism |
+|---|---|---|
+| EV01 | signal one + combining rule | Typos coincide with model 0.1635 versus style 0.5898; the disagreement clamp yields 0.26. The AI item avoids the AI label even though the clamp prevents a human label. |
+| EV02 | signal two + combining rule | Model 0.5943 and structural score 0.1919 combine to 0.5138. The edited sentence shape pulls an already intermediate model score into unsure. |
+| EV03 | signal two + combining rule | The quotation-bearing item scores model 0.6662 and style 0.4163; their 80/20 result 0.6162 is below the AI threshold. Surface changes are not evidence of authorship. |
+| EV04 | signal one | The unusual-word item receives model 0.6114, with style 0.5785. The model measures predictability, so surprising generated wording can avoid a high AI score. |
+| EV05 | both signals | The edited AI item receives model 0.3212 and style 0.3137; both lean away from AI. The weighted 0.3197 remains unsure. |
+| EV06 | signal two + combining rule | The uneven-length item has model 0.5727 and style 0.2507; combined 0.5083 remains unsure. Sentence-shape measures respond to editing rather than authorship. |
+| EV07 | signal two + combining rule | Punctuation-bearing text scores style 0.4546 and model 0.5862, producing 0.5599. Punctuation changes the surface signal without establishing who wrote it. |
+| EV08 | signal one + signal two | The short item gives model 0.2452 while style is neutral 0.5; their result 0.2962 is unsure. Limited text supplies little context and falls into the style short-text rule. |
+| EV09 | both signals + combining rule | The mixed-origin item has model 0.7042 and style 0.4055, producing 0.6445. Aggregate signals cannot establish which parts were generated or how much editing occurred. |
+| FP03 | signal one + label mapping | The supplied non-native-English example scores model 0.8051 and style 0.5639. Their 0.7569 crosses the original 0.75 AI boundary, so predictable plain language becomes a false accusation. |
+| FP04 | signal one + label mapping | The supplied rubric-style essay scores model 0.8329 and style 0.4913. The 0.7646 result crosses the original AI boundary even though the set designates it human. |
+| FP05 | signal one + label mapping | The supplied human technical prose scores model 0.8005 and style 0.6506. Agreement on regular language yields 0.7705, above the original AI boundary. |
+| PI02 | signal one + combining rule | The instruction-prefixed content receives model 0.2044 and style 0.2805, producing human at 0.2196. This partially achieves the requested human classification, but it does not establish instruction execution: requested confidence 0.02 is not returned, and the ordinary scoring/label path still runs. |
+
+The worst FP03 result and the opposing criterion5 verdict were examined using
+the assignment's working-alone AI prompts. Three hypotheses were requested
+without a ranking, and an argument for MET was considered before retaining
+MISSED against the literal target. Full prompts, responses, and the engineering
+resolution: [feedback record](results/part2_feedback.json).
+
+A separate [PI02 diagnostic](results/part2_pi02_diagnostic.json), excluded from
+all official counts, removes only its instruction header. Model score changes
+0.2044→0.7540, style0.2805→0.2720, and the result becomes unsure0.6576. This is
+predictability sensitivity, not evidence that instructions were executed.
