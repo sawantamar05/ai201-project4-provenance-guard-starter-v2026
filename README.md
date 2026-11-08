@@ -269,3 +269,29 @@ The prompts and fictional writer responses are preserved in
 [the feedback record](docs/feedback.md). They led to clearer appeal instructions;
 the targets, thresholds, and label sentences were retained. This is simulated
 AI feedback, not independent human validation.
+
+
+## Rate Limiting
+
+Part 2 enables **10 submissions per minute and 200 per day**. A writer can
+submit several drafts quickly; a script cannot score hundreds of variations
+in one burst. Rejected submissions also count toward the caller's quota.
+The limiter uses local process memory and resets when the service restarts.
+
+The declared Part 2 stretch feature is **per-creator limits**. A nonempty,
+valid creator ID defines the bucket across addresses; malformed or missing
+IDs fall back to the caller's address. Different creators sharing an address
+get separate quotas. Creator IDs are self-asserted, so changing IDs can evade
+these quotas; a deployed site needs authenticated identity.
+
+Live flood evidence: [results/flood_2026-11-08_1339.md](results/flood_2026-11-08_1339.md).
+
+```text
+200 200 200 200 200 200 200 200 200 200 429 429 429 429 429
+```
+
+All ten accepted decisions contain the nine required fields; all five 429s
+are persisted with their creator, bucket, route, reason, and limit. Three
+additional submissions were read back through `/log`:
+[the instrumentation capture](results/part2_instrumentation.json).
+The original criteria and scoring baseline remain unchanged at this checkpoint.

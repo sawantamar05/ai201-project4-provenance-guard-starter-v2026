@@ -53,6 +53,7 @@ import argparse
 import csv
 import datetime as dt
 import json
+import hashlib
 import sys
 from pathlib import Path
 
@@ -356,6 +357,7 @@ def run_flood(args):
     print("The first one is slow while the model loads.\n")
 
     codes = []
+    captures = []
     for i in range(1, args.flood + 1):
         try:
             response = requests.post(f"{args.url}/submit",
@@ -363,8 +365,10 @@ def run_flood(args):
                                            "creator_id": args.creator},
                                      timeout=args.timeout)
             codes.append(str(response.status_code))
+            captures.append({"index": i, "status": response.status_code, "response": response.json()})
         except Exception as exc:  # noqa: BLE001
             codes.append(type(exc).__name__)
+            captures.append({"index": i, "error": str(exc)})
         print(f"  [{i:>2}/{args.flood}] {codes[-1]}")
 
     run = " ".join(codes)
@@ -393,6 +397,8 @@ def run_flood(args):
         f"- Rate limited: **{limited}**\n\n"
         f"```\n{run}\n```\n",
         encoding="utf-8")
+    path.with_suffix('.json').write_text(json.dumps({"creator_id": args.creator, "url": args.url,
+        "status_codes": codes, "requests": captures}, indent=2) + '\n', encoding='utf-8')
     print(f"\nWrote {path.relative_to(config.ROOT)}")
 
 
@@ -479,6 +485,10 @@ def main():
             "family": attack["family"],
             "targets": attack["targets"],
             "status": status,
+            "request_body": attack.get("body"),
+            "raw_request": attack.get("raw"),
+            "content_type": attack.get("content_type", "application/json"),
+            "response": payload,
             "content_id": payload.get("content_id"),
             # `body` is whatever the attack file held — a malformed-request
             # attack can legitimately make it a list, a string or absent, so
@@ -582,6 +592,15 @@ def write_report(rows, args):
         ]
 
     path.write_text("\n".join(lines), encoding="utf-8")
+    source_hashes = {name: hashlib.sha256((config.ROOT / name).read_bytes()).hexdigest()
+                     for name in ('app.py', 'audit.py', 'config.py', 'detector.py', 'scoring.py', 'stylometry.py', 'criteria.md')}
+    dataset_hashes = {name: hashlib.sha256((Path(args.folder) / name).read_bytes()).hexdigest()
+                      for name in ('attacks.csv', 'attacks_malformed_requests.csv')}
+    path.with_suffix('.json').write_text(json.dumps({
+        'recorded_at': dt.datetime.now(dt.timezone.utc).isoformat(), 'label': args.label,
+        'url': args.url, 'row_count': len(rows), 'source_hashes': source_hashes,
+        'dataset_hashes': dataset_hashes, 'rows': rows,
+    }, indent=2, ensure_ascii=True) + '\n', encoding='utf-8')
 
     print(f"\n{'=' * 60}")
     print(f"Wrote {path.relative_to(config.ROOT)}")

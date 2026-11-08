@@ -36,8 +36,8 @@ STYLE_WEIGHT_EVENNESS = 0.50
 STYLE_WEIGHT_REPETITION = 0.30
 STYLE_WEIGHT_SIMPLICITY = 0.20
 
-# Optional limits for the next unit; no-op unless explicitly enabled.
-RATE_LIMITING_ENABLED = os.getenv("AI201_RATE_LIMITS", "0") == "1"
+# Part 2: local per-creator limits, enabled by default.
+RATE_LIMITING_ENABLED = os.getenv("AI201_RATE_LIMITS", "1") == "1"
 RATE_LIMIT_PER_MINUTE = 10
 RATE_LIMIT_PER_DAY = 200
 RATE_LIMIT_STORAGE = "memory://"

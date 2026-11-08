@@ -1,0 +1,15 @@
+{
+  "part1_head": "b152891b6f0da3993ab26f7df2dd76d855918853",
+  "stage": "Part 2 instruments complete; no improvement yet; attack ZIP not opened",
+  "files": {
+    "app.py": "872d0589d678e3c8ac3abe2c40e19d29408cce2c2c743d4b2c30fd55c178723f",
+    "audit.py": "3bcfaeaa8d5e1ad9ea39018cfd5e390dde86f5d1ae7815bb944cb6fd9c31314e",
+    "config.py": "b35d759595679572105d026dda3e83f71a5d20c7bb7862c35da0650da5ce2c2d",
+    "detector.py": "58f474dbd37061a12f3bc4746b95c57b0c0691304fcd9a80495c9710feab0129",
+    "scoring.py": "fe216de87e54120b7d1b5115bcdd217938b05577e51fe466bfc82364768a3201",
+    "stylometry.py": "c118f7d49fda47039af22f31f2da4f905e070432f49c96924ca17801970fd04b",
+    "criteria.md": "aa64b419b9824b2fbf1af987a88698612433fd98460aeb04f41ca30c885635af",
+    "data/evaluation_inputs.json": "f701b1db8e71d8a9324f8129416ab699fdbb4229dfae7f11901930e36951d007",
+    "data/label_demonstrations.json": "f53f0bbc603c377296d87a463b88d788e35e6c5ee5e3b02c931455b3b3609d82"
+  }
+}

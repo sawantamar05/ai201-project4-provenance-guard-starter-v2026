@@ -3,7 +3,7 @@
 
 import uuid
 
-from flask import Flask, jsonify, request
+from flask import Flask, g, jsonify, request
 from werkzeug.exceptions import RequestEntityTooLarge
 
 import audit
@@ -29,21 +29,30 @@ if config.RATE_LIMITING_ENABLED:
     def rate_limit_key():
         payload = request.get_json(silent=True)
         creator = payload.get('creator_id') if isinstance(payload, dict) else None
-        return creator.strip() if isinstance(creator, str) and creator.strip() else get_remote_address()
+        usable = (_valid_unicode(creator) and creator.strip()
+                  and len(creator) <= config.MAX_CREATOR_CHARS)
+        g.audit_creator_id = creator if usable else 'unknown'
+        g.rate_limit_bucket = ('creator:' + creator.strip() if usable
+                               else 'address:' + str(get_remote_address()))
+        return g.rate_limit_bucket
 
     limiter = Limiter(key_func=rate_limit_key, app=app,
                       storage_uri=config.RATE_LIMIT_STORAGE, default_limits=[])
 
     @app.errorhandler(429)
     def rate_limited(exc):
-        return _reject('rate_limited', 'Too many submissions. Try again shortly.', 429)
+        return _reject('rate_limited', 'Too many submissions. Try again shortly.', 429,
+                       limit=str(exc.description))
 
 
-def _reject(error, message, status, creator_id='unknown'):
+def _reject(error, message, status, creator_id='unknown', **extra):
     """Record bounded rejection metadata, without storing submitted writing."""
+    if creator_id == 'unknown':
+        creator_id = getattr(g, 'audit_creator_id', 'unknown')
     try:
         audit.log_rejection(creator_id=creator_id, reason=error,
-                            route=request.path, http_status=status)
+                            route=request.path, http_status=status,
+                            rate_limit_bucket=getattr(g, 'rate_limit_bucket', None), **extra)
     except OSError:
         app.logger.error('Could not persist rejection metadata.')
     return jsonify({'error': error, 'message': message}), status

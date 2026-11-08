@@ -34,6 +34,9 @@ class ServiceTests(unittest.TestCase):
         self.model = patch.object(detector, "model_signal", return_value=0.60).start()
         self.addCleanup(patch.stopall)
         appmod.app.config["TESTING"] = True
+        self.rate_setting = patch.object(appmod.limiter, "enabled", False, create=True)
+        self.rate_setting.start()
+        self.addCleanup(self.rate_setting.stop)
         self.client = appmod.app.test_client()
 
     def submit(self, text=VALID_TEXT, creator_id="writer-01"):
