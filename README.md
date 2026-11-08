@@ -2,7 +2,13 @@
 
 A local Flask backend for cautious writing-provenance estimates and appeals.
 [Run the service](RUNNING.md) · [Acceptance criteria](criteria.md) ·
-[API design](docs/design.md) · [Verification evidence](docs/verification.md)
+[API design](docs/design.md) · [Part 1 evidence](docs/verification.md) · [Part 2 audit](results/part2_submission_audit.json)
+
+Part 2 testing is recorded below: **56 attacks before and 56 after**, three
+trials per original criterion in both phases, and one measured threshold change.
+Four criteria are MET; the exact bad-input-code criterion remains MISSED and
+is diagnosed. Test results and residual failures are part of the submission.
+
 
 ## What This Does
 
@@ -263,7 +269,7 @@ claims. The response identified an unpaired-Unicode-surrogate logging crash
 and a runner that repeated submissions but only checked appeals/validation
 once. The changes validate Unicode before inference, reject oversized bodies
 early, add regression tests, and repeat all five criterion checks across
-three trials. All 29 automated tests passed, alongside the real HTTP checks.
+three trials. At the Part 1 checkpoint, all 29 automated tests passed alongside the real HTTP checks. Part 2 adds five checks, for 34 passing tests.
 
 
 **Writer-perspective exercises.** Codex also generated the assignment's
@@ -273,6 +279,23 @@ The prompts and fictional writer responses are preserved in
 the targets, thresholds, and label sentences were retained. This is simulated
 AI feedback, not independent human validation.
 
+
+
+**Part 2 — instruments and diagnosis.** AI assistance was used to configure
+per-creator limits, capture full attack exchanges, and extend the evaluation
+runner to exercise all five criteria three times. The resulting changes added
+rate-limit tests and rejection metadata; detector/model code and the original
+criteria were retained.
+
+**Part 2 — competing explanations and measured change.** The working-alone
+prompts requested three causes for FP03 without ranking them and the strongest
+opposing verdict for criterion 5. The analysis separated ordinary-language
+predictability, structural regularity, and the label boundary; it also exposed
+that safe 429 rejection is not the exact 400/404/413/415 target. The chosen single
+runtime improvement was AI threshold 0.75→0.80, measured with both full suites.
+All attack judgments and diagnoses are AI-assisted engineering analysis using
+the actual returned values; they are not independent human annotations or peer
+feedback. Full prompts/responses are in [the Part 2 feedback record](results/part2_feedback.json).
 
 ## Rate Limiting
 
@@ -816,18 +839,18 @@ appeals and invalid input; a JSON response alone cannot establish call counts.
 
 ### Verdict decisions and diagnoses
 
-- **Criterion1 — MET:** 0/10 historical-human items labeled AI in every trial,
-  against the original ceiling1/10. The staff set's three false positives show
+- **Criterion 1 — MET:** 0/10 historical-human items labeled AI in every trial,
+  against the original ceiling 1/10. The staff set's three false positives show
   that this development corpus is too narrow to establish modern-writer safety.
-- **Criterion2 — MET:** median gap0.2470 exceeds0.20 in every trial.
-- **Criterion3 — MET:** three labels and10,001 mapped scores in every trial.
+- **Criterion 2 — MET:** median gap 0.2470 exceeds 0.20 in every trial.
+- **Criterion 3 — MET:** three labels and 10,001 mapped scores in every trial.
   The synthetic human-labeled item demonstrates reachability and evasion.
-- **Criterion4 — MET:**10/10 appeals in every trial, exact reasoning and
+- **Criterion 4 — MET:** 10/10 appeals in every trial, exact reasoning and
   original decisions preserved, fresh-process status checks passed.
-- **Criterion5 — MISSED:**36/37,26/37,26/37 exact responses. Every miss is429.
+- **Criterion 5 — MISSED:**36/37, 26/37, 26/37 exact responses. Every miss is 429.
   **Stage:** rate-limit/route ordering. **Mechanism:** missing or invalid IDs
   share one address bucket, so the limiter rejects before the validation
-  handler can return the specified400/404/413/415. Successful events are unchanged.
+  handler can return the specified 400/404/413/415. Successful events are unchanged.
 
 Every broken attack has a stage and mechanism below; these are the reviewed
 before outcomes, without changing the signals to fit individual attacks.
@@ -848,7 +871,7 @@ before outcomes, without changing the signals to fit individual attacks.
 | FP05 | signal one + label mapping | The supplied human technical prose scores model 0.8005 and style 0.6506. Agreement on regular language yields 0.7705, above the original AI boundary. |
 | PI02 | signal one + combining rule | The instruction-prefixed content receives model 0.2044 and style 0.2805, producing human at 0.2196. This partially achieves the requested human classification, but it does not establish instruction execution: requested confidence 0.02 is not returned, and the ordinary scoring/label path still runs. |
 
-The worst FP03 result and the opposing criterion5 verdict were examined using
+The worst FP03 result and the opposing criterion 5 verdict were examined using
 the assignment's working-alone AI prompts. Three hypotheses were requested
 without a ranking, and an argument for MET was considered before retaining
 MISSED against the literal target. Full prompts, responses, and the engineering
@@ -856,14 +879,14 @@ resolution: [feedback record](results/part2_feedback.json).
 
 A separate [PI02 diagnostic](results/part2_pi02_diagnostic.json), excluded from
 all official counts, removes only its instruction header. Model score changes
-0.2044→0.7540, style0.2805→0.2720, and the result becomes unsure0.6576. This is
+0.2044→0.7540, style 0.2805→0.2720, and the result becomes unsure 0.6576. This is
 predictability sensitivity, not evidence that instructions were executed.
 
 
 ## The Improvement
 
-**One change:** `config.py::AI_THRESHOLD` increased from **0.75 to0.80**.
-The diagnosis was FP03–FP05: scores0.7569,0.7646,0.7705 were only slightly over
+**One change:** `config.py::AI_THRESHOLD` increased from **0.75 to 0.80**.
+The diagnosis was FP03–FP05: scores 0.7569, 0.7646, 0.7705 were only slightly over
 the old accusation boundary. Both signals, both weights, human threshold,
 disagreement rule, validation, rate limits, and label sentences were retained.
 [The change manifest](results/part2_change_manifest.json) verifies that only
@@ -879,14 +902,14 @@ requests. Same input order, caller scheme, model, and datasets were used.
 
 | Measured outcome | Before | After |
 |---|---|---|
-| Official attack rows attempted |56/56|56/56|
-| HELD |43|46|
-| BROKE |13|10|
-| Human-designated staff examples labeled AI |3/8|0/8|
-| Generated evasion cases avoiding AI label |9/10|9/10|
-| Partial PI02 human-classification success |1|1|
-| Skipped attacks /5xx /transport failures |0/0/0|0/0/0|
-| Source CSVs and numeric signal/combined scores |original|identical|
+| Official attack rows attempted | 56/56 | 56/56 |
+| HELD | 43 | 46 |
+| BROKE | 13 | 10 |
+| Human-designated staff examples labeled AI | 3/8 | 0/8 |
+| Generated evasion cases avoiding AI label | 9/10 | 9/10 |
+| Partial PI02 human-classification success | 1 | 1 |
+| Skipped attacks /5xx /transport failures | 0/0/0 | 0/0/0 |
+| Source CSVs and numeric signal/combined scores | original | identical |
 
 **Did it help?** Yes: the three observed false accusations became unsure,
 with no other official attack outcome changing. It did not solve evasion or
@@ -898,7 +921,7 @@ results on the same inspected staff set, not independent generalization evidence
 
 ### Attack Run — After
 
-All56 attacks were rerun. Full requests/responses:
+All 56 attacks were rerun. Full requests/responses:
 [after capture](results/attack_run_2026-11-08_1351_after.json).
 Every row's scores and reviewed mark follow in the same format as before.
 
@@ -1034,8 +1057,8 @@ Every row's scores and reviewed mark follow in the same format as before.
 | 5. Reject bad input before scoring | All 18 validation groups return specified JSON400/404/413/415; no success events | 36/37 exact responses; 18/18 groups | 26/37 exact responses; 18/18 groups | 26/37 exact responses; 18/18 groups | MISSED |
 
 This is the same five-row format and the same targets as the before table.
-Model/style/combined scores match exactly. Criterion5 remains MISSED, with the
-same36/37,26/37,26/37 exact-status results; no new target was substituted.
+Model/style/combined scores match exactly. Criterion 5 remains MISSED, with the
+same 36/37, 26/37, 26/37 exact-status results; no new target was substituted.
 Full after evidence: [JSON](results/part2_eval_after.json) and
 [run log](results/part2_eval_after.md).
 
@@ -1151,3 +1174,52 @@ Full after evidence: [JSON](results/part2_eval_after.json) and
   "message": "Too many submissions. Try again shortly."
 }
 ```
+
+
+## What's Still Broken
+
+The ten remaining BROKE attack IDs are listed individually below. The stopping
+reason is the same for each: this submission declares one measured improvement, which
+was reserved for reducing the most harmful observed false accusations. Further
+signal or route changes would confound that comparison, so they are proposed
+rather than silently applied.
+
+| Remaining attack | Stage and remaining mechanism | Next experiment |
+|---|---|---|
+| EV01 | signal one + combining rule: Typos and word-level novelty lower the model score. | Test spelling-robust contextual features against genuine misspelled human writing before changing the signal. |
+| EV02 | signal two + combining rule: Edited sentence shape lowers the style score. | Evaluate sentence-length normalization on held-out human and generated sentence edits. |
+| EV03 | signal two + combining rule: Quotation-bearing mixed content stays below the AI boundary. | Test segment-level scoring and quoted-span handling, with quotation-rich human controls. |
+| EV04 | signal one: Unusual generated wording avoids a high predictability score. | Evaluate a different independent contextual signal on rare-vocabulary human and AI samples. |
+| EV05 | both signals: The heavily edited item has low readings from both signals. | Treat mixed authorship as uncertain; test voluntary draft evidence rather than assuming editing can be detected reliably. |
+| EV06 | signal two + combining rule: Extreme sentence-length variation depresses the structural result. | Test length-aware feature weighting with short and long human prose, without tuning on this single attack. |
+| EV07 | signal two + combining rule: Punctuation changes the structural features. | Compare punctuation-normalized features against expressive human writing and poetry. |
+| EV08 | signal one + signal two: Short text has little model context and neutral style. | Keep an unsure outcome for insufficient context; evaluate length-stratified targets before making stronger labels. |
+| EV09 | both signals + combining rule: A human opening changes the aggregate view of mixed text. | Test bounded segment/window scoring beyond the first 400 tokens, with measured CPU and false-positive costs. |
+| PI02 | signal one + combining rule: A novel instruction header changes predictability enough to produce human. | Test separate header/body scoring with legitimate quoted-instruction controls; preserve fixed output labels and safe JSON. |
+
+**Criterion 5 still MISSED:** the rate limiter can replace required validation
+codes with 429 for malformed requests sharing an exhausted address bucket.
+Next, test a cheap validation-before-quota arrangement together with a separate
+address-level abuse cap. Keep the original target and measure whether it is
+met; merely adding 429 to the accepted target after observing a miss would hide
+the failure. This route/limiter change was not bundled with the one threshold
+improvement.
+
+**Other known limits:** creator IDs are unverified and can be rotated, limiter
+state resets on restart, and a single-process memory store does not coordinate
+multiple workers. The historical development corpus is small and can overlap
+GPT-2 training data. The rare-word synthetic AI demonstration still receives
+a human label, and neither a label nor a successful appeal verifies authorship.
+Authenticated identity, durable shared limit storage, representative independent
+writing samples, and an actual human review process are future work.
+
+**Production trade:** I would prefer an unsure result and a usable appeal over
+a confident accusation when the evidence is weak. That choice lets more AI
+writing pass without an AI label and increases review work for the site, while
+reducing the risk that an ordinary writer bears the cost of a false accusation.
+
+The original `criteria.md` was retained byte-for-byte. Both complete attack
+runs, both five-row/three-trial run logs, all reviewed verdicts/diagnoses,
+twelve pasted audit events including rejections, and the sole runtime-change
+manifest are included. The submission uses the same repository:
+https://github.com/sawantamar05/ai201-project4-provenance-guard-starter-v2026

@@ -1,0 +1,51 @@
+{
+  "recorded_at_utc": "2026-11-08T22:01:06.921069+00:00",
+  "source_commit_at_audit": "8f2b7fd509c94258c27ff0a92e0fb786345d1b1b",
+  "new_commits_at_audit": 5,
+  "checks": {
+    "original_criteria_unchanged": true,
+    "both_supplied_csvs_match_original_zip_and_both_runs": true,
+    "address_minute_window_expired_before_each_criteria_campaign": true,
+    "only_measured_runtime_improvement_is_ai_threshold": true,
+    "all_56_attacks_reviewed_in_each_phase_with_comparable_scores": true,
+    "five_literal_criteria_have_three_actual_trials_before_and_after": true,
+    "unmet_exact_status_target_is_retained_as_missed": true,
+    "complete_decisions_and_twelve_real_pasted_audit_events": true,
+    "all_ten_readme_sections_tables_and_json_are_present": true,
+    "local_document_links_resolve": true,
+    "at_least_four_new_part2_commits": true
+  },
+  "all_evidence_checks_passed": true,
+  "criteria_verdicts": {
+    "before": {
+      "1": "MET",
+      "2": "MET",
+      "3": "MET",
+      "4": "MET",
+      "5": "MISSED"
+    },
+    "after": {
+      "1": "MET",
+      "2": "MET",
+      "3": "MET",
+      "4": "MET",
+      "5": "MISSED"
+    }
+  },
+  "attack_counts": {
+    "before": {
+      "BROKE": 13,
+      "HELD": 43
+    },
+    "after": {
+      "BROKE": 10,
+      "HELD": 46
+    }
+  },
+  "audit_entry_count": 1013,
+  "campaign_idle_seconds": {
+    "before": 370.445992,
+    "after": 75.720328
+  },
+  "portal_submission": "Performed by the user; repository URL is in SUBMISSION.md."
+}

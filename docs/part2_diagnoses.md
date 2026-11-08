@@ -5,10 +5,10 @@
 | Criterion | Verdict | Decision and mechanism |
 |---|---|---|
 | 1. False accusations | MET | 0/10 historical-human items were AI in each trial, meeting the unchanged <=1 target. This limited corpus did not expose the three plain-language false positives in the staff set. |
-| 2. Median gap | MET | Generated median0.6751 minus human median0.4281 equals0.2470 in each trial, above0.20. Individual overlap remains. |
-| 3. Labels and score coverage | MET | All three labels appeared in every trial and all10,001 scores mapped. Synthetic AI receiving human establishes reachability, not correct authorship. |
-| 4. Appeals | MET | All10 per trial preserved exact reasoning and original events, and a fresh Python process read every status as under_review with its detector unloaded. Isolated tests establish zero rescoring. |
-| 5. Exact bad-input responses | MISSED | Trial counts36/37,26/37,26/37. All23 misses were429 instead of a required validation code: the limiter runs before validation and invalid/missing IDs share the address bucket. No invalid request became a success. |
+| 2. Median gap | MET | Generated median 0.6751 minus human median 0.4281 equals 0.2470 in each trial, above 0.20. Individual overlap remains. |
+| 3. Labels and score coverage | MET | All three labels appeared in every trial and all 10,001 scores mapped. Synthetic AI receiving human establishes reachability, not correct authorship. |
+| 4. Appeals | MET | All 10 per trial preserved exact reasoning and original events, and a fresh Python process read every status as under_review with its detector unloaded. Isolated tests establish zero rescoring. |
+| 5. Exact bad-input responses | MISSED | Trial counts 36/37, 26/37, 26/37. All 23 misses were 429 instead of a required validation code: the limiter runs before validation and invalid/missing IDs share the address bucket. No invalid request became a success. |
 
 No criterion was rewritten: an unmet measurable target remains unmet. Model scores match across trials; quota state, not randomness, explains the exact-status differences.
 
@@ -32,14 +32,14 @@ No criterion was rewritten: an unmet measurable target remains unmet. Model scor
 
 ## Pattern and worst outcome
 
-FP03–FP05 are three versions of one problem: predictable human-designated language receives a high model score, and an aggressive label boundary turns combined scores0.7569,0.7646,0.7705 into accusations. FP03 is the worst social outcome because the supplied set describes the writer as a careful non-native English speaker. The generated evasion cases show the opposite blind spot: edits or limited context keep scores below the AI boundary. These are structural limits, not proof that all writing in a category behaves alike.
+FP03–FP05 are three versions of one problem: predictable human-designated language receives a high model score, and an aggressive label boundary turns combined scores 0.7569, 0.7646, 0.7705 into accusations. FP03 is the worst social outcome because the supplied set describes the writer as a careful non-native English speaker. The generated evasion cases show the opposite blind spot: edits or limited context keep scores below the AI boundary. These are structural limits, not proof that all writing in a category behaves alike.
 
-PI02 receives the requested human guess but not the requested confidence0.02. Removing its instruction header in one separate diagnostic request changes the model score from0.2044 to0.7540 while style changes only0.2805 to0.2720; the result becomes unsure0.6576. This locates the measured shift in contextual predictability. The service computes language-model loss and uses fixed JSON/labels; it never executes the injected request as an instruction. The partial human-classification success is still counted BROKE.
+PI02 receives the requested human guess but not the requested confidence 0.02. Removing its instruction header in one separate diagnostic request changes the model score from 0.2044 to 0.7540 while style changes only 0.2805 to 0.2720; the result becomes unsure 0.6576. This locates the measured shift in contextual predictability. The service computes language-model loss and uses fixed JSON/labels; it never executes the injected request as an instruction. The partial human-classification success is still counted BROKE.
 
 ## Single improvement selected before the after run
 
-Raise only config.AI_THRESHOLD from0.75 to0.80. Leave both signals, both weights, the human threshold, disagreement handling, validation, and label text unchanged. This is the one permitted diagnosis-driven improvement, aimed at false accusations. It will make AI-like text in[0.75,0.80) unsure too; the after run must show the actual benefit and any costs. The original five criteria and both source CSVs stay unchanged.
+Raise only config.AI_THRESHOLD from 0.75 to 0.80. Leave both signals, both weights, the human threshold, disagreement handling, validation, and label text unchanged. This is the one permitted diagnosis-driven improvement, aimed at false accusations. It will make AI-like text in [0.75, 0.80) unsure too; the after run must show the actual benefit and any costs. The original five criteria and both source CSVs stay unchanged.
 
 ## Working-alone exercises
 
-The prompts and AI-generated responses are preserved in results/part2_feedback.json. Milestone2 requested three possible causes at different stages without ranking them. Milestone4 requested the strongest opposing criterion5 verdict and evidence that would settle it. The opposite case correctly noted safe rejection, but it does not override the original exact-status target. The final verdict remains MISSED. These are Codex-assisted analysis exercises, not peer testimony or a claimed Claude conversation.
+The prompts and AI-generated responses are preserved in results/part2_feedback.json. Milestone 2 requested three possible causes at different stages without ranking them. Milestone 4 requested the strongest opposing criterion 5 verdict and evidence that would settle it. The opposite case correctly noted safe rejection, but it does not override the original exact-status target. The final verdict remains MISSED. These are Codex-assisted analysis exercises, not peer testimony or a claimed Claude conversation.
