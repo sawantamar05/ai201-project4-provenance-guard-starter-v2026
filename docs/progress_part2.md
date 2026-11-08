@@ -13,7 +13,7 @@ service's decisions. Declare per-creator limiting before implementation.
 | 2. Full attack baseline | Complete | 56/56 sent; 43 HELD, 13 BROKE; all rows reviewed; 12 audit entries in README including 2 rejections |
 | 3. Five criteria, three trials | Complete before fix | Criteria 1–4 MET in all trials; criterion 5 MISSED (36/37, 26/37, 26/37); all raw responses saved |
 | 4. Verdicts and diagnoses | Complete | All13 broken attacks and the criterion5 miss have measured stage/mechanism diagnoses; both working-alone feedback prompts recorded |
-| 5. One improvement | Pending | Choose after baseline; run both full suites again |
+| 5. One improvement | Complete | Only AI threshold0.75→0.80; full56 after attacks and all five criteria×3; HELD43→46; all scores unchanged |
 | 6. Final write-up | Pending | Five added README sections, ten audit entries, production trade, AI use, four new commits |
 
 The user will submit the same repository URL through the Course Portal.

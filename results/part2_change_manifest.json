@@ -1,0 +1,35 @@
+{
+  "baseline_manifest": "results/part2_baseline_manifest.json",
+  "changed_runtime_files": [
+    "config.py"
+  ],
+  "one_improvement": {
+    "setting": "AI_THRESHOLD",
+    "before": 0.75,
+    "after": 0.8
+  },
+  "before_hashes": {
+    "app.py": "872d0589d678e3c8ac3abe2c40e19d29408cce2c2c743d4b2c30fd55c178723f",
+    "audit.py": "3bcfaeaa8d5e1ad9ea39018cfd5e390dde86f5d1ae7815bb944cb6fd9c31314e",
+    "config.py": "b35d759595679572105d026dda3e83f71a5d20c7bb7862c35da0650da5ce2c2d",
+    "detector.py": "58f474dbd37061a12f3bc4746b95c57b0c0691304fcd9a80495c9710feab0129",
+    "scoring.py": "fe216de87e54120b7d1b5115bcdd217938b05577e51fe466bfc82364768a3201",
+    "stylometry.py": "c118f7d49fda47039af22f31f2da4f905e070432f49c96924ca17801970fd04b",
+    "criteria.md": "aa64b419b9824b2fbf1af987a88698612433fd98460aeb04f41ca30c885635af",
+    "data/evaluation_inputs.json": "f701b1db8e71d8a9324f8129416ab699fdbb4229dfae7f11901930e36951d007",
+    "data/label_demonstrations.json": "f53f0bbc603c377296d87a463b88d788e35e6c5ee5e3b02c931455b3b3609d82"
+  },
+  "after_hashes": {
+    "app.py": "872d0589d678e3c8ac3abe2c40e19d29408cce2c2c743d4b2c30fd55c178723f",
+    "audit.py": "3bcfaeaa8d5e1ad9ea39018cfd5e390dde86f5d1ae7815bb944cb6fd9c31314e",
+    "config.py": "8e2ac241f50fa9753e0be3d9050c7b0e8f644256eaeff90c4af52fa8b00ee654",
+    "detector.py": "58f474dbd37061a12f3bc4746b95c57b0c0691304fcd9a80495c9710feab0129",
+    "scoring.py": "fe216de87e54120b7d1b5115bcdd217938b05577e51fe466bfc82364768a3201",
+    "stylometry.py": "c118f7d49fda47039af22f31f2da4f905e070432f49c96924ca17801970fd04b",
+    "criteria.md": "aa64b419b9824b2fbf1af987a88698612433fd98460aeb04f41ca30c885635af",
+    "data/evaluation_inputs.json": "f701b1db8e71d8a9324f8129416ab699fdbb4229dfae7f11901930e36951d007",
+    "data/label_demonstrations.json": "f53f0bbc603c377296d87a463b88d788e35e6c5ee5e3b02c931455b3b3609d82"
+  },
+  "runtime_diff": "diff --git a/config.py b/config.py\nindex 1ddb1d2..63d532f 100644\n--- a/config.py\n+++ b/config.py\n@@ -21,7 +21,7 @@ DETECTOR_MAX_TOKENS = 400\n WEIGHT_MODEL_SIGNAL = 0.80\n WEIGHT_STYLE_SIGNAL = 0.20\n HUMAN_THRESHOLD = 0.25\n-AI_THRESHOLD = 0.75\n+AI_THRESHOLD = 0.80\n SIGNAL_DISAGREEMENT_THRESHOLD = 0.35\n DISAGREEMENT_SCORE_MIN = 0.26\n DISAGREEMENT_SCORE_MAX = 0.74\n",
+  "criteria_changed": false
+}

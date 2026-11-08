@@ -1,4 +1,8 @@
-# Verification evidence
+# Part 1 verification evidence
+
+These are the archived October 30 Part 1 measurements. Current Part 2
+rate-limited before/after results and the retained exact-status miss are in
+[README.md](../README.md).
 
 Checked the complete local API story: JSON request → validation → local model and style → score/label → JSONL event → response → appeal → persisted review status.
 

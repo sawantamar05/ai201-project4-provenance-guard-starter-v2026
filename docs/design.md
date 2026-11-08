@@ -1,4 +1,8 @@
-# Service design
+# Service design — Part 1 baseline
+
+This is the original pre-implementation design. Part 2 retains the API contract
+and changes only the AI-label threshold from 0.75 to 0.80 after baseline testing.
+Current results and ranges are in [README.md](../README.md).
 
 ## Submission path
 

@@ -8,7 +8,7 @@ A local Flask backend for cautious writing-provenance estimates and appeals.
 
 A writing submission follows seven steps:
 
-1. Validate a JSON object containing `text` and `creator_id`.
+1. Apply the caller quota and validate JSON containing `text` and `creator_id`.
 2. Assign a unique content ID.
 3. Run a cached local GPT-2 model to measure contextual predictability.
 4. Measure sentence-length variation, vocabulary variety, and punctuation.
@@ -82,8 +82,11 @@ false-positive target and the engineering response.
 | Label | Complete score range | Exact reader-facing text |
 |---|---|---|
 | high-confidence human (`human`) | `0 ≤ score ≤ 0.25` | This writing looks more consistent with human writing. This estimate does not verify who wrote it. |
-| unsure (`unsure`) | `0.25 < score < 0.75` | We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review. |
-| high-confidence AI (`ai`) | `0.75 ≤ score ≤ 1` | This writing shows patterns often found in AI-generated text. This estimate can be wrong and is not proof of AI use. You can request a review. |
+| unsure (`unsure`) | `0.25 < score < 0.80` | We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review. |
+| high-confidence AI (`ai`) | `0.80 ≤ score ≤ 1` | This writing shows patterns often found in AI-generated text. This estimate can be wrong and is not proof of AI use. You can request a review. |
+
+These are the current Part 2 ranges. The measured improvement raised the AI
+threshold from `0.75` to `0.80`; the original before ranges remain in history.
 
 The unsure label says what is unknown without accusing the writer, then offers
 a next step. All 10,001 four-decimal scores map to exactly one label; 0.51 is
@@ -855,3 +858,296 @@ A separate [PI02 diagnostic](results/part2_pi02_diagnostic.json), excluded from
 all official counts, removes only its instruction header. Model score changes
 0.2044→0.7540, style0.2805→0.2720, and the result becomes unsure0.6576. This is
 predictability sensitivity, not evidence that instructions were executed.
+
+
+## The Improvement
+
+**One change:** `config.py::AI_THRESHOLD` increased from **0.75 to0.80**.
+The diagnosis was FP03–FP05: scores0.7569,0.7646,0.7705 were only slightly over
+the old accusation boundary. Both signals, both weights, human threshold,
+disagreement rule, validation, rate limits, and label sentences were retained.
+[The change manifest](results/part2_change_manifest.json) verifies that only
+`config.py` differs among runtime files since the instrumented baseline, and
+its runtime diff is exactly this one setting. Original criteria and input
+bytes are unchanged.
+
+The service was restarted for the new setting. Both attack campaigns used a
+fresh limiter process; each criteria campaign began after the address minute
+window expired. No settings changed and no counters were reset between its
+three trials. All HTTP responses are retained, including throttled invalid
+requests. Same input order, caller scheme, model, and datasets were used.
+
+| Measured outcome | Before | After |
+|---|---|---|
+| Official attack rows attempted |56/56|56/56|
+| HELD |43|46|
+| BROKE |13|10|
+| Human-designated staff examples labeled AI |3/8|0/8|
+| Generated evasion cases avoiding AI label |9/10|9/10|
+| Partial PI02 human-classification success |1|1|
+| Skipped attacks /5xx /transport failures |0/0/0|0/0/0|
+| Source CSVs and numeric signal/combined scores |original|identical|
+
+**Did it help?** Yes: the three observed false accusations became unsure,
+with no other official attack outcome changing. It did not solve evasion or
+the invalid-input exact-status miss. On any future AI input scoring in
+`[0.75,0.80)`, the new rule will also return unsure; that is the cost of a wider
+uncertainty band. The set did not measure that cost because its only examples
+in this interval were the three human-designated false positives. These are
+results on the same inspected staff set, not independent generalization evidence.
+
+### Attack Run — After
+
+All56 attacks were rerun. Full requests/responses:
+[after capture](results/attack_run_2026-11-08_1351_after.json).
+Every row's scores and reviewed mark follow in the same format as before.
+
+| ID | Family | Target | HTTP | Model | Style | Combined | Guess | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| EV01 | evasion | signal two: typos raise word variety | 200 | 0.1635 | 0.5898 | 0.2600 | unsure | BROKE |
+| EV02 | evasion | signal two: broken-up sentences raise length spread | 200 | 0.5943 | 0.1919 | 0.5138 | unsure | BROKE |
+| EV03 | evasion | signal two: a pasted quotation changes the shape | 200 | 0.6662 | 0.4163 | 0.6162 | unsure | BROKE |
+| EV04 | evasion | signal one: unusual words raise perplexity | 200 | 0.6114 | 0.5785 | 0.6048 | unsure | BROKE |
+| EV05 | evasion | both signals: heavy human editing pass | 200 | 0.3212 | 0.3137 | 0.3197 | unsure | BROKE |
+| EV06 | evasion | signal two: one very long sentence and one very short | 200 | 0.5727 | 0.2507 | 0.5083 | unsure | BROKE |
+| EV07 | evasion | signal two: padding with punctuation | 200 | 0.5862 | 0.4546 | 0.5599 | unsure | BROKE |
+| EV08 | evasion | signal one: text below the token window | 200 | 0.2452 | 0.5000 | 0.2962 | unsure | BROKE |
+| EV09 | evasion | both: AI text with a human opening paragraph bolted on | 200 | 0.7042 | 0.4055 | 0.6445 | unsure | BROKE |
+| EV10 | evasion | signal two: repeated stanza structure | 200 | 0.9792 | 0.7658 | 0.9365 | ai | HELD |
+| FP01 | false_positive | plain, clear human writing with no flourishes | 200 | 0.6175 | 0.4886 | 0.5917 | unsure | HELD |
+| FP02 | false_positive | human writing in a formal register | 200 | 0.7387 | 0.6225 | 0.7155 | unsure | HELD |
+| FP03 | false_positive | a non-native English speaker writing carefully | 200 | 0.8051 | 0.5639 | 0.7569 | unsure | HELD |
+| FP04 | false_positive | a student essay written to a rubric | 200 | 0.8329 | 0.4913 | 0.7646 | unsure | HELD |
+| FP05 | false_positive | technical documentation written by a person | 200 | 0.8005 | 0.6506 | 0.7705 | unsure | HELD |
+| FP06 | false_positive | a person imitating a formal template | 200 | 0.8814 | 0.4464 | 0.7400 | unsure | HELD |
+| FP07 | false_positive | human writing that repeats a phrase deliberately | 200 | 0.8816 | 0.4441 | 0.7400 | unsure | HELD |
+| FP08 | false_positive | very short genuine human submission | 200 | 0.3223 | 0.5000 | 0.3578 | unsure | HELD |
+| PI01 | prompt_injection | instruction to ignore the check | 200 | 0.4625 | 0.2917 | 0.4283 | unsure | HELD |
+| PI02 | prompt_injection | instruction disguised as a system message | 200 | 0.2044 | 0.2805 | 0.2196 | human | BROKE |
+| PI03 | prompt_injection | instruction wrapped in the writer's voice | 200 | 0.5943 | 0.3741 | 0.5503 | unsure | HELD |
+| PI04 | prompt_injection | attempt to make the label text hostile | 200 | 0.4998 | 0.4238 | 0.4846 | unsure | HELD |
+| PI05 | prompt_injection | attempt to inject into the audit log | 200 | 0.6401 | 0.2708 | 0.5662 | unsure | HELD |
+| PI06 | prompt_injection | instruction plus real human text | 200 | 0.5583 | 0.4953 | 0.5457 | unsure | HELD |
+| MF01 | malformed | text is only whitespace | 400 | — | — | — | — | HELD |
+| MF02 | malformed | text is a single character | 400 | — | — | — | — | HELD |
+| MF03 | malformed | text is control characters | 400 | — | — | — | — | HELD |
+| MF04 | malformed | text is only punctuation | 400 | — | — | — | — | HELD |
+| MF05 | malformed | text is a very long single word | 400 | — | — | — | — | HELD |
+| MF06 | malformed | text is emoji only | 400 | — | — | — | — | HELD |
+| MF07 | malformed | text is right-to-left script | 200 | 0.9064 | 0.5000 | 0.7400 | unsure | HELD |
+| MF08 | malformed | text is 60,000 characters | 413 | — | — | — | — | HELD |
+| RQ01 | malformed | no text field at all | 400 | — | — | — | — | HELD |
+| RQ02 | malformed | no creator_id | 400 | — | — | — | — | HELD |
+| RQ03 | malformed | text is a number | 400 | — | — | — | — | HELD |
+| RQ04 | malformed | text is a list | 400 | — | — | — | — | HELD |
+| RQ05 | malformed | text is null | 400 | — | — | — | — | HELD |
+| RQ06 | malformed | creator_id is an object | 400 | — | — | — | — | HELD |
+| RQ07 | malformed | body is a JSON array, not an object | 400 | — | — | — | — | HELD |
+| RQ08 | malformed | body is unparseable JSON | 400 | — | — | — | — | HELD |
+| RQ09 | malformed | body is empty | 400 | — | — | — | — | HELD |
+| RQ10 | malformed | body is form-encoded, not JSON | 415 | — | — | — | — | HELD |
+| RQ11 | malformed | body is JSON claiming to be plain text | 415 | — | — | — | — | HELD |
+| RQ12 | malformed | deeply nested JSON | 400 | — | — | — | — | HELD |
+| FL01_01 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_02 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_03 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_04 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_05 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_06 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_07 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_08 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_09 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_10 | flood_same_creator | 20 rapid submissions from one creator | 200 | 0.0287 | 0.5000 | 0.2600 | unsure | HELD |
+| FL01_11 | flood_same_creator | 20 rapid submissions from one creator | 429 | — | — | — | — | HELD |
+| FL01_12 | flood_same_creator | 20 rapid submissions from one creator | 429 | — | — | — | — | HELD |
+
+
+### Every attack, before and after side by side
+
+| ID | Before HTTP | Before guess | Before verdict | After HTTP | After guess | After verdict |
+|---|---|---|---|---|---|---|
+| EV01 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV02 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV03 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV04 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV05 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV06 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV07 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV08 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV09 | 200 | unsure | BROKE | 200 | unsure | BROKE |
+| EV10 | 200 | ai | HELD | 200 | ai | HELD |
+| FP01 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FP02 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FP03 | 200 | ai | BROKE | 200 | unsure | HELD |
+| FP04 | 200 | ai | BROKE | 200 | unsure | HELD |
+| FP05 | 200 | ai | BROKE | 200 | unsure | HELD |
+| FP06 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FP07 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FP08 | 200 | unsure | HELD | 200 | unsure | HELD |
+| PI01 | 200 | unsure | HELD | 200 | unsure | HELD |
+| PI02 | 200 | human | BROKE | 200 | human | BROKE |
+| PI03 | 200 | unsure | HELD | 200 | unsure | HELD |
+| PI04 | 200 | unsure | HELD | 200 | unsure | HELD |
+| PI05 | 200 | unsure | HELD | 200 | unsure | HELD |
+| PI06 | 200 | unsure | HELD | 200 | unsure | HELD |
+| MF01 | 400 | — | HELD | 400 | — | HELD |
+| MF02 | 400 | — | HELD | 400 | — | HELD |
+| MF03 | 400 | — | HELD | 400 | — | HELD |
+| MF04 | 400 | — | HELD | 400 | — | HELD |
+| MF05 | 400 | — | HELD | 400 | — | HELD |
+| MF06 | 400 | — | HELD | 400 | — | HELD |
+| MF07 | 200 | unsure | HELD | 200 | unsure | HELD |
+| MF08 | 413 | — | HELD | 413 | — | HELD |
+| RQ01 | 400 | — | HELD | 400 | — | HELD |
+| RQ02 | 400 | — | HELD | 400 | — | HELD |
+| RQ03 | 400 | — | HELD | 400 | — | HELD |
+| RQ04 | 400 | — | HELD | 400 | — | HELD |
+| RQ05 | 400 | — | HELD | 400 | — | HELD |
+| RQ06 | 400 | — | HELD | 400 | — | HELD |
+| RQ07 | 400 | — | HELD | 400 | — | HELD |
+| RQ08 | 400 | — | HELD | 400 | — | HELD |
+| RQ09 | 400 | — | HELD | 400 | — | HELD |
+| RQ10 | 415 | — | HELD | 415 | — | HELD |
+| RQ11 | 415 | — | HELD | 415 | — | HELD |
+| RQ12 | 400 | — | HELD | 400 | — | HELD |
+| FL01_01 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_02 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_03 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_04 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_05 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_06 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_07 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_08 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_09 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_10 | 200 | unsure | HELD | 200 | unsure | HELD |
+| FL01_11 | 429 | — | HELD | 429 | — | HELD |
+| FL01_12 | 429 | — | HELD | 429 | — | HELD |
+
+### Five criteria after the change, three trials each
+
+| Criterion | Original target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Limit false accusations | At most 1/10 sourced human passages labeled AI in every trial | 0/10 AI flags; 10/10 valid | 0/10 AI flags; 10/10 valid | 0/10 AI flags; 10/10 valid | MET |
+| 2. Separate contrasting inputs | Four-AI median minus first-four-human median >= 0.20 in every trial | median gap 0.247 | median gap 0.247 | median gap 0.247 | MET |
+| 3. Cover all labels and scores | Actual human/unsure/ai labels and all 10,001 scores mapped; 0.51 differs from 0.95 | 3/3 labels; 10001 scores | 3/3 labels; 10001 scores | 3/3 labels; 10001 scores | MET |
+| 4. Preserve usable appeals | 10/10 exact appeals, immutable decisions, fresh-process status, no rescoring; unknown ID404 | 10/10 appeals; persistence True | 10/10 appeals; persistence True | 10/10 appeals; persistence True | MET |
+| 5. Reject bad input before scoring | All 18 validation groups return specified JSON400/404/413/415; no success events | 36/37 exact responses; 18/18 groups | 26/37 exact responses; 18/18 groups | 26/37 exact responses; 18/18 groups | MISSED |
+
+This is the same five-row format and the same targets as the before table.
+Model/style/combined scores match exactly. Criterion5 remains MISSED, with the
+same36/37,26/37,26/37 exact-status results; no new target was substituted.
+Full after evidence: [JSON](results/part2_eval_after.json) and
+[run log](results/part2_eval_after.md).
+
+**Criterion 1, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "combined_score": 0.6593,
+  "confidence": 0.6593,
+  "content_id": "51450dcb-09a1-43ce-84ce-0419f521b5a8",
+  "creator_id": "eval-after-c1-t1-human-01",
+  "detector_model": "gpt2",
+  "guess": "unsure",
+  "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+  "model_score": 0.6922,
+  "status": "decided",
+  "style_metrics": {
+    "evenness": 0.5,
+    "punctuation_density": 0.016286644951140065,
+    "punctuation_simplicity": 0.8642779587404994,
+    "repetition": 0.34976525821596255,
+    "sentence_count": 2,
+    "sentence_length_spread": 0.352112676056338,
+    "style_score": 0.5278,
+    "type_token_ratio": 0.6901408450704225,
+    "word_count": 71
+  },
+  "style_score": 0.5278,
+  "text_length": 377,
+  "timestamp": "2026-11-08T21:53:15+00:00"
+}
+```
+
+**Criterion 2, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "combined_score": 0.6593,
+  "confidence": 0.6593,
+  "content_id": "8d520d39-1760-4a4b-8aae-74e0c1094aea",
+  "creator_id": "eval-after-c2-t1-human-01",
+  "detector_model": "gpt2",
+  "guess": "unsure",
+  "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+  "model_score": 0.6922,
+  "status": "decided",
+  "style_metrics": {
+    "evenness": 0.5,
+    "punctuation_density": 0.016286644951140065,
+    "punctuation_simplicity": 0.8642779587404994,
+    "repetition": 0.34976525821596255,
+    "sentence_count": 2,
+    "sentence_length_spread": 0.352112676056338,
+    "style_score": 0.5278,
+    "type_token_ratio": 0.6901408450704225,
+    "word_count": 71
+  },
+  "style_score": 0.5278,
+  "text_length": 377,
+  "timestamp": "2026-11-08T21:53:15+00:00"
+}
+```
+
+**Criterion 3, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "combined_score": 0.1628,
+  "confidence": 0.1628,
+  "content_id": "dc6ef482-3c40-4f08-9def-f5888a930ece",
+  "creator_id": "eval-after-c3-t1-label-demo-synthetic-rare-prose",
+  "detector_model": "gpt2",
+  "guess": "human",
+  "label": "This writing looks more consistent with human writing. This estimate does not verify who wrote it.",
+  "model_score": 0.169,
+  "status": "decided",
+  "style_metrics": {
+    "evenness": 0.0,
+    "punctuation_density": 0.037109375,
+    "punctuation_simplicity": 0.6907552083333333,
+    "repetition": 0.0,
+    "sentence_count": 5,
+    "sentence_length_spread": 1.151744635279055,
+    "style_score": 0.1382,
+    "type_token_ratio": 0.9054054054054054,
+    "word_count": 74
+  },
+  "style_score": 0.1382,
+  "text_length": 583,
+  "timestamp": "2026-11-08T21:53:17+00:00"
+}
+```
+
+**Criterion 4, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "content_id": "57f55524-8978-43d5-bc0b-e1396115c1d2",
+  "creator_id": "eval-after-c4-t1-human-01",
+  "event": "appeal",
+  "message": "Your appeal has been recorded. This writing is now under review.",
+  "reasoning": "Part 2 criterion review after, trial 1: please inspect this estimate.",
+  "status": "under_review",
+  "timestamp": "2026-11-08T21:53:17+00:00"
+}
+```
+
+**Criterion 5, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "error": "rate_limited",
+  "message": "Too many submissions. Try again shortly."
+}
+```

@@ -1,0 +1,35 @@
+{
+  "before": {
+    "BROKE": 13,
+    "HELD": 43
+  },
+  "after": {
+    "BROKE": 10,
+    "HELD": 46
+  },
+  "changed_guesses": [
+    {
+      "id": "FP03",
+      "before": "ai",
+      "after": "unsure",
+      "score": 0.7569
+    },
+    {
+      "id": "FP04",
+      "before": "ai",
+      "after": "unsure",
+      "score": 0.7646
+    },
+    {
+      "id": "FP05",
+      "before": "ai",
+      "after": "unsure",
+      "score": 0.7705
+    }
+  ],
+  "model_style_combined_scores_and_http_codes_unchanged": true,
+  "changed_runtime_files": [
+    "config.py"
+  ],
+  "same_attack_csv_hashes": true
+}

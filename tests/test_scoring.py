@@ -41,6 +41,17 @@ class ScoringTests(unittest.TestCase):
                 if abs(model - style) >= 0.350000001:
                     self.assertEqual(scoring.score_to_label(value)[0], "unsure")
 
+    def test_part2_false_positive_boundary_regression(self):
+        self.assertEqual(config.AI_THRESHOLD, 0.80)
+        for model, style, expected in ((0.8051, 0.5639, 0.7569),
+                                       (0.8329, 0.4913, 0.7646),
+                                       (0.8005, 0.6506, 0.7705)):
+            score = scoring.combine_signals(model, style)
+            self.assertEqual(score, expected)
+            self.assertEqual(scoring.score_to_label(score)[0], "unsure")
+        self.assertEqual(scoring.score_to_label(0.7999)[0], "unsure")
+        self.assertEqual(scoring.score_to_label(0.80)[0], "ai")
+
     def test_invalid_numerical_scores_are_rejected(self):
         for value in (-0.01, 1.01, float("nan"), float("inf"), -float("inf")):
             with self.subTest(value=value):

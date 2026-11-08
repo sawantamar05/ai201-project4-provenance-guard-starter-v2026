@@ -136,7 +136,9 @@ Invalid fields, short text, malformed JSON, and non-object JSON produce HTTP
 400. Unknown content IDs produce HTTP 404. Oversized text, reasoning, or
 bodies produce HTTP 413; non-JSON content types produce HTTP 415. Error
 responses contain `error` and `message`. A failed detector or audit write
-produces HTTP 503. Invalid requests do not receive a saved successful decision.
+produces HTTP 503. Invalid requests do not receive a saved successful decision. When a submission quota
+is exhausted, HTTP429 can precede these validation responses; appeals are not
+submission-rate limited.
 
 ## Verify the implementation
 
@@ -150,10 +152,10 @@ python -m unittest discover -s tests -v
 Run the complete HTTP verification while the service is running:
 
 ```bash
-python scripts/verify_project.py --url http://127.0.0.1:5000 --trials 3
+python scripts/verify_project.py --url http://127.0.0.1:5000 --trials 3 --output results/development_current.json
 ```
 
-This records all real responses in `results/verification.json`, evaluates the
+This records all real responses in `results/development_current.json`, evaluates the
 frozen development groups, sweeps 10,001 label scores, and checks appeals and
 bad input. Read the saved verdicts; targets are specified in `criteria.md`.
 The isolated tests cover detector invocation counts, unavailable dependencies,
@@ -164,42 +166,70 @@ To check persistence directly, stop the server with Ctrl-C, start it again
 using the same project directory, and repeat the `/content` request for
 `DEMO_CONTENT_ID`. Its status is reconstructed from `logs/audit.jsonl`.
 
-For the next unit's submission-only scenario runner:
+## Part 2: full before/after evidence
+
+Rate limiting is enabled by default: **10 submissions per minute and 200 per
+day**, per usable creator ID, with an address fallback for missing/invalid IDs.
+The local in-memory counters reset on a server restart. IDs are caller-supplied;
+changing an ID can evade this teaching control. Production needs authenticated
+identity and shared durable limit storage.
+
+With the server running, the course commands are:
 
 ```bash
-python run_eval.py --url http://127.0.0.1:5000 --label development --trials 3
+python run_attacks.py --flood 15 --creator my-flood-check --url http://127.0.0.1:5000
+python run_attacks.py --set attack_set --label before --url http://127.0.0.1:5000
+python run_eval.py --label before --url http://127.0.0.1:5000
 ```
 
-`scenarios.py` loads the frozen sourced-human and generated-AI passages plus
-invalid submission bodies. `run_eval.py` sends only `POST /submit` and saves
-a report for interpretation. Use `scripts/verify_project.py` for appeal checks,
-the complete validation matrix, and automated criterion verdicts.
+The submitted before run used the Part 2 instrumented baseline at commit
+`6d42fc9`. The current configuration includes the measured improvement:
+`AI_THRESHOLD = 0.80`, raised from `0.75`. Re-running a command labeled
+`before` on the current code does not reproduce the old threshold. Preserve
+archived results rather than replacing them with a mislabeled new capture.
 
-## Optional rate limiting and attack tools
-
-Start with limiting enabled when testing the next unit's controls:
+After the single change and service restart, the recorded after commands were:
 
 ```bash
-AI201_RATE_LIMITS=1 python app.py
-python run_attacks.py --url http://127.0.0.1:5000 --flood 15
+python run_attacks.py --set attack_set --label after --url http://127.0.0.1:5000
+python run_eval.py --label after --url http://127.0.0.1:5000
+python scripts/part2_attack_review.py --label after
 ```
 
-`config.py` sets 10 submissions per minute and 200 per day. Limits are already
-wired into `/submit`; no code editing is needed to enable them. They use
-in-memory storage and reset on restart. The key uses the supplied creator ID,
-with a remote-address fallback. A caller can change that unverified ID, so
-this is a development control. Keep limiting off for the ordinary three-trial
-verification run.
+Use port 5054 in all URLs if that is where your server runs. Let the address
+minute window expire after the attack run before a clean evaluation campaign;
+keep the limiter enabled and do not reset or change settings between its three
+trials. The submitted campaigns each began after an idle minute. Quota state
+still changes during the trials; that is recorded rather than silently retried.
 
-`run_attacks.py --set` accepts an externally provided attack-set directory.
-Its `--show` option displays an attack without sending it. The frozen
-development passages are not an independent attack set.
+`scenarios.py` defines exactly the five original criteria. `run_eval.py` now
+runs submissions, score comparisons, the complete label sweep, ten appeals
+per trial, fresh-process persistence checks, and all eighteen validation groups.
+Its JSON saves all three trials; the Markdown report includes a five-row table
+and full trial-1 output for every criterion. A missed target is recorded as
+MISSED and does not mean the test runner failed to execute.
+
+Every attack has raw request/response captures and a separate reviewed judgment.
+`part2_attack_review.py` records the explicit goal-based judgment policy. It
+does not establish human authorship independently. The two source CSVs and
+original ZIP remain byte-for-byte unchanged, with hashes in
+`attack_set/provenance.json`. Do not edit them to improve a result.
+
+The legacy Part 1 verifier can write a separate development capture:
+
+```bash
+python scripts/verify_project.py --url http://127.0.0.1:5000 --output results/development_current.json
+```
+
+Official Part 2 evidence always keeps limiting enabled. Some invalid requests
+will receive 429 when an address bucket is exhausted; this is the documented
+miss against the original exact-validation-code target.
 
 ## Files and operating limits
 
 | File | Purpose |
 | --- | --- |
-| `app.py` | Input validation, routes, optional limits, decision and appeal flow |
+| `app.py` | Input validation, routes, enabled limits, decision and appeal flow |
 | `detector.py` | Cached local GPT-2 predictability signal |
 | `stylometry.py` | Sentence-length spread, word variety, and punctuation measures |
 | `scoring.py` | Signal combination and complete label mapping |
