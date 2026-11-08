@@ -659,3 +659,153 @@ a non-native English speaker. It received model 0.8051, style 0.5639, combined
 boundary. This is the wrong accusation the system is intended to avoid. The
 label warns it can be wrong and an appeal is available, but those do not erase
 the reputational harm of the original result.
+
+
+## Run Log and Verdicts
+
+These are the **original five targets from Part 1**, tested three times with no
+service changes between trials. `scenarios.py` configures each criterion once;
+`run_eval.py::main` / `run_eval.py::trial_result` perform all HTTP calls and save
+[the full before JSON](results/part2_eval_before.json) and
+[the run log](results/part2_eval_before.md). Every miss is retained. Historical
+human passages are the original fixed sourced corpus, not personal writing.
+Supplemental synthetic label demonstrations remain excluded from score-spread
+and false-positive groups.
+
+### Before the improvement
+
+| Criterion | Original target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Limit false accusations | At most 1/10 sourced human passages labeled AI in every trial | 0/10 AI flags; 10/10 valid | 0/10 AI flags; 10/10 valid | 0/10 AI flags; 10/10 valid | MET |
+| 2. Separate contrasting inputs | Four-AI median minus first-four-human median >= 0.20 in every trial | median gap 0.247 | median gap 0.247 | median gap 0.247 | MET |
+| 3. Cover all labels and scores | Actual human/unsure/ai labels and all 10,001 scores mapped; 0.51 differs from 0.95 | 3/3 labels; 10001 scores | 3/3 labels; 10001 scores | 3/3 labels; 10001 scores | MET |
+| 4. Preserve usable appeals | 10/10 exact appeals, immutable decisions, fresh-process status, no rescoring; unknown ID404 | 10/10 appeals; persistence True | 10/10 appeals; persistence True | 10/10 appeals; persistence True | MET |
+| 5. Reject bad input before scoring | All 18 validation groups return specified JSON400/404/413/415; no success events | 36/37 exact responses; 18/18 groups | 26/37 exact responses; 18/18 groups | 26/37 exact responses; 18/18 groups | MISSED |
+
+The model scores are identical across trials. Criterion 5 differs because
+invalid requests with missing/unusable creator IDs share an address quota:
+the first trial consumes it and later trials are still inside the minute.
+A 429 is safe rejection, but the original criterion explicitly requires
+400/404/413/415, so it is **MISSED** rather than generously reinterpreted.
+Valid scenario IDs are distinct per criterion/trial; no rejected call is
+silently retried. The rate limiter remains enabled throughout.
+
+**Criterion 1, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "combined_score": 0.6593,
+  "confidence": 0.6593,
+  "content_id": "5d7bfcfc-1113-4e62-9bca-55b7e5b20318",
+  "creator_id": "eval-before-c1-t1-human-01",
+  "detector_model": "gpt2",
+  "guess": "unsure",
+  "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+  "model_score": 0.6922,
+  "status": "decided",
+  "style_metrics": {
+    "evenness": 0.5,
+    "punctuation_density": 0.016286644951140065,
+    "punctuation_simplicity": 0.8642779587404994,
+    "repetition": 0.34976525821596255,
+    "sentence_count": 2,
+    "sentence_length_spread": 0.352112676056338,
+    "style_score": 0.5278,
+    "type_token_ratio": 0.6901408450704225,
+    "word_count": 71
+  },
+  "style_score": 0.5278,
+  "text_length": 377,
+  "timestamp": "2026-11-08T21:47:25+00:00"
+}
+```
+
+**Criterion 2, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "combined_score": 0.6593,
+  "confidence": 0.6593,
+  "content_id": "d1ff719b-3927-4e73-91fb-2df7c4e1f144",
+  "creator_id": "eval-before-c2-t1-human-01",
+  "detector_model": "gpt2",
+  "guess": "unsure",
+  "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+  "model_score": 0.6922,
+  "status": "decided",
+  "style_metrics": {
+    "evenness": 0.5,
+    "punctuation_density": 0.016286644951140065,
+    "punctuation_simplicity": 0.8642779587404994,
+    "repetition": 0.34976525821596255,
+    "sentence_count": 2,
+    "sentence_length_spread": 0.352112676056338,
+    "style_score": 0.5278,
+    "type_token_ratio": 0.6901408450704225,
+    "word_count": 71
+  },
+  "style_score": 0.5278,
+  "text_length": 377,
+  "timestamp": "2026-11-08T21:47:26+00:00"
+}
+```
+
+**Criterion 3, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "combined_score": 0.1628,
+  "confidence": 0.1628,
+  "content_id": "95a98c80-9ff4-4346-b0b6-2eb9c60ed1db",
+  "creator_id": "eval-before-c3-t1-label-demo-synthetic-rare-prose",
+  "detector_model": "gpt2",
+  "guess": "human",
+  "label": "This writing looks more consistent with human writing. This estimate does not verify who wrote it.",
+  "model_score": 0.169,
+  "status": "decided",
+  "style_metrics": {
+    "evenness": 0.0,
+    "punctuation_density": 0.037109375,
+    "punctuation_simplicity": 0.6907552083333333,
+    "repetition": 0.0,
+    "sentence_count": 5,
+    "sentence_length_spread": 1.151744635279055,
+    "style_score": 0.1382,
+    "type_token_ratio": 0.9054054054054054,
+    "word_count": 74
+  },
+  "style_score": 0.1382,
+  "text_length": 583,
+  "timestamp": "2026-11-08T21:47:27+00:00"
+}
+```
+
+**Criterion 4, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "content_id": "d81f39a4-f203-4fb5-aeea-ed5fd3e0cbd2",
+  "creator_id": "eval-before-c4-t1-human-01",
+  "event": "appeal",
+  "message": "Your appeal has been recorded. This writing is now under review.",
+  "reasoning": "Part 2 criterion review before, trial 1: please inspect this estimate.",
+  "status": "under_review",
+  "timestamp": "2026-11-08T21:47:28+00:00"
+}
+```
+
+**Criterion 5, actual trial-1 response.** Produced by `run_eval.py::trial_result` via the live API.
+
+```json
+{
+  "error": "rate_limited",
+  "message": "Too many submissions. Try again shortly."
+}
+```
+
+
+The complete per-case responses, 10-appeal histories, fresh-process content
+checks, 10,001-score sweep, and exact-status validation cases are in the JSON.
+Fresh-process checks show all ten appealed items under review with the detector
+unloaded. Isolated service tests separately assert zero detector calls for
+appeals and invalid input; a JSON response alone cannot establish call counts.

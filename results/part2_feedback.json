@@ -1,0 +1,22 @@
+{
+  "scope": "AI-generated working-alone exercise by Codex; fictional analysis, not peer testimony or a Claude session.",
+  "milestone2": {
+    "attack_id": "FP03",
+    "prompt": "Here is a human-designated attack input that my detector labeled AI, the actual response, and both signal scores. Give me three possible causes at different stages of my pipeline. Do not tell me which is most likely.\n\nInput: I want to describe my experience of the first month in this country. The weather was very different from my home. I did not expect the rain to continue for so many days. My colleagues were kind and they helped me to find an apartment. I am still learning the words that people use in the office. Sometimes I do not understand the jokes. But I am happy that I came here and I think it was a good decision for my family.\nResponse: {\"combined_score\": 0.7569, \"confidence\": 0.7569, \"content_id\": \"fa4f6f1e-52a1-4bfc-bee2-59711ad02040\", \"creator_id\": \"attacker_FP03\", \"detector_model\": \"gpt2\", \"guess\": \"ai\", \"label\": \"This writing shows patterns often found in AI-generated text. This estimate can be wrong and is not proof of AI use. You can request a review.\", \"model_score\": 0.8051, \"status\": \"decided\", \"style_metrics\": {\"evenness\": 0.6201951743096841, \"punctuation_density\": 0.020833333333333332, \"punctuation_simplicity\": 0.8263888888888888, \"repetition\": 0.2951807228915663, \"sentence_count\": 7, \"sentence_length_spread\": 0.30384386055225276, \"style_score\": 0.5639, \"type_token_ratio\": 0.7228915662650602, \"word_count\": 83}, \"style_score\": 0.5639, \"text_length\": 418, \"timestamp\": \"2026-11-08T21:41:14+00:00\"}",
+    "response": [
+      {
+        "stage": "signal one",
+        "hypothesis": "The local language model may find clear, ordinary sentences predictable even when a person wrote them. Its 0.8051 score can therefore reflect common wording rather than AI authorship."
+      },
+      {
+        "stage": "signal two",
+        "hypothesis": "Sentence regularity, vocabulary repetition, or punctuation simplicity may produce a moderately AI-like structural score. The measured style score is 0.5639; these surface properties cannot identify an author."
+      },
+      {
+        "stage": "label mapping",
+        "hypothesis": "The weighted score is 0.7569, only 0.0069 above the 0.75 AI boundary. A narrow boundary crossing may turn ambiguous evidence into a high-confidence accusation."
+      }
+    ]
+  },
+  "diagnostic_resolution": "The high model score and moderate style score are the measured inputs. The combining rule yields 0.7569; the original 0.75 label boundary directly explains the accusation. A threshold change is the candidate single improvement; its actual effects must be measured after all before trials."
+}

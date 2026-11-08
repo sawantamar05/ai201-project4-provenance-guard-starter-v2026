@@ -14,7 +14,7 @@ class ScoringTests(unittest.TestCase):
         for i in range(10001):
             value = i / 10000
             guess, label = scoring.score_to_label(value)
-            expected = "human" if value <= 0.25 else "ai" if value >= 0.75 else "unsure"
+            expected = "human" if value <= config.HUMAN_THRESHOLD else "ai" if value >= config.AI_THRESHOLD else "unsure"
             self.assertEqual(guess, expected)
             self.assertTrue(label.strip())
             self.assertNotIn("PLACEHOLDER", label)
@@ -22,7 +22,7 @@ class ScoringTests(unittest.TestCase):
         self.assertEqual(reached, {"ai", "human", "unsure"})
 
     def test_threshold_boundaries_and_different_confidences(self):
-        for value, expected in ((0, "human"), (0.25, "human"), (0.2501, "unsure"), (0.51, "unsure"), (0.7499, "unsure"), (0.75, "ai"), (0.95, "ai"), (1, "ai")):
+        for value, expected in ((0, "human"), (config.HUMAN_THRESHOLD, "human"), (config.HUMAN_THRESHOLD+0.0001, "unsure"), (0.51, "unsure"), (config.AI_THRESHOLD-0.0001, "unsure"), (config.AI_THRESHOLD, "ai"), (0.95, "ai"), (1, "ai")):
             with self.subTest(value=value):
                 self.assertEqual(scoring.score_to_label(value)[0], expected)
         self.assertNotEqual(scoring.score_to_label(0.51), scoring.score_to_label(0.95))

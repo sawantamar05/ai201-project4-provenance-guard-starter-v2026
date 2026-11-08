@@ -94,7 +94,7 @@ def score_sweep():
     failures = []
     for index in range(10001):
         score = index / 10000
-        expected = "human" if score <= 0.25 else "ai" if score >= 0.75 else "unsure"
+        expected = "human" if score <= config.HUMAN_THRESHOLD else "ai" if score >= config.AI_THRESHOLD else "unsure"
         try:
             guess, label = scoring.score_to_label(score)
             if guess not in counts or not isinstance(label, str) or not label.strip():
@@ -107,7 +107,7 @@ def score_sweep():
             failures.append({"score": score, "error": str(exc)})
     boundaries = {
         str(value): scoring.score_to_label(value)[0]
-        for value in (0.0, 0.25, 0.2501, 0.51, 0.7499, 0.75, 0.95, 1.0)
+        for value in sorted({0.0, config.HUMAN_THRESHOLD, round(config.HUMAN_THRESHOLD + 0.0001,4), 0.51, round(config.AI_THRESHOLD - 0.0001,4), config.AI_THRESHOLD, 0.95, 1.0})
     }
     return {
         "scores_checked": 10001,
