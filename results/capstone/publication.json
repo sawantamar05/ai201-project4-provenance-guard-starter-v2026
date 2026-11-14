@@ -1,0 +1,24 @@
+{
+  "repository_url": "https://github.com/sawantamar05/ai201-project4-provenance-guard-starter-v2026",
+  "branch": "main",
+  "verified_build_commit": "c47c4a7f7e7f2a78ff8bf94c0dfacb483deaeefe",
+  "push_result": "e7aa922..c47c4a7 main -> main",
+  "workflow": "Backend checks",
+  "workflow_run_id": 43545556602,
+  "workflow_url": "https://github.com/sawantamar05/ai201-project4-provenance-guard-starter-v2026/actions/runs/43545556602",
+  "workflow_status": "completed",
+  "workflow_conclusion": "success",
+  "job_id": 132295918868,
+  "verified_steps": [
+    "Verify contracts, scoring, and persistence",
+    "Check syntax",
+    "Audit capstone evidence and commit history"
+  ],
+  "verification_sources": [
+    "git push origin main returned success",
+    "gh run list filtered by the full build commit SHA",
+    "GitHub connector fetch_workflow_run_jobs confirmed each verification step succeeded"
+  ],
+  "record_scope": "Publication of the completed build. The subsequent publication-record commit changes only documentation and this record; its workflow can be inspected on GitHub.",
+  "portal_submission": "The user must submit this existing repository URL through the Course Portal. No portal submission is claimed."
+}

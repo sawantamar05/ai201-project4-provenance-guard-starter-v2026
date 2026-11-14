@@ -43,6 +43,7 @@ committed request records. Follow the Capstone run path at the top of
   both tables, literal output, at least ten log entries and a failure, measured
   cost, remaining limits, and AI use. The run uses no hosted URL or API key.
 
-The final evidence audit and GitHub CI are separate publication checks. The
-repository is ready to submit when those checks pass; a GitHub push itself
-does not submit the URL through the Course Portal.
+The [final evidence audit](results/capstone/final_audit.json) passed all 13
+checks, and the [published build passed GitHub CI](https://github.com/sawantamar05/ai201-project4-provenance-guard-starter-v2026/actions/runs/43545556602).
+The repository is ready to submit. A GitHub push itself does not submit the
+URL through the Course Portal.

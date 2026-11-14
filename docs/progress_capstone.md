@@ -14,7 +14,7 @@ Historical Part 1/2 criteria and results remain separate. No stretch is declared
 | 4. Criteria | Complete | Five fixed targets, three extension targets, explicit reasons and protocols |
 | 5. Baseline trials | Complete | `results/capstone/before/report.json`: 15 real-HTTP trials; C1/C2 MISSED, C3/C4/C5 MET; isolated calls retained |
 | 6. Diagnosis and improvement | Complete | Fix `2643b2b`; `results/capstone/after/report.json`: all five criteria MET across three trials; only `app.py` differs between campaign source hashes |
-| 7. Cost and publication | In progress | Ten-run cost measured at 0.0820445 CPU-s/run; README and cost arithmetic written; final audit, GitHub push and CI remain |
+| 7. Cost and publication | Complete | 0.0820445 CPU-s/run; nine-section README; all 13 final audit checks pass; published build `c47c4a7` passes [GitHub Actions](https://github.com/sawantamar05/ai201-project4-provenance-guard-starter-v2026/actions/runs/43545556602) |
 
 The baseline includes the instrumentation needed to observe it but preserves
 the earlier quota-before-validation behavior. The one measured improvement
@@ -29,3 +29,7 @@ credentials are used in the committed run records.
 
 Course Portal submission remains the user's final manual action; publication
 to GitHub does not establish that the portal received the repository URL.
+
+All seven repository milestones are complete. The final publication-record
+commit adds this status and the verified CI record after the build above;
+it does not change the service, criteria, campaigns, or measured results.
