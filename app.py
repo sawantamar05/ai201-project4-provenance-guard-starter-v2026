@@ -11,9 +11,30 @@ import config
 import detector
 import scoring
 import stylometry
+import telemetry
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = config.MAX_REQUEST_BYTES
+
+
+# Register before Flask-Limiter: an early quota rejection is still a request.
+app.before_request(telemetry.start_request)
+
+
+@app.after_request
+def record_request_completion(response):
+    try:
+        return telemetry.complete_request(response)
+    except OSError:
+        app.logger.error('Could not persist request completion metadata.')
+        failed = jsonify({
+            'error': 'request_log_unavailable',
+            'message': ('The request record could not be saved. The operation may '
+                        'have completed; check its state before retrying.'),
+        })
+        failed.status_code = 503
+        failed.headers['X-Request-ID'] = g.request_id
+        return failed
 
 
 class _LimiterOff:
