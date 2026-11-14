@@ -1,0 +1,53 @@
+{
+  "recorded_at_utc": "2026-11-14T02:18:21.315873+00:00",
+  "source_commit": "c203adc9d8c390f170969c039ff60da26279187f",
+  "checks": {
+    "five_criteria_three_real_trials_each_and_literal_verdicts_recomputed": true,
+    "isolated_detector_call_evidence_matches_targets_and_is_explicitly_mocked": true,
+    "durable_completion_records_and_real_appeal_restarts_match_raw_responses": true,
+    "same_environment_criteria_corpus_models_and_harness_only_app_changed": true,
+    "capstone_criteria_unchanged_since_first_criteria_commit_originals_archived_exactly": true,
+    "all_original_results_logs_attack_sets_data_and_detector_sources_preserved": true,
+    "eight_new_commits_criteria_before_named_results_and_three_build_commits": true,
+    "final_capstone_heading_nine_bold_sections_and_both_complete_tables": true,
+    "at_least_ten_plus_one_failure_literal_completion_records_pasted": true,
+    "each_criterion_has_literal_trial1_output_and_named_producer": true,
+    "measured_ten_run_cpu_cost_and_hundred_a_day_arithmetic_recomputed": true,
+    "clean_checkout_fresh_environment_exact_lock_real_inference_restart_and_logs_verified": true,
+    "submission_document_local_links_resolve": true
+  },
+  "details": {
+    "before": {
+      "1": "MISSED",
+      "2": "MISSED",
+      "3": "MET",
+      "4": "MET",
+      "5": "MET"
+    },
+    "after": {
+      "1": "MET",
+      "2": "MET",
+      "3": "MET",
+      "4": "MET",
+      "5": "MET"
+    },
+    "preserved_original_file_count": 46,
+    "new_capstone_commits": 10,
+    "criteria_commit": "ded63f6eaa4ac877f5614e25775a78fc2a3ad43c",
+    "first_results_commit": "dabd5254c8c83dc24a7d4dbe66d65015704a7620",
+    "build_commits_before_results": [
+      "d485de9d30fde9fe6f580cbbc551e3d8619c4068",
+      "2ff002579d79bbd5c7616038456e34ab226bb9d3",
+      "b690d9d21092fbab93a014421b0c03f79a5bc9ef",
+      "2189501e0a202dc47dd5c98ef224c1f47f17b0dc"
+    ],
+    "cost": {
+      "mean_cpu_seconds": 0.0820445,
+      "hundred_per_day_cpu_seconds": 8.204450000000001,
+      "mean_wall_seconds": 0.05582587504759431
+    }
+  },
+  "all_evidence_checks_passed": true,
+  "scope": "Read-only evidence/scoring audit; criterion misses are allowed when correctly reported. No models or HTTP requests executed.",
+  "portal_submission": "The user submits the existing GitHub repository URL through the Course Portal."
+}
