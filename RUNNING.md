@@ -4,6 +4,141 @@ Provenance Guard is a local JSON API. It combines a GPT-2 predictability signal
 with stylometry, saves each decision, and records appeals for review. It needs
 no API key. Model files download once; inference runs on your machine.
 
+## Capstone — Path B: local with logs
+
+This is the capstone run path. The later sections preserve the earlier project
+instructions and results. The measured environment is **Python 3.13.3 on macOS
+Apple Silicon**; a fresh installation on another Python version or platform has
+not been verified for this capstone. Gunicorn uses the Flask WSGI callable
+`app:app`, as documented by [Gunicorn](https://gunicorn.org/reference/settings/)
+and [Flask](https://flask.palletsprojects.com/en/stable/deploying/index.html).
+
+From a clean checkout, create a new environment and install the exact versions:
+
+```bash
+python3.13 -m venv .venv
+.venv/bin/python -m pip install -r requirements-lock.txt
+.venv/bin/python -m pip check
+```
+
+The capstone uses all 40 pinned packages in `requirements-lock.txt`, including
+Flask, Flask-Limiter, Gunicorn, PyTorch, Transformers, and Requests. The virtual
+environment is not committed and is not copied from an existing checkout.
+
+**Prepare model files once.** This command allows the initial GPT-2 download
+into the project cache, then loads it without scoring an evaluation passage:
+
+```bash
+HF_HOME="$PWD/.cache/huggingface" HF_HUB_OFFLINE=0 .venv/bin/python -c 'import detector; print(detector.warm_up())'
+```
+
+The measured GPT-2 revision is
+`607a30d783dfa663caf39e06633721c8d4cfcd7e`: seven snapshot files totaling
+**550,959,861 bytes** (525.44 MiB), including 548,105,171 bytes of model weights.
+The cache uses symlinks into blobs; these sizes count each snapshot file once.
+See [the environment record](docs/capstone_environment.md) for the inventory.
+
+To reuse an existing cache instead, set `HF_HOME` to the absolute directory
+containing its `hub` folder before the following commands:
+
+```bash
+export HF_HOME="/absolute/path/to/existing/huggingface"
+HF_HUB_OFFLINE=1 .venv/bin/python -c 'import detector; print(detector.warm_up())'
+```
+
+Cache reuse verifies offline model loading; it does not verify a new model
+download or make dependency installation offline. If `HF_HOME` is unset, the
+service defaults to this checkout's `.cache/huggingface` directory. Inference
+needs no API key. A missing or unusable model returns JSON HTTP 503.
+
+**Start the service with one command** from the project directory:
+
+```bash
+HF_HUB_OFFLINE=1 AI201_RATE_LIMITS=1 AI201_LOG_DIR="$PWD/logs/local" .venv/bin/gunicorn --workers 1 --threads 1 --bind 127.0.0.1:5054 --timeout 120 app:app
+```
+
+The address is `http://127.0.0.1:5054`. The explicit log directory preserves the
+earlier project's `logs/audit.jsonl`. This session appends decision, rejection,
+and appeal events to `logs/local/audit.jsonl`, and one `request_completed`
+event per completed request to `logs/local/requests.jsonl`. The response's
+`X-Request-ID` matches its completion record. Submitted writing and appeal
+reasoning are omitted from completion records; the separate appeal audit
+intentionally preserves the exact reasoning.
+
+Each server process loads the model on its first valid submission. A separate
+warm-up command has populated the disk cache, but has not loaded the model
+into the running server. Report that first request separately from warm-request
+latency. Completion `duration_ms` and `cpu_seconds` measure route work and
+summary preparation up to the point before serializing, writing, and fsyncing
+the completion record. They exclude that final logging work and client/network
+time. Client timings in the evaluation include receiving and parsing the
+complete response. CPU time is process CPU, so attributing it to one request
+requires this single synchronous worker/thread and sequential requests.
+
+**Exercise HTTP from a second terminal.** Inspect the returned content ID and
+use it in the appeal request; the placeholder below is not a real saved ID.
+
+```bash
+curl -i http://127.0.0.1:5054/health
+curl -i -X POST http://127.0.0.1:5054/submit \
+  -H 'Content-Type: application/json' --data-binary @data/sample_submission.json
+curl -i -X POST http://127.0.0.1:5054/appeal \
+  -H 'Content-Type: application/json' \
+  -d '{"content_id":"PASTE_RETURNED_CONTENT_ID","reasoning":"Please review my drafts."}'
+curl -i -X POST http://127.0.0.1:5054/submit \
+  -H 'Content-Type: application/json' -d '{"text":"","creator_id":"local-demo"}'
+curl -i -X POST http://127.0.0.1:5054/appeal \
+  -H 'Content-Type: application/json' \
+  -d '{"content_id":"00000000-0000-4000-8000-000000000099","reasoning":"Unknown-ID check."}'
+```
+
+A successful submission returns 200; the valid appeal returns 200 with
+`under_review`; the empty-text example should return 400; and the unused UUID
+should return 404. Repeated valid submissions with the same creator ID are
+limited to ten per minute and 200 per day. Keep all error responses and their
+request records when checking these expectations.
+
+Stop the first terminal with **Ctrl-C**, then run the exact same start command
+again with the same log directory. `GET /content/PASTE_RETURNED_CONTENT_ID`
+must reconstruct the original decision and appeal status from the saved audit.
+The in-memory quota counters reset on restart; this persistence check concerns
+decisions and appeals, not durable quotas.
+
+**Reproduce the recorded campaigns without replacing evidence.**
+`scripts/run_capstone.py` starts and stops isolated one-worker Gunicorn sessions
+itself; no manually running server is needed. The committed `before` campaign
+belongs to the instrumented baseline before the quota-order improvement. The
+final code has different route behavior: running it with `--label before`
+would not recreate that baseline. Use the baseline source commit recorded in
+the report when reproducing it, and always select a new output directory:
+
+```bash
+.venv/bin/python scripts/run_capstone.py --label after --output results/capstone/recheck-after
+```
+
+That command runs all five registered criteria three times each, saves actual
+HTTP responses and isolated session logs, and includes separately labelled
+mocked detector-call evidence. The mocked checks are not latency evidence.
+Targets are in [criteria.md](criteria.md); the earlier project's evaluator
+still measures the archived [Part 1/2 targets](docs/criteria_parts1_2.md).
+
+After committing the code being tested, verify startup from a new clone and a
+new virtual environment:
+
+```bash
+.venv/bin/python scripts/verify_clean_checkout.py \
+  --model-cache "$PWD/.cache/huggingface" \
+  --output "$PWD/results/capstone/clean_checkout.json"
+```
+
+This installs the lock file in that new environment, starts an equivalent
+Gunicorn command on a free loopback port, performs a real submission and appeal,
+restarts the process, and checks persisted state and completion records. It
+explicitly shares the previously downloaded model cache. The resulting JSON
+identifies the source commit and retains setup/server logs in its temporary
+checkout; inspect `all_checks_passed` before claiming success. Use a new output
+filename for additional checks to retain the original record.
+
 ## Install and prepare the model
 
 Use Python 3.11, 3.12, or 3.13. Run these commands from the project directory:

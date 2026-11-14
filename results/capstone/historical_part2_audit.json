@@ -1,0 +1,108 @@
+{
+  "started_at_utc": "2026-11-14T02:07:27.481329+00:00",
+  "checkout": "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-part2-history-h73whnf6/checkout",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--no-local",
+        "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026",
+        "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-part2-history-h73whnf6/checkout"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-part2-history-h73whnf6/checkout'...\n"
+    },
+    {
+      "command": [
+        "git",
+        "checkout",
+        "--detach",
+        "e7aa922"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at e7aa922 docs: complete Part 2 submission with residual failures, production trade and evidence audit\n"
+    },
+    {
+      "command": [
+        "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.venv/bin/python",
+        "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-part2-history-h73whnf6/checkout/scripts/audit_part2.py"
+      ],
+      "cwd": "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-part2-history-h73whnf6/checkout",
+      "returncode": 0,
+      "stdout": "{\n  \"recorded_at_utc\": \"2026-11-14T02:07:27.972907+00:00\",\n  \"source_commit_at_audit\": \"e7aa9220e9f69f056dd731ec29aca49747a7bd9c\",\n  \"new_commits_at_audit\": 6,\n  \"checks\": {\n    \"original_criteria_unchanged\": true,\n    \"both_supplied_csvs_match_original_zip_and_both_runs\": true,\n    \"address_minute_window_expired_before_each_criteria_campaign\": true,\n    \"only_measured_runtime_improvement_is_ai_threshold\": true,\n    \"all_56_attacks_reviewed_in_each_phase_with_comparable_scores\": true,\n    \"five_literal_criteria_have_three_actual_trials_before_and_after\": true,\n    \"unmet_exact_status_target_is_retained_as_missed\": true,\n    \"complete_decisions_and_twelve_real_pasted_audit_events\": true,\n    \"all_ten_readme_sections_tables_and_json_are_present\": true,\n    \"local_document_links_resolve\": true,\n    \"at_least_four_new_part2_commits\": true\n  },\n  \"all_evidence_checks_passed\": true,\n  \"criteria_verdicts\": {\n    \"before\": {\n      \"1\": \"MET\",\n      \"2\": \"MET\",\n      \"3\": \"MET\",\n      \"4\": \"MET\",\n      \"5\": \"MISSED\"\n    },\n    \"after\": {\n      \"1\": \"MET\",\n      \"2\": \"MET\",\n      \"3\": \"MET\",\n      \"4\": \"MET\",\n      \"5\": \"MISSED\"\n    }\n  },\n  \"attack_counts\": {\n    \"before\": {\n      \"BROKE\": 13,\n      \"HELD\": 43\n    },\n    \"after\": {\n      \"BROKE\": 10,\n      \"HELD\": 46\n    }\n  },\n  \"audit_entry_count\": 1013,\n  \"campaign_idle_seconds\": {\n    \"before\": 370.445992,\n    \"after\": 75.720328\n  },\n  \"portal_submission\": \"Performed by the user; repository URL is in SUBMISSION.md.\"\n}\n",
+      "stderr": ""
+    }
+  ],
+  "original_sha256_before": {
+    "results/part2_submission_audit.json": "2f9006bbee4fde9bcbf75d877e6584bc4b43735663eb57ed3ca4c24994383eed",
+    "criteria.md": "b54324f9b43cecf68ba911daec030a362ae5d7dae9243d85591440193f22ed14",
+    "docs/criteria_parts1_2.md": "aa64b419b9824b2fbf1af987a88698612433fd98460aeb04f41ca30c885635af",
+    "logs/audit.jsonl": "4d7c09190e78fc2cdd34c6ae9fcd89f95d394f17dd40d94d68f500b1fc7881a9",
+    "attack_set/source.zip": "2d122805ef92092fcadcc8307d38fe6b4e44f26c0726fc991a4d31d0e800a33b"
+  },
+  "all_checks_passed": true,
+  "cloned_commit": "e7aa9220e9f69f056dd731ec29aca49747a7bd9c",
+  "historical_auditor_output": {
+    "recorded_at_utc": "2026-11-14T02:07:27.972907+00:00",
+    "source_commit_at_audit": "e7aa9220e9f69f056dd731ec29aca49747a7bd9c",
+    "new_commits_at_audit": 6,
+    "checks": {
+      "original_criteria_unchanged": true,
+      "both_supplied_csvs_match_original_zip_and_both_runs": true,
+      "address_minute_window_expired_before_each_criteria_campaign": true,
+      "only_measured_runtime_improvement_is_ai_threshold": true,
+      "all_56_attacks_reviewed_in_each_phase_with_comparable_scores": true,
+      "five_literal_criteria_have_three_actual_trials_before_and_after": true,
+      "unmet_exact_status_target_is_retained_as_missed": true,
+      "complete_decisions_and_twelve_real_pasted_audit_events": true,
+      "all_ten_readme_sections_tables_and_json_are_present": true,
+      "local_document_links_resolve": true,
+      "at_least_four_new_part2_commits": true
+    },
+    "all_evidence_checks_passed": true,
+    "criteria_verdicts": {
+      "before": {
+        "1": "MET",
+        "2": "MET",
+        "3": "MET",
+        "4": "MET",
+        "5": "MISSED"
+      },
+      "after": {
+        "1": "MET",
+        "2": "MET",
+        "3": "MET",
+        "4": "MET",
+        "5": "MISSED"
+      }
+    },
+    "attack_counts": {
+      "before": {
+        "BROKE": 13,
+        "HELD": 43
+      },
+      "after": {
+        "BROKE": 10,
+        "HELD": 46
+      }
+    },
+    "audit_entry_count": 1013,
+    "campaign_idle_seconds": {
+      "before": 370.445992,
+      "after": 75.720328
+    },
+    "portal_submission": "Performed by the user; repository URL is in SUBMISSION.md."
+  },
+  "original_sha256_after": {
+    "results/part2_submission_audit.json": "2f9006bbee4fde9bcbf75d877e6584bc4b43735663eb57ed3ca4c24994383eed",
+    "criteria.md": "b54324f9b43cecf68ba911daec030a362ae5d7dae9243d85591440193f22ed14",
+    "docs/criteria_parts1_2.md": "aa64b419b9824b2fbf1af987a88698612433fd98460aeb04f41ca30c885635af",
+    "logs/audit.jsonl": "4d7c09190e78fc2cdd34c6ae9fcd89f95d394f17dd40d94d68f500b1fc7881a9",
+    "attack_set/source.zip": "2d122805ef92092fcadcc8307d38fe6b4e44f26c0726fc991a4d31d0e800a33b"
+  },
+  "original_files_unchanged": true,
+  "finished_at_utc": "2026-11-14T02:07:27.989849+00:00"
+}

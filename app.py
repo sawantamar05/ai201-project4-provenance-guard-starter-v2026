@@ -21,6 +21,18 @@ app.config['MAX_CONTENT_LENGTH'] = config.MAX_REQUEST_BYTES
 app.before_request(telemetry.start_request)
 
 
+@app.before_request
+def validate_submission_before_quota():
+    """Reject cheap input failures before Flask-Limiter spends scoring quota."""
+    if request.endpoint != 'submit' or request.method != 'POST':
+        return None
+    validated, error = _validate_submission()
+    if error is not None:
+        return error
+    g.validated_submission = validated
+    return None
+
+
 @app.after_request
 def record_request_completion(response):
     try:
@@ -105,6 +117,28 @@ def _json_object():
     return payload, None
 
 
+def _validate_submission():
+    """Validate once, without scoring or changing the limiter's counters."""
+    payload, error = _json_object()
+    if error is not None:
+        return None, error
+    text, creator_id = payload.get('text'), payload.get('creator_id')
+    usable_creator = (_valid_unicode(creator_id) and creator_id.strip()
+                      and len(creator_id) <= config.MAX_CREATOR_CHARS)
+    if usable_creator:
+        # Rejections retain a usable caller ID even though no quota is spent.
+        g.audit_creator_id = creator_id
+    if not _valid_unicode(text) or not text.strip():
+        return None, _reject('invalid_text', 'text must be a nonempty string.', 400)
+    if len(text) > config.MAX_TEXT_CHARS:
+        return None, _reject('text_too_large', 'text must not exceed 10,000 characters.', 413)
+    if len(text.strip()) < config.MIN_TEXT_CHARS or len(stylometry.words(text)) < config.MIN_TEXT_WORDS:
+        return None, _reject('text_too_short', 'text needs at least 20 characters and 5 word tokens.', 400)
+    if not usable_creator:
+        return None, _reject('invalid_creator_id', 'creator_id must be a nonempty string of at most 128 characters.', 400)
+    return (text, creator_id), None
+
+
 # The starter's worked example remains the control route.
 @app.post('/ping')
 def ping():
@@ -130,18 +164,7 @@ def health():
 @app.post('/submit')
 @limiter.limit(f'{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day')
 def submit():
-    payload, error = _json_object()
-    if error is not None:
-        return error
-    text, creator_id = payload.get('text'), payload.get('creator_id')
-    if not _valid_unicode(text) or not text.strip():
-        return _reject('invalid_text', 'text must be a nonempty string.', 400)
-    if len(text) > config.MAX_TEXT_CHARS:
-        return _reject('text_too_large', 'text must not exceed 10,000 characters.', 413)
-    if len(text.strip()) < config.MIN_TEXT_CHARS or len(stylometry.words(text)) < config.MIN_TEXT_WORDS:
-        return _reject('text_too_short', 'text needs at least 20 characters and 5 word tokens.', 400)
-    if not _valid_unicode(creator_id) or not creator_id.strip() or len(creator_id) > config.MAX_CREATOR_CHARS:
-        return _reject('invalid_creator_id', 'creator_id must be a nonempty string of at most 128 characters.', 400)
+    text, creator_id = g.validated_submission
 
     content_id = str(uuid.uuid4())
     try:

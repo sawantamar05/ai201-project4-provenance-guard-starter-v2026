@@ -8,6 +8,7 @@ import app as appmod
 import audit
 import config
 import detector
+from scripts.capstone_protocol import matrix_cases
 
 TEXT = 'This writing sample has enough words for the local service to score it safely.'
 
@@ -60,17 +61,43 @@ class RateLimitTests(unittest.TestCase):
         self.assertEqual(self.submit('shared', '127.0.0.2').status_code, 429)
         self.assertEqual(self.submit('different').status_code, 200)
 
-    def test_missing_creator_uses_address_and_records_rejections(self):
-        for _ in range(10):
+    def test_missing_creator_is_rejected_without_spending_scoring_quota(self):
+        for _ in range(12):
             response = self.client.post('/submit', json={'text': TEXT})
             self.assertEqual(response.status_code, 400)
-        response = self.client.post('/submit', json={'text': TEXT})
-        self.assertEqual(response.status_code, 429)
         self.assertEqual(self.client.post('/submit', json={'text': TEXT},
                          environ_overrides={'REMOTE_ADDR': '127.0.0.2'}).status_code, 400)
         self.model.assert_not_called()
         self.assertTrue(all(row['status'] == 'rejected' for row in audit.read_entries()))
-        self.assertEqual(audit.read_entries()[10]['rate_limit_bucket'], 'address:127.0.0.1')
+        self.assertTrue(all(row['reason'] == 'invalid_creator_id' for row in audit.read_entries()))
+
+    def test_twelve_invalid_requests_preserve_ten_valid_slots_and_block_two_more(self):
+        invalid = [self.client.post('/submit', json={'text': '', 'creator_id': 'quota-safe'})
+                   for _ in range(12)]
+        self.assertEqual([r.status_code for r in invalid], [400] * 12)
+        self.model.assert_not_called()
+        valid = [self.submit('quota-safe') for _ in range(12)]
+        self.assertEqual([r.status_code for r in valid], [200] * 10 + [429] * 2)
+        self.assertEqual(self.model.call_count, 10)
+        entries = audit.read_entries()
+        self.assertEqual(len(entries), 24)
+        self.assertEqual(sum(row.get('status') == 'decided' for row in entries), 10)
+        self.assertTrue(all(r.get_json()['error'] == 'rate_limited' for r in valid[-2:]))
+
+    def test_validation_codes_survive_creator_and_missing_id_pressure(self):
+        self.assertEqual([self.submit('pressured').status_code for _ in range(12)],
+                         [200] * 10 + [429] * 2)
+        for _ in range(12):
+            self.assertEqual(self.client.post('/submit', json={'text': TEXT}).status_code, 400)
+        for case in matrix_cases('pressured'):
+            with self.subTest(case=case['name']):
+                response = self.client.post('/submit', **case['kwargs'])
+                self.assertEqual(response.status_code, case['expected_status'])
+                self.assertTrue(response.is_json)
+                self.assertTrue(response.get_json()['error'])
+                self.assertTrue(response.get_json()['message'])
+        self.assertEqual(self.model.call_count, 10)
+        self.assertEqual(sum(row.get('status') == 'decided' for row in audit.read_entries()), 10)
 
     def test_daily_limit_survives_minute_window_changes(self):
         clock = [1700000000.0]
