@@ -96,8 +96,10 @@ def main():
                            and model.call_count == 10)
             else:
                 reset('appeals')
-                submissions = [submit(f'mocked-c5-{i}', item['text']).get_json()
-                               for i, item in enumerate(HUMAN, 1)]
+                setup = [capture(submit(f'mocked-c5-{i}', item['text']))
+                         for i, item in enumerate(HUMAN, 1)]
+                submissions = [row['response_json'] for row in setup]
+                submission_calls = model.call_count
                 originals = audit.read_entries()
                 model.reset_mock()
                 appeals, lookups = [], []
@@ -130,11 +132,20 @@ with patch.object(detector, "model_signal", side_effect=AssertionError("lookup m
                             for i, r in enumerate(appeals, 1))
                 persisted = all(item.get('status') == 'under_review'
                                 and item['appeals'][0]['reasoning'] == reasoning(i)
+                                and all(item.get(key) == value for key, value in submissions[i - 1].items()
+                                        if key != 'status')
                                 for i, item in enumerate(restarted['items'], 1))
-                out.update(submission_detector_calls=len(submissions), appeals=appeals, lookups=lookups,
+                immediate = all(row['status_code'] == 200 and row['response_json'].get('status') == 'under_review'
+                                and row['response_json']['appeals'][0]['reasoning'] == reasoning(i)
+                                and all(row['response_json'].get(key) == value
+                                        for key, value in submissions[i - 1].items() if key != 'status')
+                                for i, row in enumerate(lookups, 1))
+                setup_ok = submission_calls == 10 and all(row['status_code'] == 200
+                            and row['response_json'].get('status') == 'decided' for row in setup)
+                out.update(submission_detector_calls=submission_calls, setup=setup, appeals=appeals, lookups=lookups,
                            unknown=unknown, appeal_lookup_detector_calls=model.call_count,
                            original_unchanged=original_unchanged, restarted=restarted,
-                           passed=exact and persisted and original_unchanged and model.call_count == 0
+                           passed=setup_ok and exact and immediate and persisted and original_unchanged and model.call_count == 0
                            and restarted['detector_calls'] == 0 and not restarted['detector_loaded']
                            and restarted['statuses'] == [200] * 10 and unknown['status_code'] == 404
                            and len([r for r in history if r.get('event') == 'appeal']) == 10)

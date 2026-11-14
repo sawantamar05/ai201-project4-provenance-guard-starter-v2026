@@ -303,14 +303,15 @@ def validate_completion(record, exchange):
         check(incoming.get('body_bytes') == exchange.get('request_body_bytes'), 'input body byte count')
         if isinstance(exchange.get('request_json'), dict):
             body = exchange['request_json']
-            check(incoming.get('fields') == sorted(body), 'input field names')
+            check(incoming.get('field_names') == sorted(body), 'input field names')
             if isinstance(body.get('text'), str):
-                check(incoming.get('text_length') == len(body['text']), 'input text character count')
+                check(incoming.get('text_characters') == len(body['text']), 'input text character count')
     body = exchange.get('response_json', {})
     if isinstance(outgoing, dict):
-        for key in ('content_id', 'guess', 'error'):
+        for key in ('content_id', 'guess', 'error', 'status'):
             if key in body:
                 check(outgoing.get(key) == body[key], 'output ' + key)
+        check(outgoing.get('outcome') == ('error' if 'error' in body else 'success'), 'output outcome')
     rendered = json.dumps(record, ensure_ascii=True)
     request_body = exchange.get('request_json', {})
     for field in ('text', 'reasoning'):
@@ -384,12 +385,26 @@ def criterion_four(directory, prefix):
     quick = sum(successful_submission(row) and row['elapsed_seconds'] < 5.0 for row in cases)
     durations = [row['elapsed_seconds'] for row in cases]
     rows, errors = jsonl(directory / 'requests.jsonl')
-    ids = {row.get('request_id') for row in cases}
-    costs = [row['cpu_seconds'] for row in rows if row.get('request_id') in ids
-             and isinstance(row.get('cpu_seconds'), (int, float)) and math.isfinite(row['cpu_seconds'])]
+    ids = [row.get('request_id') for row in cases]
+    costs, cost_errors = [], list(errors)
+    for exchange in cases:
+        identity = exchange.get('request_id')
+        matching = [row for row in rows if row.get('request_id') == identity]
+        if not identity or ids.count(identity) != 1 or len(matching) != 1:
+            cost_errors.append({'request_id': identity, 'error': 'CPU cost requires one unique correlated completion'})
+            continue
+        row = matching[0]
+        value = row.get('cpu_seconds')
+        if (row.get('event') != 'request_completed' or row.get('http_status') != exchange.get('status_code')
+                or isinstance(value, bool) or not isinstance(value, (int, float))
+                or not math.isfinite(value) or value < 0):
+            cost_errors.append({'request_id': identity, 'error': 'Invalid completion outcome or CPU seconds'})
+            continue
+        costs.append(value)
+    mean_cpu = statistics.mean(costs) if len(costs) == 10 and not cost_errors else None
     result.update(cases=cases, valid_count=successful, under5_seconds_count=quick,
                   mean_wall_seconds=statistics.mean(durations), wall_seconds=durations,
-                  cpu_seconds=costs, mean_cpu_seconds=statistics.mean(costs) if len(costs) == 10 else None,
+                  cpu_seconds=costs, mean_cpu_seconds=mean_cpu, cost_measurement_errors=cost_errors,
                   request_log_parse_errors=errors, quota_window_valid=True,
                   http_passed=successful == 10 and quick >= 9,
                   summary=f'{successful}/10 decisions; {quick}/10<5s; mean{statistics.mean(durations):.4f}s')
