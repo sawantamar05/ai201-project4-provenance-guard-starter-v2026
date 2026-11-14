@@ -1,0 +1,84 @@
+{
+  "started_at_utc": "2026-11-14T02:09:48.526893+00:00",
+  "workdir": "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_",
+  "checkout": "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_/checkout",
+  "source_repository": "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026",
+  "steps": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--no-local",
+        "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026",
+        "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_/checkout"
+      ],
+      "cwd": "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026",
+      "returncode": 0,
+      "duration_seconds": 0.29347233287990093,
+      "log": "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_/clone.log"
+    },
+    {
+      "command": [
+        "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.venv/bin/python",
+        "-m",
+        "venv",
+        "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_/checkout/.venv"
+      ],
+      "cwd": "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_/checkout",
+      "returncode": 0,
+      "duration_seconds": 1.211742625106126,
+      "log": "/var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_/venv.log"
+    }
+  ],
+  "sessions": [],
+  "http": [],
+  "checks": {
+    "no_existing_venv_or_model_cache_in_clone": true
+  },
+  "all_checks_passed": false,
+  "scope": "Fresh clone and fresh venv; explicit reuse of previously downloaded GPT-2 cache. Not an online model-download test.",
+  "model": {
+    "cache": "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.cache/huggingface",
+    "model": "gpt2",
+    "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+    "snapshot_files": [
+      {
+        "name": "config.json",
+        "bytes": 665
+      },
+      {
+        "name": "generation_config.json",
+        "bytes": 124
+      },
+      {
+        "name": "merges.txt",
+        "bytes": 456318
+      },
+      {
+        "name": "model.safetensors",
+        "bytes": 548105171
+      },
+      {
+        "name": "tokenizer.json",
+        "bytes": 1355256
+      },
+      {
+        "name": "tokenizer_config.json",
+        "bytes": 26
+      },
+      {
+        "name": "vocab.json",
+        "bytes": 1042301
+      }
+    ],
+    "snapshot_bytes": 550959861,
+    "download_exercised": false
+  },
+  "source_commit": "2643b2b267177a9d7b9581eeb6ef8c7f977ccb93",
+  "error": {
+    "type": "RuntimeError",
+    "message": "Command exited 1; see /var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_/install.log",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/scripts/verify_clean_checkout.py\", line 170, in main\n    report[\"steps\"].append(run(install, checkout, env, work / \"install.log\"))\n                           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/scripts/verify_clean_checkout.py\", line 44, in run\n    raise RuntimeError(f\"Command exited {result.returncode}; see {path}\")\nRuntimeError: Command exited 1; see /var/folders/22/_1fjdqvj3n33zsb_dp2ljq640000gn/T/provenance-capstone-clean-otwqfme_/install.log\n"
+  },
+  "finished_at_utc": "2026-11-14T02:09:57.829491+00:00"
+}

@@ -31,10 +31,14 @@ download or make dependency installation offline.
 
 ## Clean-checkout verification
 
-`scripts/verify_clean_checkout.py` is a verification program, not an existing
-successful result. The committed `results/capstone/clean_checkout.json`, after
-the program has actually run, records whether all its checks passed. Its
-`source_commit` identifies the exact checkout tested.
+`scripts/verify_clean_checkout.py` was run against commit `bc3ebad` in a new
+clone and a fresh virtual environment. All nine checks passed, including exact
+dependency versions, real model scoring, a saved appeal, a real process restart,
+and durable correlated request records. The committed
+[clean-checkout report](../results/capstone/clean_checkout.json) identifies the
+exact checkout and captures the HTTP responses. The
+[setup and server records](../results/capstone/clean_checkout_artifacts)
+preserve the actual installation and server output.
 
 The program:
 
@@ -63,9 +67,11 @@ does not copy the original environment or import its packages. The model cache
 is deliberately shared and `HF_HUB_OFFLINE=1` prevents inference from silently
 downloading missing files.
 
-Dependency installation normally needs network access. The initial sandbox
-inspection could not use the user-level pip cache because it was not writable;
-no complete wheelhouse was found. If a complete wheelhouse has been prepared,
+Dependency installation needs network access in this tested path. The first
+sandboxed attempt cloned successfully but could not reach the package index;
+its [failure record](../results/capstone/clean_checkout_sandbox_blocked.json)
+is retained. The authorized retry downloaded and installed all 40 exact pins;
+it did not reuse the old virtual environment. If a complete wheelhouse has been prepared,
 passing `--wheelhouse /absolute/path` instead installs with `--no-index`. Do not
 describe a run as offline merely because the model cache was reused.
 

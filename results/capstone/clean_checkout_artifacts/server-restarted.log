@@ -1,0 +1,7 @@
+[2026-11-13 18:12:29 -0800] [75294] [INFO] Starting gunicorn 23.0.0
+[2026-11-13 18:12:29 -0800] [75294] [INFO] Listening at: http://127.0.0.1:60178 (75294)
+[2026-11-13 18:12:29 -0800] [75294] [INFO] Using worker: sync
+[2026-11-13 18:12:29 -0800] [75295] [INFO] Booting worker with pid: 75295
+[2026-11-13 18:12:29 -0800] [75295] [INFO] Worker exiting (pid: 75295)
+[2026-11-13 18:12:29 -0800] [75294] [INFO] Handling signal: term
+[2026-11-13 18:12:29 -0800] [75294] [INFO] Shutting down: Master
