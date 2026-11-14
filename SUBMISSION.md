@@ -19,3 +19,30 @@ remain. Original criteria, input provenance, and Part 1 history are preserved.
 
 The GitHub Actions workflow verifies the published backend tests. Portal
 submission is performed by the user.
+
+## Capstone submission
+
+Submit the same repository URL above for the capstone. Shape B hardens input
+validation and quota handling; Path B runs the local Gunicorn service with
+committed request records. Follow the Capstone run path at the top of
+[RUNNING.md](RUNNING.md).
+
+- [Five capstone criteria](criteria.md), committed in `ded63f6` before results;
+  [the earlier criteria](docs/criteria_parts1_2.md) are preserved unchanged.
+- [Before](results/capstone/before/report.md) and
+  [after](results/capstone/after/report.md): five criteria, three trials each,
+  with real HTTP exchanges, isolated logs, and explicitly mocked call counts.
+- [Baseline diagnosis](docs/capstone_diagnosis.md): quota accounting preceded
+  validation, causing two misses. The single ordering improvement makes all
+  five criteria MET across all three after trials without changing targets,
+  model scores, detection thresholds, or quota values.
+- [Clean-checkout proof](results/capstone/clean_checkout.json): fresh clone,
+  fresh environment, all 40 exact dependency pins, real inference and appeal,
+  actual restart, and durable request records. All nine checks passed.
+- The nine bold Capstone sections at the end of [README.md](README.md) contain
+  both tables, literal output, at least ten log entries and a failure, measured
+  cost, remaining limits, and AI use. The run uses no hosted URL or API key.
+
+The final evidence audit and GitHub CI are separate publication checks. The
+repository is ready to submit when those checks pass; a GitHub push itself
+does not submit the URL through the Course Portal.

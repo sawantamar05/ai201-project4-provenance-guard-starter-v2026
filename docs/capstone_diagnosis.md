@@ -27,3 +27,23 @@ under `results/capstone/before_sandbox_blocked`; it contains no scored HTTP
 trials and is not counted as one of the three trials. The completed baseline
 required execution permission for local sockets. There were no quota-window
 retries or discarded scored trials in the completed campaign.
+
+## After the one improvement
+
+The full after campaign at `2643b2b` repeated all five criteria, three trials
+each, without changing the targets. Criterion 1 increased from 10/20 exact
+validation responses to 20/20 in every trial. Criterion 2 increased from zero
+accepted valid allowance requests to ten in every trial; all twelve malformed
+requests returned 400 and the two excess valid requests still returned 429.
+The isolated companion now records exactly ten detector calls for that sequence.
+
+Criteria 3–5 remained MET across all three after trials. Only `app.py` differs
+between the campaign source hashes. The model, signal functions, scoring
+thresholds, corpus, quotas, telemetry, and harness remained unchanged. The
+comparison supports a validation/quota fix, not an inference-speed or detection-
+accuracy claim.
+
+All five after targets are met, but the latency target was generous: all 30
+warm after requests finished below 0.25 seconds. A future evaluation should
+register 10/10 below 0.25 seconds on this same machine, retaining separate cold
+startup measurements. The present targets and original verdicts remain intact.

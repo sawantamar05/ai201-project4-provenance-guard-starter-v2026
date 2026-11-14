@@ -1,0 +1,70 @@
+{
+  "sample_count": 10,
+  "source_path": "results/capstone/after/c4_trial1_attempt1",
+  "source_report": "results/capstone/after/report.json",
+  "source_commit": "2643b2b267177a9d7b9581eeb6ef8c7f977ccb93",
+  "trial": 1,
+  "request_ids": [
+    "365d8021-2758-4f2f-a2c5-199e1e2c059b",
+    "5f822487-38c8-4695-8004-ed6ca5392044",
+    "8af8305e-2461-4097-8487-c46d34da2d74",
+    "58d2a11a-4e86-490a-9628-99acec293a93",
+    "e59a5c8b-9f42-43ef-8de3-229c4d673070",
+    "ecc04610-b764-40fa-a7e3-d4057de2df80",
+    "89b34a46-b865-4b30-9f98-285c7edf5936",
+    "5181b6ca-59b5-4b7c-8373-15967c1358a6",
+    "0e021174-6838-46fe-8740-b77c441a5ea7",
+    "8a9a96c9-e8f4-460a-816d-bf96995361bd"
+  ],
+  "cpu_samples": [
+    0.055038,
+    0.105668,
+    0.114528,
+    0.089926,
+    0.059143,
+    0.068329,
+    0.086254,
+    0.079041,
+    0.070982,
+    0.091536
+  ],
+  "wall_samples": [
+    0.04083670908585191,
+    0.06880754185840487,
+    0.07307741604745388,
+    0.06044883420690894,
+    0.043491417076438665,
+    0.04866529116407037,
+    0.05802450003102422,
+    0.05366337485611439,
+    0.04990345798432827,
+    0.061340208165347576
+  ],
+  "sum_cpu_seconds": 0.820445,
+  "mean_cpu_seconds": 0.08204449999999999,
+  "mean_wall_seconds": 0.05582587504759431,
+  "hundred_per_day_cpu_seconds": 8.20445,
+  "hundred_per_day_assumption": "100 people, one accepted warm submission per person per day",
+  "method": "Mean of ten real sequential accepted HTTP submissions. CPU uses time.process_time deltas in one synchronous Gunicorn worker; wall time uses client perf_counter through complete response/JSON parsing.",
+  "cpu_exclusions": [
+    "initial model load",
+    "completion-log serialization and fsync",
+    "client/network CPU",
+    "additional appeals and other requests"
+  ],
+  "money_measurement": "No paid inference API called; electricity/hosting dollars were not measured.",
+  "other_trials": [
+    {
+      "trial": 2,
+      "sample_count": 10,
+      "mean_cpu_seconds": 0.083537,
+      "mean_wall_seconds": 0.05838409583084285
+    },
+    {
+      "trial": 3,
+      "sample_count": 10,
+      "mean_cpu_seconds": 0.082668,
+      "mean_wall_seconds": 0.056214254396036265
+    }
+  ]
+}

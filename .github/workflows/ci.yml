@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
@@ -15,4 +17,6 @@ jobs:
       - name: Verify contracts, scoring, and persistence
         run: python -m unittest discover -s tests -v
       - name: Check syntax
-        run: python -m compileall -q app.py audit.py config.py detector.py scoring.py stylometry.py scripts tests
+        run: python -m compileall -q app.py audit.py config.py detector.py scoring.py stylometry.py telemetry.py scripts tests
+      - name: Audit capstone evidence and commit history
+        run: python scripts/audit_capstone.py

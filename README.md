@@ -1228,32 +1228,521 @@ https://github.com/sawantamar05/ai201-project4-provenance-guard-starter-v2026
 
 **What This Extends**
 
-I am extending the existing Provenance Guard service. The new work is predictable
-validation and quota handling, supported by per-request completion records with
-timing and CPU measurements. The original detector, scoring rule, labels, and
-appeal workflow remain the baseline. The five new targets are in
-[criteria.md](criteria.md); the earlier project's targets are archived unchanged
-in [docs/criteria_parts1_2.md](docs/criteria_parts1_2.md). No capstone evaluation
-results have been collected at this checkpoint.
+I extended the existing Provenance Guard Flask API with predictable validation
+and quota handling, plus durable request completion records and measured run
+cost. This is the same repository and detector from Project 4. The new targets
+are in [criteria.md](criteria.md); the earlier targets are preserved unchanged in
+[docs/criteria_parts1_2.md](docs/criteria_parts1_2.md). The criteria existed in Git
+before capstone evaluation, and both campaigns record the identical criteria
+SHA-256 `b54324f9b43cecf68ba911daec030a362ae5d7dae9243d85591440193f22ed14`.
 
 **The Shape**
 
-I chose **B — Harden against failure**. I want malformed submissions to get the
-right validation error even after quota pressure, without using the allowance
-for valid scoring. I will record both successes and failures so the before/after
-comparison can explain the behavior. Model retraining, a new interface, public
-hosting, authenticated identities, shared quota storage, and changes to detection
-thresholds are outside this capstone. The run path will be **Path B — local with
-logs**, extending [RUNNING.md](RUNNING.md). No stretch work is declared.
+I chose **B — Harden against failure**: malformed submissions should receive
+their validation error without consuming the allowance for valid scoring.
+Request timing, failure traces, and the local run path support that one change.
+Model retraining, threshold changes, a new interface, public hosting,
+authenticated identities, and shared quota storage stayed outside this unit.
+No stretch work was declared. The before campaign is an instrumented baseline
+with the old quota order, not the original uninstrumented starter.
+
+**Running It**
+
+I used **Path B — local with logs**. [RUNNING.md](RUNNING.md) gives the exact
+single-worker Gunicorn start command, pinned setup, model preparation, isolated
+log directories, and clean-checkout verification. The environment and model
+inventory are recorded in [docs/capstone_environment.md](docs/capstone_environment.md).
+Each trial started an actual local HTTP server outside the editor. Criterion 5
+stopped that server and started a fresh process against the same saved audit.
+The committed campaigns include the launch commands, process records, HTTP
+captures, request logs, and both five-row run logs.
+
+I also verified a [clean checkout](results/capstone/clean_checkout.json) at
+commit `bc3ebad`: a fresh clone and new virtual environment
+installed all **40 exact dependency pins**, and **all nine checks passed**,
+including real inference, exact appeal persistence across a restart, and saved
+request completions. This reused the previously downloaded GPT-2 cache
+explicitly; it was not an online model-download test.
+
+**Instrumentation**
+
+`telemetry.start_request` starts before validation and rate limiting;
+`telemetry.complete_request` writes one `request_completed` record to
+`requests.jsonl`, separately from decision/appeal events in `audit.jsonl`.
+Each completion contains a UTC timestamp, a generated request ID matching
+`X-Request-ID`, method/path, response status, input/output summaries, wall
+duration, and process CPU seconds. Input summaries retain byte counts, JSON
+field names, parsing outcome, and text length; output summaries retain content
+ID, guess, status, or error. Submission text and appeal-reasoning values are
+omitted from this new log. The appeal audit still preserves reasoning exactly.
+
+These **13 actual entries** are the first ten valid submissions, two quota
+rejections, and one malformed-input rejection from after criterion 3, trial 1.
+They are pasted from [that session's request log](results/capstone/after/c3_trial1_attempt1/requests.jsonl),
+with their values unchanged:
+
+```jsonl
+{"event":"request_completed","request_id":"fe84b749-c360-4274-adf2-b909bfcb26a9","timestamp":"2026-11-14T02:08:36.668086+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":425,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":377},"output_summary":{"content_type":"application/json","content_id":"c6c6d5e7-e8fb-4713-a709-a9aa747f7b6b","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":41.651125,"cpu_seconds":0.057285}
+{"event":"request_completed","request_id":"72666c6a-95a2-41b4-9b19-933298884426","timestamp":"2026-11-14T02:08:36.735804+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":712,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":664},"output_summary":{"content_type":"application/json","content_id":"6819356d-16fd-4af2-ac8d-427ccd77d8b1","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":66.5395,"cpu_seconds":0.103893}
+{"event":"request_completed","request_id":"8b4763dd-0899-4d96-ad07-59bd1d78ed2f","timestamp":"2026-11-14T02:08:36.815425+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":863,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":795},"output_summary":{"content_type":"application/json","content_id":"936748de-1092-4b15-bb75-990b6d08b172","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":78.103458,"cpu_seconds":0.120754}
+{"event":"request_completed","request_id":"dc168320-cd9a-450b-a740-34c0d53a41b0","timestamp":"2026-11-14T02:08:36.877295+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":625,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":552},"output_summary":{"content_type":"application/json","content_id":"233953a6-b49d-4e94-a9e0-45b40e24d163","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":60.5475,"cpu_seconds":0.090943}
+{"event":"request_completed","request_id":"0e0f9643-6637-4945-929b-a508f44a391a","timestamp":"2026-11-14T02:08:36.921350+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":402,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":354},"output_summary":{"content_type":"application/json","content_id":"32e41624-5dac-43c3-bd39-6fe90b89b350","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":42.961041,"cpu_seconds":0.059885}
+{"event":"request_completed","request_id":"a3c8ef24-21d4-408b-9326-5a5ae2d99ce9","timestamp":"2026-11-14T02:08:36.970403+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":549,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":501},"output_summary":{"content_type":"application/json","content_id":"8fd73fc5-e4b1-4d88-90bd-4a98c3588963","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":47.942708,"cpu_seconds":0.068713}
+{"event":"request_completed","request_id":"ce18c836-0838-4731-ac70-91dc42efbfa9","timestamp":"2026-11-14T02:08:37.028421+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":660,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":592},"output_summary":{"content_type":"application/json","content_id":"fabcb982-4380-4deb-9b83-dee5dbf6f14a","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":56.94575,"cpu_seconds":0.086038}
+{"event":"request_completed","request_id":"3025ea5e-a91e-4957-a334-c45f19cb4486","timestamp":"2026-11-14T02:08:37.084192+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":661,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":598},"output_summary":{"content_type":"application/json","content_id":"c202a331-b153-49b6-8f5e-9bc5f46f33b2","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":54.717125,"cpu_seconds":0.081653}
+{"event":"request_completed","request_id":"126a95a7-262f-48e7-8f27-e7115bb886a2","timestamp":"2026-11-14T02:08:37.135760+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":572,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":524},"output_summary":{"content_type":"application/json","content_id":"c493eeb2-d84b-4ae4-bd58-f1090572c2fe","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":50.487709,"cpu_seconds":0.072724}
+{"event":"request_completed","request_id":"e30fbad1-099f-4883-8848-fd1843cee592","timestamp":"2026-11-14T02:08:37.225457+00:00","method":"POST","path":"/submit","http_status":200,"input_summary":{"body_bytes":674,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":626},"output_summary":{"content_type":"application/json","content_id":"7a7c25b6-f8ff-491b-ae83-25e5a22b9830","guess":"unsure","status":"decided","outcome":"success"},"duration_ms":88.540667,"cpu_seconds":0.110455}
+{"event":"request_completed","request_id":"4808f340-ebe1-4ef5-8eff-eb7c46654878","timestamp":"2026-11-14T02:08:37.227083+00:00","method":"POST","path":"/submit","http_status":429,"input_summary":{"body_bytes":425,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":377},"output_summary":{"content_type":"application/json","error":"rate_limited","outcome":"error"},"duration_ms":0.413625,"cpu_seconds":0.000405}
+{"event":"request_completed","request_id":"49983aa0-838e-40fc-a4ad-7592e9873abc","timestamp":"2026-11-14T02:08:37.228216+00:00","method":"POST","path":"/submit","http_status":429,"input_summary":{"body_bytes":425,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":377},"output_summary":{"content_type":"application/json","error":"rate_limited","outcome":"error"},"duration_ms":0.262084,"cpu_seconds":0.000251}
+{"event":"request_completed","request_id":"722f9fc2-8542-46c0-bf63-12a522d13355","timestamp":"2026-11-14T02:08:37.229079+00:00","method":"POST","path":"/submit","http_status":400,"input_summary":{"body_bytes":56,"content_type":"application/json","parsing":"json_object","field_names":["creator_id","text"],"field_count":2,"field_names_truncated":false,"text_characters":0},"output_summary":{"content_type":"application/json","error":"invalid_text","outcome":"error"},"duration_ms":0.140083,"cpu_seconds":0.000128}
+```
+
+All 23 measured requests had exactly one correlated completion in each before
+and after trial, including validation 400, quota 429, and unknown-appeal 404.
+Healthy writable storage is part of this measurement: a failed log write cannot
+produce a durable record. The service exposes that failure as JSON 503 and a
+server error log, and the isolated telemetry tests check that behavior.
+
+**What It Costs**
+
+One run here means one accepted, warm paragraph submission. In after criterion
+4, trial 1, I measured ten real requests: **0.0820445 process CPU seconds per
+run** and **0.0558259 seconds mean client wall time**. The CPU sample sum was
+`0.820445 / 10 = 0.0820445`; the raw ten CPU and wall samples,
+correlation IDs, method, and arithmetic are in
+[results/capstone/cost.json](results/capstone/cost.json).
+
+The worker uses `time.process_time()` before/after route handling and summary
+preparation, before completion serialization/fsync. Client wall time includes
+the complete response and JSON parsing, including the log append. CPU time
+excludes initial model load, completion serialization/fsync, and client/network
+CPU. Torch can use multiple CPU threads, so process CPU time can exceed wall
+time even with one synchronous HTTP worker. Repeated measurements were trial 2: 0.0835370 CPU-s, 0.0583841 wall-s; trial 3: 0.0826680 CPU-s, 0.0562143 wall-s.
+Cold model-loading requests were disclosed separately: 1.5194s, 1.5328s, 1.5560s
+in the three after timing trials.
+
+For **100 people per day, one accepted warm submission each**:
+`100 × 0.0820445 = 8.20445 process CPU seconds/day`.
+Appeals, additional requests, and cold loads add work beyond this multiplication.
+No paid inference API was called in these offline sessions. Electricity and
+hosting dollars were not measured, so these numbers are a compute measurement
+rather than a dollar-cost claim.
+
+**Run Log and Verdicts**
+
+The before campaign used commit `2189501`. I ran all five
+criteria three times without changing the system between trials. A target had
+to hold in every trial; the two missed criteria remain **MISSED** here.
+Full outputs: [before JSON](results/capstone/before/report.json) and
+[before run log](results/capstone/before/report.md).
+
+| Criterion | Target | Run1 | Run2 | Run3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Validation errors under quota pressure | 20/20 exact JSON validation responses; no malformed scoring/success events | 10/20 exact; no-success-events=True; isolated=True | 10/20 exact; no-success-events=True; isolated=True | 10/20 exact; no-success-events=True; isolated=True | MISSED |
+| 2. Malformed requests preserve scoring allowance | 12/12 invalid400; then ten200 and two429; exactly10 isolated detector calls | 10/12 invalid400; 0/10 valid200; 2/2 quota429; isolated=False | 10/12 invalid400; 0/10 valid200; 2/2 quota429; isolated=False | 10/12 invalid400; 0/10 valid200; 2/2 quota429; isolated=False | MISSED |
+| 3. Complete durable request records | 23/23 durable unique correlated completion records with required redacted fields | 23/23 complete records; HTTP sequence=True | 23/23 complete records; HTTP sequence=True | 23/23 complete records; HTTP sequence=True | MET |
+| 4. Warm submission response time | 10/10 complete decisions; at least9/10 warm requests below5.0s | 10/10 decisions; 10/10<5s; mean0.0579s | 10/10 decisions; 10/10<5s; mean0.0548s | 10/10 decisions; 10/10<5s; mean0.0710s | MET |
+| 5. Appeals survive server restart | 10/10 exact persistent appeals; unchanged originals; unknown404; zero rescoring | 10/10 persistent appeals; unknown404=True; model unloaded=True; isolated=True | 10/10 persistent appeals; unknown404=True; model unloaded=True; isolated=True | 10/10 persistent appeals; unknown404=True; model unloaded=True; isolated=True | MET |
+
+**Diagnosis of criterion 1:** the Flask-Limiter request hook ran before
+`submit` reached validation. After ten valid submissions, the creator bucket
+returned 429 for malformed requests with that ID. Separately, malformed requests
+without a usable ID filled the address fallback bucket. All ten pressure-matrix
+cases therefore received 429 rather than their required 400/413/415; all ten
+ordinary cases were correct. The stage was quota enforcement, and the mechanism
+was validation occurring after quota lookup and accounting.
+
+**Diagnosis of criterion 2:** the same ordering charged the first ten empty-text
+requests to the valid creator's ten-slot bucket. The last two malformed requests
+then returned 429, and all twelve subsequent valid requests were throttled.
+This left 10/12 invalid 400 responses and zero accepted valid requests in every
+trial. Both misses were one request-ordering problem with two effects.
+
+Criteria 3–5 were **MET**: completion records covered all 23 measured requests,
+all ten warm submissions returned complete decisions below 5s, and all ten
+appeals survived an actual restart without rescoring. Those results cover this
+small serial local workload; they do not establish accuracy, production load
+capacity, or durability when the disk itself cannot accept a write.
+
+**Criterion 1 — actual output (before)**
+
+Before trial 1, pressure case 1: expected HTTP 400, actual HTTP 429. Produced by `scripts/run_capstone.py::criterion_one`; complete request/response in [the pressure capture](results/capstone/before/c1_trial1_attempt1/pressure/http_01.json).
+
+```json
+{
+  "error": "rate_limited",
+  "message": "Too many submissions. Try again shortly."
+}
+```
+
+**Criterion 2 — actual output (before)**
+
+Before trial 1, first valid request after 12 malformed requests: HTTP 429. Produced by `scripts/run_capstone.py::criterion_two`; saved in [the trial capture](results/capstone/before/c2_trial1_attempt1/http_01.json).
+
+```json
+{
+  "error": "rate_limited",
+  "message": "Too many submissions. Try again shortly."
+}
+```
+
+**Criterion 3 — actual output (before)**
+
+Before trial 1, one actual durable completion. Produced by `telemetry.py::complete_request` and checked by `scripts/run_capstone.py::criterion_three`; saved in [the request log](results/capstone/before/c3_trial1_attempt1/requests.jsonl).
+
+```json
+{
+  "event": "request_completed",
+  "request_id": "242e68d0-8474-453e-91f2-8619384ac3d4",
+  "timestamp": "2026-11-14T02:05:07.604929+00:00",
+  "method": "POST",
+  "path": "/submit",
+  "http_status": 200,
+  "input_summary": {
+    "body_bytes": 426,
+    "content_type": "application/json",
+    "parsing": "json_object",
+    "field_names": [
+      "creator_id",
+      "text"
+    ],
+    "field_count": 2,
+    "field_names_truncated": false,
+    "text_characters": 377
+  },
+  "output_summary": {
+    "content_type": "application/json",
+    "content_id": "44ae0c19-92ce-45a7-9ce8-78f693d63907",
+    "guess": "unsure",
+    "status": "decided",
+    "outcome": "success"
+  },
+  "duration_ms": 39.614958,
+  "cpu_seconds": 0.054686
+}
+```
+
+**Criterion 4 — actual output (before)**
+
+Before trial 1, first timed warm response. This projection preserves the actual status, elapsed time, complete response JSON, and request ID. Produced by `scripts/run_capstone.py::criterion_four`; full capture in [the trial HTTP record](results/capstone/before/c4_trial1_attempt1/http_01.json).
+
+```json
+{
+  "status_code": 200,
+  "elapsed_seconds": 0.04311654111370444,
+  "response_json": {
+    "combined_score": 0.6593,
+    "confidence": 0.6593,
+    "content_id": "d8d35d00-40e2-4ef5-950f-63dcdaba0d89",
+    "creator_id": "cap-before-c4-t1-a1-human-01",
+    "detector_model": "gpt2",
+    "guess": "unsure",
+    "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+    "model_score": 0.6922,
+    "status": "decided",
+    "style_metrics": {
+      "evenness": 0.5,
+      "punctuation_density": 0.016286644951140065,
+      "punctuation_simplicity": 0.8642779587404994,
+      "repetition": 0.34976525821596255,
+      "sentence_count": 2,
+      "sentence_length_spread": 0.352112676056338,
+      "style_score": 0.5278,
+      "type_token_ratio": 0.6901408450704225,
+      "word_count": 71
+    },
+    "style_score": 0.5278,
+    "text_length": 377,
+    "timestamp": "2026-11-14T02:05:15+00:00"
+  },
+  "request_id": "095de458-c1b0-4120-bfc4-e3288678c2ee"
+}
+```
+
+**Criterion 5 — actual output (before)**
+
+Before trial 1, actual content response from the restarted server: HTTP 200. Produced by `scripts/run_capstone.py::criterion_five`; saved in [the restarted-process capture](results/capstone/before/c5_trial1_attempt1/http_02.json).
+
+```json
+{
+  "appeals": [
+    {
+      "content_id": "23706e24-26fa-4ac4-ae8c-7dedc0951a30",
+      "creator_id": "cap-before-c5-t1-a1-human-01",
+      "event": "appeal",
+      "reasoning": "  Capstone review 1: please consider my drafts.  ",
+      "status": "under_review",
+      "timestamp": "2026-11-14T02:05:24+00:00"
+    }
+  ],
+  "combined_score": 0.6593,
+  "confidence": 0.6593,
+  "content_id": "23706e24-26fa-4ac4-ae8c-7dedc0951a30",
+  "creator_id": "cap-before-c5-t1-a1-human-01",
+  "detector_model": "gpt2",
+  "guess": "unsure",
+  "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+  "model_score": 0.6922,
+  "status": "under_review",
+  "style_metrics": {
+    "evenness": 0.5,
+    "punctuation_density": 0.016286644951140065,
+    "punctuation_simplicity": 0.8642779587404994,
+    "repetition": 0.34976525821596255,
+    "sentence_count": 2,
+    "sentence_length_spread": 0.352112676056338,
+    "style_score": 0.5278,
+    "type_token_ratio": 0.6901408450704225,
+    "word_count": 71
+  },
+  "style_score": 0.5278,
+  "text_length": 377,
+  "timestamp": "2026-11-14T02:05:23+00:00"
+}
+```
+
+
+**The Improvement**
+
+I made **one runtime improvement**: validate cheap submission input before
+Flask-Limiter checks/charges scoring quota. A request hook now calls
+`app.py::_validate_submission` and caches the valid text/creator tuple in
+`g.validated_submission`; `submit` reuses it. Invalid requests return their
+400/413/415 immediately and do not consume the model-scoring allowance. Valid
+requests still receive ten slots per minute and 200 per day, and the next two
+valid requests in the registered burst still return 429.
+
+Only `app.py` differs among the frozen runtime/harness/input source hashes
+between the campaigns. Model, thresholds, signal weights, corpus, quotas,
+telemetry, and the evaluation protocol remained unchanged. The after campaign
+used commit `2643b2b` and repeated the full five criteria,
+three trials each. Sources: [after JSON](results/capstone/after/report.json) and
+[after run log](results/capstone/after/report.md).
+
+| Criterion | Target | Run1 | Run2 | Run3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Validation errors under quota pressure | 20/20 exact JSON validation responses; no malformed scoring/success events | 20/20 exact; no-success-events=True; isolated=True | 20/20 exact; no-success-events=True; isolated=True | 20/20 exact; no-success-events=True; isolated=True | MET |
+| 2. Malformed requests preserve scoring allowance | 12/12 invalid400; then ten200 and two429; exactly10 isolated detector calls | 12/12 invalid400; 10/10 valid200; 2/2 quota429; isolated=True | 12/12 invalid400; 10/10 valid200; 2/2 quota429; isolated=True | 12/12 invalid400; 10/10 valid200; 2/2 quota429; isolated=True | MET |
+| 3. Complete durable request records | 23/23 durable unique correlated completion records with required redacted fields | 23/23 complete records; HTTP sequence=True | 23/23 complete records; HTTP sequence=True | 23/23 complete records; HTTP sequence=True | MET |
+| 4. Warm submission response time | 10/10 complete decisions; at least9/10 warm requests below5.0s | 10/10 decisions; 10/10<5s; mean0.0558s | 10/10 decisions; 10/10<5s; mean0.0584s | 10/10 decisions; 10/10<5s; mean0.0562s | MET |
+| 5. Appeals survive server restart | 10/10 exact persistent appeals; unchanged originals; unknown404; zero rescoring | 10/10 persistent appeals; unknown404=True; model unloaded=True; isolated=True | 10/10 persistent appeals; unknown404=True; model unloaded=True; isolated=True | 10/10 persistent appeals; unknown404=True; model unloaded=True; isolated=True | MET |
+
+| Criterion | Before, all three trials | After, all three trials | Change |
+|---|---|---|---|
+| 1. Validation under pressure | 10/20 exact; MISSED | 20/20 exact; MET | Pressure cases now return their validation code |
+| 2. Scoring allowance | 10/12 invalid 400; 0/10 valid 200; MISSED | 12/12 invalid 400; 10/10 valid 200; MET | Invalid requests no longer consume valid slots |
+| 3. Request completions | 23/23; MET | 23/23; MET | Complete records retained |
+| 4. Warm response time | 10/10 complete and below 5s; MET | 10/10 complete and below 5s; MET | Target retained; timing variation is not a claimed speedup |
+| 5. Persistent appeals | 10/10; MET | 10/10; MET | Appeal protection retained |
+
+The improvement helped the diagnosed failure: exact validation responses rose
+from 10/20 to 20/20, and accepted valid allowance requests rose from 0/10 to 10/10
+in every trial. The other three criteria remained MET. Mean warm client times
+were 0.0579s, 0.0548s, 0.0710s before and
+0.0558s, 0.0584s, 0.0562s after; this small variation does not
+support a claim that validation ordering made model inference faster.
+
+**Criterion 1 — actual output (after)**
+
+After trial 1, pressure case 1: expected HTTP 400, actual HTTP 400. Produced by `scripts/run_capstone.py::criterion_one`; complete request/response in [the pressure capture](results/capstone/after/c1_trial1_attempt1/pressure/http_01.json).
+
+```json
+{
+  "error": "invalid_text",
+  "message": "text must be a nonempty string."
+}
+```
+
+**Criterion 2 — actual output (after)**
+
+After trial 1, first valid request after 12 malformed requests: HTTP 200. Produced by `scripts/run_capstone.py::criterion_two`; saved in [the trial capture](results/capstone/after/c2_trial1_attempt1/http_01.json).
+
+```json
+{
+  "combined_score": 0.6593,
+  "confidence": 0.6593,
+  "content_id": "646310d0-f8ff-4de8-b831-5749061fae66",
+  "creator_id": "cap-after-c2-t1-a1",
+  "detector_model": "gpt2",
+  "guess": "unsure",
+  "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+  "model_score": 0.6922,
+  "status": "decided",
+  "style_metrics": {
+    "evenness": 0.5,
+    "punctuation_density": 0.016286644951140065,
+    "punctuation_simplicity": 0.8642779587404994,
+    "repetition": 0.34976525821596255,
+    "sentence_count": 2,
+    "sentence_length_spread": 0.352112676056338,
+    "style_score": 0.5278,
+    "type_token_ratio": 0.6901408450704225,
+    "word_count": 71
+  },
+  "style_score": 0.5278,
+  "text_length": 377,
+  "timestamp": "2026-11-14T02:08:28+00:00"
+}
+```
+
+**Criterion 3 — actual output (after)**
+
+After trial 1, one actual durable completion. Produced by `telemetry.py::complete_request` and checked by `scripts/run_capstone.py::criterion_three`; saved in [the request log](results/capstone/after/c3_trial1_attempt1/requests.jsonl).
+
+```json
+{
+  "event": "request_completed",
+  "request_id": "fe84b749-c360-4274-adf2-b909bfcb26a9",
+  "timestamp": "2026-11-14T02:08:36.668086+00:00",
+  "method": "POST",
+  "path": "/submit",
+  "http_status": 200,
+  "input_summary": {
+    "body_bytes": 425,
+    "content_type": "application/json",
+    "parsing": "json_object",
+    "field_names": [
+      "creator_id",
+      "text"
+    ],
+    "field_count": 2,
+    "field_names_truncated": false,
+    "text_characters": 377
+  },
+  "output_summary": {
+    "content_type": "application/json",
+    "content_id": "c6c6d5e7-e8fb-4713-a709-a9aa747f7b6b",
+    "guess": "unsure",
+    "status": "decided",
+    "outcome": "success"
+  },
+  "duration_ms": 41.651125,
+  "cpu_seconds": 0.057285
+}
+```
+
+**Criterion 4 — actual output (after)**
+
+After trial 1, first timed warm response. This projection preserves the actual status, elapsed time, complete response JSON, and request ID. Produced by `scripts/run_capstone.py::criterion_four`; full capture in [the trial HTTP record](results/capstone/after/c4_trial1_attempt1/http_01.json).
+
+```json
+{
+  "status_code": 200,
+  "elapsed_seconds": 0.04083670908585191,
+  "response_json": {
+    "combined_score": 0.6593,
+    "confidence": 0.6593,
+    "content_id": "8f82248e-5fb6-4432-bf10-af9cf086ead9",
+    "creator_id": "cap-after-c4-t1-a1-human-01",
+    "detector_model": "gpt2",
+    "guess": "unsure",
+    "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+    "model_score": 0.6922,
+    "status": "decided",
+    "style_metrics": {
+      "evenness": 0.5,
+      "punctuation_density": 0.016286644951140065,
+      "punctuation_simplicity": 0.8642779587404994,
+      "repetition": 0.34976525821596255,
+      "sentence_count": 2,
+      "sentence_length_spread": 0.352112676056338,
+      "style_score": 0.5278,
+      "type_token_ratio": 0.6901408450704225,
+      "word_count": 71
+    },
+    "style_score": 0.5278,
+    "text_length": 377,
+    "timestamp": "2026-11-14T02:08:44+00:00"
+  },
+  "request_id": "365d8021-2758-4f2f-a2c5-199e1e2c059b"
+}
+```
+
+**Criterion 5 — actual output (after)**
+
+After trial 1, actual content response from the restarted server: HTTP 200. Produced by `scripts/run_capstone.py::criterion_five`; saved in [the restarted-process capture](results/capstone/after/c5_trial1_attempt1/http_02.json).
+
+```json
+{
+  "appeals": [
+    {
+      "content_id": "8d132cf2-9582-4769-a4ce-75b4555f197a",
+      "creator_id": "cap-after-c5-t1-a1-human-01",
+      "event": "appeal",
+      "reasoning": "  Capstone review 1: please consider my drafts.  ",
+      "status": "under_review",
+      "timestamp": "2026-11-14T02:08:52+00:00"
+    }
+  ],
+  "combined_score": 0.6593,
+  "confidence": 0.6593,
+  "content_id": "8d132cf2-9582-4769-a4ce-75b4555f197a",
+  "creator_id": "cap-after-c5-t1-a1-human-01",
+  "detector_model": "gpt2",
+  "guess": "unsure",
+  "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+  "model_score": 0.6922,
+  "status": "under_review",
+  "style_metrics": {
+    "evenness": 0.5,
+    "punctuation_density": 0.016286644951140065,
+    "punctuation_simplicity": 0.8642779587404994,
+    "repetition": 0.34976525821596255,
+    "sentence_count": 2,
+    "sentence_length_spread": 0.352112676056338,
+    "style_score": 0.5278,
+    "type_token_ratio": 0.6901408450704225,
+    "word_count": 71
+  },
+  "style_score": 0.5278,
+  "text_length": 377,
+  "timestamp": "2026-11-14T02:08:52+00:00"
+}
+```
+
+
+**What's Still Broken**
+
+All five after criteria were MET, but the warm-latency target was too generous
+for this measured workload. The slowest of all 30 after warm requests was
+0.0815253s. In a future registration I would tighten criterion 4 from 9/10
+below 5s to **10/10 below 0.25s** on the same hardware and frozen passages. I have
+kept the current target and both original result sets unchanged.
+
+Creator IDs remain caller supplied and can be rotated to bypass a quota.
+In-memory counters reset when the server restarts and do not coordinate
+multiple workers. Invalid requests no longer spend scoring quota, so they need
+a separate front-door abuse cap if this becomes a public service. Completion
+logging depends on writable disk: an append failure can return 503 after a
+decision has already been persisted, requiring operator inspection before a
+retry. The detector remains a heuristic, not proof of authorship; these
+historical passages and repeated engineering trials do not establish general
+authorship accuracy. I stopped at the scoped validation/quota improvement and
+kept the service local rather than expand this unit into an identity, hosting,
+or storage redesign.
+
+With another unit, I would first tie submission quotas to an authenticated
+caller identity, because rotating a self-declared ID bypasses the present
+control. I would validate that identity boundary before adding shared durable
+quota storage, so persistence does not preserve the wrong ownership model.
 
 **How I Used AI**
 
-I asked Codex to compare my four CodePath projects against the capstone brief.
-It recommended Provenance Guard because it has an existing local API, recorded
-failure evidence, and a bounded validation/quota problem to address. I selected
-that scope instead of adding another model or interface.
+I asked Codex to compare my four CodePath systems against this brief. It
+recommended Provenance Guard's existing API and recorded validation/quota miss;
+I selected Shape B and kept model training and a new interface outside the scope.
 
-I then asked Codex to draft criteria in my first-person voice and told it my
-instructor permits this assistance. Codex drafted explicit targets, reasons,
-and repeatable checks, and reviewed quota-bucket and logging ambiguities. This
-records AI-assisted drafting; it does not represent the criteria as unaided work.
+I asked Codex to draft first-person criteria and told it that my instructor
+permits this assistance. It supplied targets, reasons, and test procedures;
+review clarified that creator and address quotas need separate pressure and
+that request completions must be counted separately from decision/appeal audit
+events. This was AI-assisted drafting and review, not unaided criteria writing
+or a peer review session.
+
+I then asked Codex to implement, instrument, and evaluate the bounded extension.
+It produced the real-HTTP runner and explicitly mocked call-count companion.
+The baseline showed two misses with the same quota-ordering mechanism, so the
+measured change moved validation before quota accounting and retained both
+result sets. AI also generated this write-up from the saved responses and CPU
+samples; the JSON/JSONL artifacts, source hashes, and commit history are the
+evidence behind the claims.
