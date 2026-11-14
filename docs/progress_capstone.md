@@ -12,8 +12,8 @@ Historical Part 1/2 criteria and results remain separate. No stretch is declared
 | 2. Build | In progress | Per-request telemetry and isolated log directories; quota-order change reserved for measured improvement |
 | 3. Running and observation | In progress | Gunicorn single-worker run path, exact dependency/model inventory, clean-checkout verification being prepared |
 | 4. Criteria | Complete | Five fixed targets, three extension targets, explicit reasons and protocols |
-| 5. Baseline trials | Pending | Three independent real-HTTP trials per criterion plus isolated detector-call evidence |
-| 6. Diagnosis and improvement | Pending | Preserve baseline before changing validation/quota ordering; rerun full set afterward |
+| 5. Baseline trials | Complete | `results/capstone/before/report.json`: 15 real-HTTP trials; C1/C2 MISSED, C3/C4/C5 MET; isolated calls retained |
+| 6. Diagnosis and improvement | In progress | `docs/capstone_diagnosis.md` names one shared ordering mechanism; full baseline preserved before changing it |
 | 7. Cost and publication | Pending | Measured ten-run CPU cost, full README, final audit, GitHub push and CI |
 
 The baseline includes the instrumentation needed to observe it but preserves

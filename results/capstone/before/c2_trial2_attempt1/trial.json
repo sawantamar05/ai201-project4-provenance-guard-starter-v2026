@@ -1,0 +1,1096 @@
+{
+  "starts": [
+    {
+      "command": [
+        "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.venv/bin/python",
+        "-m",
+        "gunicorn",
+        "--workers",
+        "1",
+        "--threads",
+        "1",
+        "--timeout",
+        "120",
+        "--bind",
+        "127.0.0.1:59229",
+        "app:app"
+      ],
+      "pid": 74364,
+      "started_at_utc": "2026-11-14T02:05:01.296200+00:00",
+      "url": "http://127.0.0.1:59229",
+      "log_directory": "results/capstone/before/c2_trial2_attempt1",
+      "environment_overrides": {
+        "AI201_LOG_DIR": "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/results/capstone/before/c2_trial2_attempt1",
+        "AI201_RATE_LIMITS": "1",
+        "HF_HUB_OFFLINE": "1",
+        "HF_HOME": "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.cache/huggingface"
+      },
+      "health_at_start": {
+        "detector_loaded": false,
+        "detector_model": "gpt2",
+        "log_entries": 0,
+        "ok": true,
+        "rate_limiting": true
+      },
+      "health_request_id": "43875dc2-714d-43cb-a1af-7f77336cf08c",
+      "cold_warmup": {
+        "name": "disclosed cold-model warm-up",
+        "method": "POST",
+        "path": "/submit",
+        "sent_at_utc": "2026-11-14T02:05:01.412258+00:00",
+        "request_json": {
+          "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+          "creator_id": "cap-before-c2-t2-a1-warm"
+        },
+        "status_code": 200,
+        "response_headers": {
+          "Server": "gunicorn",
+          "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+          "Connection": "close",
+          "Content-Type": "application/json",
+          "Content-Length": "746",
+          "X-Request-ID": "99cd52a7-b86c-4fa8-a985-d5cfef0ae6f5"
+        },
+        "request_id": "99cd52a7-b86c-4fa8-a985-d5cfef0ae6f5",
+        "response_json": {
+          "combined_score": 0.6593,
+          "confidence": 0.6593,
+          "content_id": "5d3184d7-10c8-4690-9e05-12626f15fec7",
+          "creator_id": "cap-before-c2-t2-a1-warm",
+          "detector_model": "gpt2",
+          "guess": "unsure",
+          "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+          "model_score": 0.6922,
+          "status": "decided",
+          "style_metrics": {
+            "evenness": 0.5,
+            "punctuation_density": 0.016286644951140065,
+            "punctuation_simplicity": 0.8642779587404994,
+            "repetition": 0.34976525821596255,
+            "sentence_count": 2,
+            "sentence_length_spread": 0.352112676056338,
+            "style_score": 0.5278,
+            "type_token_ratio": 0.6901408450704225,
+            "word_count": 71
+          },
+          "style_score": 0.5278,
+          "text_length": 377,
+          "timestamp": "2026-11-14T02:05:02+00:00"
+        },
+        "elapsed_seconds": 1.5610955422744155,
+        "request_body_bytes": 431
+      },
+      "stopped_at_utc": "2026-11-14T02:05:03.547529+00:00",
+      "returncode": 0
+    }
+  ],
+  "warmup": {
+    "name": "disclosed cold-model warm-up",
+    "method": "POST",
+    "path": "/submit",
+    "sent_at_utc": "2026-11-14T02:05:01.412258+00:00",
+    "request_json": {
+      "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+      "creator_id": "cap-before-c2-t2-a1-warm"
+    },
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "746",
+      "X-Request-ID": "99cd52a7-b86c-4fa8-a985-d5cfef0ae6f5"
+    },
+    "request_id": "99cd52a7-b86c-4fa8-a985-d5cfef0ae6f5",
+    "response_json": {
+      "combined_score": 0.6593,
+      "confidence": 0.6593,
+      "content_id": "5d3184d7-10c8-4690-9e05-12626f15fec7",
+      "creator_id": "cap-before-c2-t2-a1-warm",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.6922,
+      "status": "decided",
+      "style_metrics": {
+        "evenness": 0.5,
+        "punctuation_density": 0.016286644951140065,
+        "punctuation_simplicity": 0.8642779587404994,
+        "repetition": 0.34976525821596255,
+        "sentence_count": 2,
+        "sentence_length_spread": 0.352112676056338,
+        "style_score": 0.5278,
+        "type_token_ratio": 0.6901408450704225,
+        "word_count": 71
+      },
+      "style_score": 0.5278,
+      "text_length": 377,
+      "timestamp": "2026-11-14T02:05:02+00:00"
+    },
+    "elapsed_seconds": 1.5610955422744155,
+    "request_body_bytes": 431
+  },
+  "invalid_requests": [
+    {
+      "name": "invalid allowance check 1",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.973355+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "76e0bdcc-7cfd-4425-92bb-e1fa35070f18"
+      },
+      "request_id": "76e0bdcc-7cfd-4425-92bb-e1fa35070f18",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0011657499708235264,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 2",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.974531+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "d3384782-6e34-4f0f-9fc7-a9be2d12c52b"
+      },
+      "request_id": "d3384782-6e34-4f0f-9fc7-a9be2d12c52b",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0008282908238470554,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 3",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.975366+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "0d960dac-757e-4ef6-a5c9-5f1d715b60df"
+      },
+      "request_id": "0d960dac-757e-4ef6-a5c9-5f1d715b60df",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0008882498368620872,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 4",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.976261+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "8da19001-0469-46cc-9682-3518f380b980"
+      },
+      "request_id": "8da19001-0469-46cc-9682-3518f380b980",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0007523330859839916,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 5",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.977019+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "a380dc7c-c94e-4d05-83e4-69939b484bb7"
+      },
+      "request_id": "a380dc7c-c94e-4d05-83e4-69939b484bb7",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0008610831573605537,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 6",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.977887+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "f73afc6d-7b9e-4e2b-972e-faa30aab8446"
+      },
+      "request_id": "f73afc6d-7b9e-4e2b-972e-faa30aab8446",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0009157918393611908,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 7",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.978811+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "19c1ea41-3a3c-4ed8-abf3-4a582eb4e065"
+      },
+      "request_id": "19c1ea41-3a3c-4ed8-abf3-4a582eb4e065",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.000843374989926815,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 8",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.979660+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "6a6dba3c-0d90-4e52-b609-de0adad9cc6d"
+      },
+      "request_id": "6a6dba3c-0d90-4e52-b609-de0adad9cc6d",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0007678326219320297,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 9",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.980433+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "3eadf9a8-5dec-468c-bae5-18ae96c5d3b5"
+      },
+      "request_id": "3eadf9a8-5dec-468c-bae5-18ae96c5d3b5",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0007554166950285435,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 10",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.981194+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "7a36fb84-6527-4a1d-ae94-63348fa28d44"
+      },
+      "request_id": "7a36fb84-6527-4a1d-ae94-63348fa28d44",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0007482497021555901,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 11",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.981947+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "1c958db9-2b05-4536-9a40-f16540d427ee"
+      },
+      "request_id": "1c958db9-2b05-4536-9a40-f16540d427ee",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0007837498560547829,
+      "request_body_bytes": 49
+    },
+    {
+      "name": "invalid allowance check 12",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.982736+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "ecd12d6c-bedc-4acc-b90a-ae616da112e9"
+      },
+      "request_id": "ecd12d6c-bedc-4acc-b90a-ae616da112e9",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0007688337936997414,
+      "request_body_bytes": 49
+    }
+  ],
+  "valid_requests": [
+    {
+      "name": "valid allowance check 1",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.983510+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "6cb93ae9-b824-44c6-a3c7-cb522e3fa0a1"
+      },
+      "request_id": "6cb93ae9-b824-44c6-a3c7-cb522e3fa0a1",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0008031250908970833,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 2",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.984319+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "1dd4bf2c-1690-4ee4-8fcc-afb764c90cdd"
+      },
+      "request_id": "1dd4bf2c-1690-4ee4-8fcc-afb764c90cdd",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0007942500524222851,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 3",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.985118+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "bd4dbf4f-c9e8-4114-a31b-2461f6162706"
+      },
+      "request_id": "bd4dbf4f-c9e8-4114-a31b-2461f6162706",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0007412498816847801,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 4",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.985864+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "c30ebbb1-61a4-4822-aeb9-ef8a8b5293ca"
+      },
+      "request_id": "c30ebbb1-61a4-4822-aeb9-ef8a8b5293ca",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0007696668617427349,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 5",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.986640+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "6c2f1242-1843-4061-b90e-ea46dac5819d"
+      },
+      "request_id": "6c2f1242-1843-4061-b90e-ea46dac5819d",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0009547499939799309,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 6",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.987602+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "278e0f09-6588-4e84-8169-1e4e969a6ea3"
+      },
+      "request_id": "278e0f09-6588-4e84-8169-1e4e969a6ea3",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0008959588594734669,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 7",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.988504+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "5dc6072b-c72f-4f49-a905-877734223437"
+      },
+      "request_id": "5dc6072b-c72f-4f49-a905-877734223437",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0007944591343402863,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 8",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.989304+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "4aabd015-b420-4ec3-9d02-2f024959f5a7"
+      },
+      "request_id": "4aabd015-b420-4ec3-9d02-2f024959f5a7",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.000765583012253046,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 9",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.990075+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "01ae09d8-a5f2-4fe2-a936-2570af12af03"
+      },
+      "request_id": "01ae09d8-a5f2-4fe2-a936-2570af12af03",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0007460410706698895,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 10",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.990827+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "4a060250-9109-4a91-9b55-13af3515cc29"
+      },
+      "request_id": "4a060250-9109-4a91-9b55-13af3515cc29",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0006975000724196434,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 11",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.991529+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "1d4884ad-5f0b-418a-bb58-76e328fdfacd"
+      },
+      "request_id": "1d4884ad-5f0b-418a-bb58-76e328fdfacd",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0006976253353059292,
+      "request_body_bytes": 426
+    },
+    {
+      "name": "valid allowance check 12",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:05:02.992231+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-before-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:05:02 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "d9be7399-75ad-435a-889b-2ba1fe603971"
+      },
+      "request_id": "d9be7399-75ad-435a-889b-2ba1fe603971",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0007087080739438534,
+      "request_body_bytes": 426
+    }
+  ],
+  "quota_sequence_seconds": 0.019590958021581173,
+  "quota_window_valid": true,
+  "audit_parse_errors": [],
+  "saved_decision_count": 0,
+  "invalid400_count": 10,
+  "valid200_count": 0,
+  "throttled429_count": 2,
+  "http_passed": false,
+  "summary": "10/12 invalid400; 0/10 valid200; 2/2 quota429",
+  "trial": 2,
+  "attempt": 1,
+  "criterion": 2,
+  "evidence_directory": "results/capstone/before/c2_trial2_attempt1",
+  "companion": {
+    "required": true,
+    "kind": "mocked isolated invocation check; not real inference",
+    "command": [
+      "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.venv/bin/python",
+      "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/scripts/capstone_call_counts.py",
+      "--criterion",
+      "2",
+      "--trial",
+      "2"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "result": {
+      "criterion": 2,
+      "trial": 2,
+      "kind": "mocked isolated detector invocation check",
+      "real_model_loaded": false,
+      "conditions": [],
+      "requests": [
+        {
+          "kind": "invalid",
+          "index": 1,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 2,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 3,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 4,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 5,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 6,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 7,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 8,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 9,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 10,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 11,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 12,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 1,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 2,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 3,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 4,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 5,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 6,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 7,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 8,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 9,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 10,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 11,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 12,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        }
+      ],
+      "total_detector_calls": 0,
+      "expected_statuses": [
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        429,
+        429
+      ],
+      "expected_calls": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "passed": false
+    },
+    "passed": false
+  },
+  "passed": false,
+  "verdict": "MISSED",
+  "invalid_attempts": []
+}

@@ -1,0 +1,76 @@
+{
+  "label": "before",
+  "started_at_utc": "2026-11-14T01:59:12.949947+00:00",
+  "status": "INTERRUPTED",
+  "source_commit": "b690d9d21092fbab93a014421b0c03f79a5bc9ef",
+  "source_sha256": {
+    "criteria.md": "b54324f9b43cecf68ba911daec030a362ae5d7dae9243d85591440193f22ed14",
+    "docs/criteria_parts1_2.md": "aa64b419b9824b2fbf1af987a88698612433fd98460aeb04f41ca30c885635af",
+    "app.py": "d71fd9c4bd2d3ddf24a7c65d57e039bca40121b6fba0a714f0fc9dac9b879025",
+    "audit.py": "3bcfaeaa8d5e1ad9ea39018cfd5e390dde86f5d1ae7815bb944cb6fd9c31314e",
+    "config.py": "a1ddc3e7c49d481e362857bea970cbbe559a74e3d576a170b679dbf963fdc67e",
+    "detector.py": "58f474dbd37061a12f3bc4746b95c57b0c0691304fcd9a80495c9710feab0129",
+    "scoring.py": "fe216de87e54120b7d1b5115bcdd217938b05577e51fe466bfc82364768a3201",
+    "stylometry.py": "c118f7d49fda47039af22f31f2da4f905e070432f49c96924ca17801970fd04b",
+    "telemetry.py": "d3cdcf5e8e5050437aaa184108e33d4d912a7873942077000f71677ce63624f3",
+    "scripts/run_capstone.py": "b9698a072fc25f894528ae7c220b422f02504526499d847247824acc3fd7a533",
+    "scripts/capstone_protocol.py": "5db3b0bc818db1e455ccbc6e8873dbd5252dac36a35cd4b0898026c887a2e7d2",
+    "scripts/capstone_call_counts.py": "231ed141292e0471fb5b6e157fc80056ecf46584c2f21bdf0eb52708acffcd1c",
+    "data/evaluation_inputs.json": "f701b1db8e71d8a9324f8129416ab699fdbb4229dfae7f11901930e36951d007"
+  },
+  "environment": {
+    "python": "3.13.3 (main, Apr  8 2025, 13:54:08) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "executable": "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.venv/bin/python",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "packages": {
+      "flask": "3.1.3",
+      "flask-limiter": "3.12",
+      "gunicorn": "23.0.0",
+      "requests": "2.34.2",
+      "torch": "2.15.0",
+      "transformers": "4.57.6"
+    },
+    "workers": 1,
+    "threads": 1,
+    "inference": "real local GPT-2, cached offline files",
+    "cost_method": "serial worker per-request time.process_time CPU seconds; client perf_counter wall seconds"
+  },
+  "input_provenance": "Existing ten historical-human development excerpts; three repetitions test engineering consistency, not independent authorship accuracy.",
+  "criteria": {
+    "1": {
+      "name": "Validation errors under quota pressure",
+      "target": "20/20 exact JSON validation responses; no malformed scoring/success events",
+      "trials": [],
+      "verdict": "PENDING"
+    },
+    "2": {
+      "name": "Malformed requests preserve scoring allowance",
+      "target": "12/12 invalid400; then ten200 and two429; exactly10 isolated detector calls",
+      "trials": [],
+      "verdict": "PENDING"
+    },
+    "3": {
+      "name": "Complete durable request records",
+      "target": "23/23 durable unique correlated completion records with required redacted fields",
+      "trials": [],
+      "verdict": "PENDING"
+    },
+    "4": {
+      "name": "Warm submission response time",
+      "target": "10/10 complete decisions; at least9/10 warm requests below5.0s",
+      "trials": [],
+      "verdict": "PENDING"
+    },
+    "5": {
+      "name": "Appeals survive server restart",
+      "target": "10/10 exact persistent appeals; unchanged originals; unknown404; zero rescoring",
+      "trials": [],
+      "verdict": "PENDING"
+    }
+  },
+  "interrupted_at_utc": "2026-11-14T01:59:12.977487+00:00",
+  "error": "PermissionError: [Errno 1] Operation not permitted",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/scripts/run_capstone.py\", line 549, in main\n    result = FUNCTIONS[number](directory, prefix)\n  File \"/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/scripts/run_capstone.py\", line 222, in criterion_one\n    server.start()\n    ~~~~~~~~~~~~^^\n  File \"/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/scripts/run_capstone.py\", line 97, in start\n    port = free_port()\n  File \"/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/scripts/run_capstone.py\", line 80, in free_port\n    sock.bind(('127.0.0.1', 0))\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 1] Operation not permitted\n"
+}
