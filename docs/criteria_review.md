@@ -3,7 +3,7 @@
 Prepared October 30, 2026, with AI assistance at the user's request, after the
 initial evaluation. This plain-language draft restates the original five
 engineering targets and explains how to check them. The canonical pre-results
-targets remain in [criteria.md](../criteria.md), with their original history.
+targets are archived in [criteria_parts1_2.md](criteria_parts1_2.md), with their original history.
 This review is not a new pre-results registration or a claim of personal
 student authorship.
 

@@ -1,7 +1,7 @@
 # Provenance Guard
 
 A local Flask backend for cautious writing-provenance estimates and appeals.
-[Run the service](RUNNING.md) · [Acceptance criteria](criteria.md) ·
+[Run the service](RUNNING.md) · [Part 1/2 criteria](docs/criteria_parts1_2.md) ·
 [API design](docs/design.md) · [Part 1 evidence](docs/verification.md) · [Part 2 audit](results/part2_submission_audit.json)
 
 Part 2 testing is recorded below: **56 attacks before and 56 after**, three
@@ -1223,3 +1223,37 @@ runs, both five-row/three-trial run logs, all reviewed verdicts/diagnoses,
 twelve pasted audit events including rejections, and the sole runtime-change
 manifest are included. The submission uses the same repository:
 https://github.com/sawantamar05/ai201-project4-provenance-guard-starter-v2026
+
+## Capstone
+
+**What This Extends**
+
+I am extending the existing Provenance Guard service. The new work is predictable
+validation and quota handling, supported by per-request completion records with
+timing and CPU measurements. The original detector, scoring rule, labels, and
+appeal workflow remain the baseline. The five new targets are in
+[criteria.md](criteria.md); the earlier project's targets are archived unchanged
+in [docs/criteria_parts1_2.md](docs/criteria_parts1_2.md). No capstone evaluation
+results have been collected at this checkpoint.
+
+**The Shape**
+
+I chose **B — Harden against failure**. I want malformed submissions to get the
+right validation error even after quota pressure, without using the allowance
+for valid scoring. I will record both successes and failures so the before/after
+comparison can explain the behavior. Model retraining, a new interface, public
+hosting, authenticated identities, shared quota storage, and changes to detection
+thresholds are outside this capstone. The run path will be **Path B — local with
+logs**, extending [RUNNING.md](RUNNING.md). No stretch work is declared.
+
+**How I Used AI**
+
+I asked Codex to compare my four CodePath projects against the capstone brief.
+It recommended Provenance Guard because it has an existing local API, recorded
+failure evidence, and a bounded validation/quota problem to address. I selected
+that scope instead of adding another model or interface.
+
+I then asked Codex to draft criteria in my first-person voice and told it my
+instructor permits this assistance. Codex drafted explicit targets, reasons,
+and repeatable checks, and reviewed quota-bucket and logging ambiguities. This
+records AI-assisted drafting; it does not represent the criteria as unaided work.

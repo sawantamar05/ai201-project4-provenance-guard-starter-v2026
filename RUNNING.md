@@ -157,7 +157,9 @@ python scripts/verify_project.py --url http://127.0.0.1:5000 --trials 3 --output
 
 This records all real responses in `results/development_current.json`, evaluates the
 frozen development groups, sweeps 10,001 label scores, and checks appeals and
-bad input. Read the saved verdicts; targets are specified in `criteria.md`.
+bad input. Read the saved verdicts; original targets are archived in
+[docs/criteria_parts1_2.md](docs/criteria_parts1_2.md). The root `criteria.md`
+now holds the new capstone targets; this legacy verifier does not evaluate them.
 The isolated tests cover detector invocation counts, unavailable dependencies,
 and reconstruction from the saved audit log. A fresh HTTP session by itself
 does not verify a server restart.
@@ -236,7 +238,8 @@ miss against the original exact-validation-code target.
 | `config.py` | Weights, thresholds, limits, cache, and server settings |
 | `audit.py` | Append-only decision, appeal, and rejection events |
 | `data/evaluation_inputs.json` | Frozen inputs with source and generation provenance |
-| `criteria.md` | Five acceptance targets and their reasons |
+| `docs/criteria_parts1_2.md` | Five original acceptance targets and their reasons |
+| `criteria.md` | Five new capstone targets, committed before capstone evaluation |
 | `logs/audit.jsonl` | Saved event history, included as project evidence |
 | `results/` | Captured demonstration and verification outputs |
 
