@@ -42,6 +42,7 @@ RATE_LIMIT_PER_MINUTE = 10
 RATE_LIMIT_PER_DAY = 200
 RATE_LIMIT_STORAGE = "memory://"
 
-LOG_DIR = ROOT / "logs"
+# Separate real sessions and evaluation campaigns without replacing earlier evidence.
+LOG_DIR = Path(os.getenv("AI201_LOG_DIR", str(ROOT / "logs"))).expanduser().resolve()
 AUDIT_LOG = LOG_DIR / "audit.jsonl"
 RESULTS_DIR = ROOT / "results"
