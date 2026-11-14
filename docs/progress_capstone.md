@@ -9,11 +9,11 @@ Historical Part 1/2 criteria and results remain separate. No stretch is declared
 | Milestone | State | Evidence |
 | --- | --- | --- |
 | 1. Scope | Complete | README Capstone scope and exclusions; criteria commit `ded63f6` |
-| 2. Build | In progress | Per-request telemetry and isolated log directories; quota-order change reserved for measured improvement |
+| 2. Build | Complete | Three build commits add durable telemetry, correlated hooks, and trial/reproducibility tooling; valid quotas unchanged |
 | 3. Running and observation | In progress | Gunicorn single-worker run path, exact dependency/model inventory, clean-checkout verification being prepared |
 | 4. Criteria | Complete | Five fixed targets, three extension targets, explicit reasons and protocols |
 | 5. Baseline trials | Complete | `results/capstone/before/report.json`: 15 real-HTTP trials; C1/C2 MISSED, C3/C4/C5 MET; isolated calls retained |
-| 6. Diagnosis and improvement | In progress | `docs/capstone_diagnosis.md` names one shared ordering mechanism; full baseline preserved before changing it |
+| 6. Diagnosis and improvement | Complete | Fix `2643b2b`; `results/capstone/after/report.json`: all five criteria MET across three trials; only `app.py` differs between campaign source hashes |
 | 7. Cost and publication | Pending | Measured ten-run CPU cost, full README, final audit, GitHub push and CI |
 
 The baseline includes the instrumentation needed to observe it but preserves

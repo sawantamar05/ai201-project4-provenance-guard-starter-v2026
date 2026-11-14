@@ -1,0 +1,1516 @@
+{
+  "starts": [
+    {
+      "command": [
+        "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.venv/bin/python",
+        "-m",
+        "gunicorn",
+        "--workers",
+        "1",
+        "--threads",
+        "1",
+        "--timeout",
+        "120",
+        "--bind",
+        "127.0.0.1:59780",
+        "app:app"
+      ],
+      "pid": 74891,
+      "started_at_utc": "2026-11-14T02:08:29.763250+00:00",
+      "url": "http://127.0.0.1:59780",
+      "log_directory": "results/capstone/after/c2_trial2_attempt1",
+      "environment_overrides": {
+        "AI201_LOG_DIR": "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/results/capstone/after/c2_trial2_attempt1",
+        "AI201_RATE_LIMITS": "1",
+        "HF_HUB_OFFLINE": "1",
+        "HF_HOME": "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.cache/huggingface"
+      },
+      "health_at_start": {
+        "detector_loaded": false,
+        "detector_model": "gpt2",
+        "log_entries": 0,
+        "ok": true,
+        "rate_limiting": true
+      },
+      "health_request_id": "972ddb23-6ad7-4e77-9079-13852b30ca57",
+      "cold_warmup": {
+        "name": "disclosed cold-model warm-up",
+        "method": "POST",
+        "path": "/submit",
+        "sent_at_utc": "2026-11-14T02:08:29.878325+00:00",
+        "request_json": {
+          "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+          "creator_id": "cap-after-c2-t2-a1-warm"
+        },
+        "status_code": 200,
+        "response_headers": {
+          "Server": "gunicorn",
+          "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+          "Connection": "close",
+          "Content-Type": "application/json",
+          "Content-Length": "745",
+          "X-Request-ID": "c6fa647b-18e5-4e29-85c5-5f037286dbf8"
+        },
+        "request_id": "c6fa647b-18e5-4e29-85c5-5f037286dbf8",
+        "response_json": {
+          "combined_score": 0.6593,
+          "confidence": 0.6593,
+          "content_id": "5cea504c-b568-4dfa-a3b8-ca832e41495f",
+          "creator_id": "cap-after-c2-t2-a1-warm",
+          "detector_model": "gpt2",
+          "guess": "unsure",
+          "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+          "model_score": 0.6922,
+          "status": "decided",
+          "style_metrics": {
+            "evenness": 0.5,
+            "punctuation_density": 0.016286644951140065,
+            "punctuation_simplicity": 0.8642779587404994,
+            "repetition": 0.34976525821596255,
+            "sentence_count": 2,
+            "sentence_length_spread": 0.352112676056338,
+            "style_score": 0.5278,
+            "type_token_ratio": 0.6901408450704225,
+            "word_count": 71
+          },
+          "style_score": 0.5278,
+          "text_length": 377,
+          "timestamp": "2026-11-14T02:08:31+00:00"
+        },
+        "elapsed_seconds": 1.5532415420748293,
+        "request_body_bytes": 430
+      },
+      "stopped_at_utc": "2026-11-14T02:08:32.194618+00:00",
+      "returncode": 0
+    }
+  ],
+  "warmup": {
+    "name": "disclosed cold-model warm-up",
+    "method": "POST",
+    "path": "/submit",
+    "sent_at_utc": "2026-11-14T02:08:29.878325+00:00",
+    "request_json": {
+      "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+      "creator_id": "cap-after-c2-t2-a1-warm"
+    },
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "745",
+      "X-Request-ID": "c6fa647b-18e5-4e29-85c5-5f037286dbf8"
+    },
+    "request_id": "c6fa647b-18e5-4e29-85c5-5f037286dbf8",
+    "response_json": {
+      "combined_score": 0.6593,
+      "confidence": 0.6593,
+      "content_id": "5cea504c-b568-4dfa-a3b8-ca832e41495f",
+      "creator_id": "cap-after-c2-t2-a1-warm",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.6922,
+      "status": "decided",
+      "style_metrics": {
+        "evenness": 0.5,
+        "punctuation_density": 0.016286644951140065,
+        "punctuation_simplicity": 0.8642779587404994,
+        "repetition": 0.34976525821596255,
+        "sentence_count": 2,
+        "sentence_length_spread": 0.352112676056338,
+        "style_score": 0.5278,
+        "type_token_ratio": 0.6901408450704225,
+        "word_count": 71
+      },
+      "style_score": 0.5278,
+      "text_length": 377,
+      "timestamp": "2026-11-14T02:08:31+00:00"
+    },
+    "elapsed_seconds": 1.5532415420748293,
+    "request_body_bytes": 430
+  },
+  "invalid_requests": [
+    {
+      "name": "invalid allowance check 1",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.431572+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "7039fd58-34ca-439d-b97b-3f4ba3897b25"
+      },
+      "request_id": "7039fd58-34ca-439d-b97b-3f4ba3897b25",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0010158750228583813,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 2",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.432599+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "c109f122-88dd-43a6-a60e-eec45c56b553"
+      },
+      "request_id": "c109f122-88dd-43a6-a60e-eec45c56b553",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0007164156995713711,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 3",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.433321+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "90689cf1-4673-4288-aa01-afed5316d7ae"
+      },
+      "request_id": "90689cf1-4673-4288-aa01-afed5316d7ae",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.000668166670948267,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 4",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.433995+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "49bd1118-9595-4cd0-a0b5-1e4cd737ebec"
+      },
+      "request_id": "49bd1118-9595-4cd0-a0b5-1e4cd737ebec",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0006359582766890526,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 5",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.434636+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "074f1d38-bfac-4474-bea7-ea8303384ef8"
+      },
+      "request_id": "074f1d38-bfac-4474-bea7-ea8303384ef8",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0006883330643177032,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 6",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.435329+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "be59e7b0-2a1a-4a90-ae5f-eb201012bfb6"
+      },
+      "request_id": "be59e7b0-2a1a-4a90-ae5f-eb201012bfb6",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0007230406627058983,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 7",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.436056+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "a4d9a89b-ede0-4cfa-b8d1-9a7bee2803e1"
+      },
+      "request_id": "a4d9a89b-ede0-4cfa-b8d1-9a7bee2803e1",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0007993751205503941,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 8",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.436860+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "c4eb5956-8bf4-47ae-ab44-41492658516b"
+      },
+      "request_id": "c4eb5956-8bf4-47ae-ab44-41492658516b",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0008699172176420689,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 9",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.437734+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "1050e3c3-3ca4-43b8-acc0-ed181aaa1ad6"
+      },
+      "request_id": "1050e3c3-3ca4-43b8-acc0-ed181aaa1ad6",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.000794542022049427,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 10",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.438533+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "59a092cb-5862-40ff-a817-4f09473509b9"
+      },
+      "request_id": "59a092cb-5862-40ff-a817-4f09473509b9",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.000726624857634306,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 11",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.439264+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "551322c1-186f-4810-8bc4-92b8de4bb816"
+      },
+      "request_id": "551322c1-186f-4810-8bc4-92b8de4bb816",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.0007349583320319653,
+      "request_body_bytes": 48
+    },
+    {
+      "name": "invalid allowance check 12",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.440003+00:00",
+      "request_json": {
+        "text": "",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 400,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "69",
+        "X-Request-ID": "8a817883-2a7f-4e77-beec-9396812a2ae9"
+      },
+      "request_id": "8a817883-2a7f-4e77-beec-9396812a2ae9",
+      "response_json": {
+        "error": "invalid_text",
+        "message": "text must be a nonempty string."
+      },
+      "elapsed_seconds": 0.000669458881020546,
+      "request_body_bytes": 48
+    }
+  ],
+  "valid_requests": [
+    {
+      "name": "valid allowance check 1",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.440680+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "b8099806-d929-42dd-81dc-257c74702916"
+      },
+      "request_id": "b8099806-d929-42dd-81dc-257c74702916",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "cc5cd714-15c3-491b-8117-d4e19c1da351",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.04120912496000528,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 2",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.481895+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "6847fe25-1e71-4a42-a518-3cf18b24a6fe"
+      },
+      "request_id": "6847fe25-1e71-4a42-a518-3cf18b24a6fe",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "58894c1e-952a-4d9d-95c2-adf46ab0ac7c",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.041279416996985674,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 3",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.523184+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "a92cbcd1-9f68-49c3-8285-c4f3016b853e"
+      },
+      "request_id": "a92cbcd1-9f68-49c3-8285-c4f3016b853e",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "b41552ca-e33d-4377-98bd-48ff19fda0cd",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.04078320786356926,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 4",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.563979+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "9ead0628-5832-42d7-ad92-775ccb1701dd"
+      },
+      "request_id": "9ead0628-5832-42d7-ad92-775ccb1701dd",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "42e7387b-1422-476e-8334-36673768a0ae",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.04196487506851554,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 5",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.605954+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "a90a04d8-cd96-4e1c-8ff6-9517e00d5b47"
+      },
+      "request_id": "a90a04d8-cd96-4e1c-8ff6-9517e00d5b47",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "00bb9f84-8ef6-4aff-a566-1d79a5860d95",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.04048112500458956,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 6",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.646446+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "7ffc15c0-dcbf-455c-b052-25d99d8a6811"
+      },
+      "request_id": "7ffc15c0-dcbf-455c-b052-25d99d8a6811",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "7230d46f-a3d8-4bc0-b81c-3e642dbb92f9",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.04053299967199564,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 7",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.686988+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "3b02083d-05ea-477c-b2fd-e0a07ed1f96c"
+      },
+      "request_id": "3b02083d-05ea-477c-b2fd-e0a07ed1f96c",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "a67a81e9-e9b9-42ee-b8eb-d715acdce37b",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.04099616687744856,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 8",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.727994+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "ac10a55f-8679-4021-a2ed-e14c95d5b244"
+      },
+      "request_id": "ac10a55f-8679-4021-a2ed-e14c95d5b244",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "b4e02b88-1f6b-47ee-83c5-908c471ce417",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.04085387522354722,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 9",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.768858+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "5e1f0db3-0f92-4176-acfa-3ee22003da42"
+      },
+      "request_id": "5e1f0db3-0f92-4176-acfa-3ee22003da42",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "b23afa11-0710-40fc-a40b-6e165081fdec",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.04033962497487664,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 10",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.809207+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 200,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "740",
+        "X-Request-ID": "ad73911f-6ee5-4104-a520-94e469b1f956"
+      },
+      "request_id": "ad73911f-6ee5-4104-a520-94e469b1f956",
+      "response_json": {
+        "combined_score": 0.6593,
+        "confidence": 0.6593,
+        "content_id": "378a1cee-e332-42ed-af4e-7368a50b41b9",
+        "creator_id": "cap-after-c2-t2-a1",
+        "detector_model": "gpt2",
+        "guess": "unsure",
+        "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+        "model_score": 0.6922,
+        "status": "decided",
+        "style_metrics": {
+          "evenness": 0.5,
+          "punctuation_density": 0.016286644951140065,
+          "punctuation_simplicity": 0.8642779587404994,
+          "repetition": 0.34976525821596255,
+          "sentence_count": 2,
+          "sentence_length_spread": 0.352112676056338,
+          "style_score": 0.5278,
+          "type_token_ratio": 0.6901408450704225,
+          "word_count": 71
+        },
+        "style_score": 0.5278,
+        "text_length": 377,
+        "timestamp": "2026-11-14T02:08:31+00:00"
+      },
+      "elapsed_seconds": 0.040497499983757734,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 11",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.849714+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "18f4f40b-56ca-4873-a500-f7b08ee602a1"
+      },
+      "request_id": "18f4f40b-56ca-4873-a500-f7b08ee602a1",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0011646249331533909,
+      "request_body_bytes": 425
+    },
+    {
+      "name": "valid allowance check 12",
+      "method": "POST",
+      "path": "/submit",
+      "sent_at_utc": "2026-11-14T02:08:31.850886+00:00",
+      "request_json": {
+        "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        "creator_id": "cap-after-c2-t2-a1"
+      },
+      "status_code": 429,
+      "response_headers": {
+        "Server": "gunicorn",
+        "Date": "Sat, 14 Nov 2026 02:08:31 GMT",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Content-Length": "78",
+        "X-Request-ID": "1503cb80-11bc-48fb-bf59-3e1731c701a0"
+      },
+      "request_id": "1503cb80-11bc-48fb-bf59-3e1731c701a0",
+      "response_json": {
+        "error": "rate_limited",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "elapsed_seconds": 0.0008792500011622906,
+      "request_body_bytes": 425
+    }
+  ],
+  "quota_sequence_seconds": 0.42020766623318195,
+  "quota_window_valid": true,
+  "audit_parse_errors": [],
+  "saved_decision_count": 10,
+  "invalid400_count": 12,
+  "valid200_count": 10,
+  "throttled429_count": 2,
+  "http_passed": true,
+  "summary": "12/12 invalid400; 10/10 valid200; 2/2 quota429",
+  "trial": 2,
+  "attempt": 1,
+  "criterion": 2,
+  "evidence_directory": "results/capstone/after/c2_trial2_attempt1",
+  "companion": {
+    "required": true,
+    "kind": "mocked isolated invocation check; not real inference",
+    "command": [
+      "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/.venv/bin/python",
+      "/Users/amarsawant/Downloads/Codepath/AI 201/ai201-project4-provenance-guard-starter-v2026/scripts/capstone_call_counts.py",
+      "--criterion",
+      "2",
+      "--trial",
+      "2"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "result": {
+      "criterion": 2,
+      "trial": 2,
+      "kind": "mocked isolated detector invocation check",
+      "real_model_loaded": false,
+      "conditions": [],
+      "requests": [
+        {
+          "kind": "invalid",
+          "index": 1,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 2,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 3,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 4,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 5,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 6,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 7,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 8,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 9,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 10,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 11,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "invalid",
+          "index": 12,
+          "status_code": 400,
+          "response_json": {
+            "error": "invalid_text",
+            "message": "text must be a nonempty string."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 1,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "11ac6436-2326-450d-9f25-f80285c7133d",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 2,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "d2371b65-3c00-4842-afb7-b19598a34218",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 3,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "e2a8c53e-5fbc-4825-96b3-e59652bdf403",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 4,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "a86db99f-a56a-4bd7-9d03-13c68161e408",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 5,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "9c42db21-433d-44c7-94e2-ddeb5e68ae84",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 6,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "4fcc5be9-2375-45b9-983e-9ef0b28587a1",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 7,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "0ddc5663-311a-483f-ad3e-4aa5a70fdf21",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 8,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "fea7e2bb-40ac-4e26-a09c-82d475dd6b57",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 9,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "b627ea2d-19a4-4a30-b46e-703670972423",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 10,
+          "status_code": 200,
+          "response_json": {
+            "combined_score": 0.5856,
+            "confidence": 0.5856,
+            "content_id": "4a18a2be-c27d-40e9-8a80-843b94d78593",
+            "creator_id": "mocked-c2-t2",
+            "detector_model": "gpt2",
+            "guess": "unsure",
+            "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+            "model_score": 0.6,
+            "status": "decided",
+            "style_metrics": {
+              "evenness": 0.5,
+              "punctuation_density": 0.016286644951140065,
+              "punctuation_simplicity": 0.8642779587404994,
+              "repetition": 0.34976525821596255,
+              "sentence_count": 2,
+              "sentence_length_spread": 0.352112676056338,
+              "style_score": 0.5278,
+              "type_token_ratio": 0.6901408450704225,
+              "word_count": 71
+            },
+            "style_score": 0.5278,
+            "text_length": 377,
+            "timestamp": "2026-11-14T02:08:32+00:00"
+          },
+          "detector_calls": 1
+        },
+        {
+          "kind": "valid",
+          "index": 11,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        },
+        {
+          "kind": "valid",
+          "index": 12,
+          "status_code": 429,
+          "response_json": {
+            "error": "rate_limited",
+            "message": "Too many submissions. Try again shortly."
+          },
+          "detector_calls": 0
+        }
+      ],
+      "total_detector_calls": 10,
+      "expected_statuses": [
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        429,
+        429
+      ],
+      "expected_calls": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "passed": true
+    },
+    "passed": true
+  },
+  "passed": true,
+  "verdict": "MET",
+  "invalid_attempts": []
+}

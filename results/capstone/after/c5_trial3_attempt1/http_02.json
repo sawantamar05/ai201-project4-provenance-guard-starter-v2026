@@ -1,0 +1,583 @@
+[
+  {
+    "name": "persisted lookup 1",
+    "method": "GET",
+    "path": "/content/fbbf03ad-3de0-421e-a613-92f17cf1491f",
+    "sent_at_utc": "2026-11-14T02:08:59.867872+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1008",
+      "X-Request-ID": "8068b869-b1dd-47d3-a195-c670fc357d30"
+    },
+    "request_id": "8068b869-b1dd-47d3-a195-c670fc357d30",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "fbbf03ad-3de0-421e-a613-92f17cf1491f",
+          "creator_id": "cap-after-c5-t3-a1-human-01",
+          "event": "appeal",
+          "reasoning": "  Capstone review 1: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.6593,
+      "confidence": 0.6593,
+      "content_id": "fbbf03ad-3de0-421e-a613-92f17cf1491f",
+      "creator_id": "cap-after-c5-t3-a1-human-01",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.6922,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.5,
+        "punctuation_density": 0.016286644951140065,
+        "punctuation_simplicity": 0.8642779587404994,
+        "repetition": 0.34976525821596255,
+        "sentence_count": 2,
+        "sentence_length_spread": 0.352112676056338,
+        "style_score": 0.5278,
+        "type_token_ratio": 0.6901408450704225,
+        "word_count": 71
+      },
+      "style_score": 0.5278,
+      "text_length": 377,
+      "timestamp": "2026-11-14T02:08:58+00:00"
+    },
+    "elapsed_seconds": 0.0012089582160115242,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 2",
+    "method": "GET",
+    "path": "/content/6d5ded3c-8cb2-4947-857b-dd18faa72dcb",
+    "sent_at_utc": "2026-11-14T02:08:59.869097+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1021",
+      "X-Request-ID": "d0ec741d-f39b-4e8f-93c7-2a202da70648"
+    },
+    "request_id": "d0ec741d-f39b-4e8f-93c7-2a202da70648",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "6d5ded3c-8cb2-4947-857b-dd18faa72dcb",
+          "creator_id": "cap-after-c5-t3-a1-human-02",
+          "event": "appeal",
+          "reasoning": "  Capstone review 2: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.4608,
+      "confidence": 0.4608,
+      "content_id": "6d5ded3c-8cb2-4947-857b-dd18faa72dcb",
+      "creator_id": "cap-after-c5-t3-a1-human-02",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.4863,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.2554540936099331,
+        "punctuation_density": 0.04021937842778794,
+        "punctuation_simplicity": 0.6648385131017671,
+        "repetition": 0.3276836158192091,
+        "sentence_count": 4,
+        "sentence_length_spread": 0.5956367251120536,
+        "style_score": 0.359,
+        "type_token_ratio": 0.7033898305084746,
+        "word_count": 118
+      },
+      "style_score": 0.359,
+      "text_length": 664,
+      "timestamp": "2026-11-14T02:08:58+00:00"
+    },
+    "elapsed_seconds": 0.0008889171294867992,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 3",
+    "method": "GET",
+    "path": "/content/726c1b47-7e61-4463-ad41-ae3326f01310",
+    "sent_at_utc": "2026-11-14T02:08:59.869993+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1010",
+      "X-Request-ID": "bccfe72d-6886-4bd3-833c-0e80d3fb0fdc"
+    },
+    "request_id": "bccfe72d-6886-4bd3-833c-0e80d3fb0fdc",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "726c1b47-7e61-4463-ad41-ae3326f01310",
+          "creator_id": "cap-after-c5-t3-a1-human-03",
+          "event": "appeal",
+          "reasoning": "  Capstone review 3: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.3358,
+      "confidence": 0.3358,
+      "content_id": "726c1b47-7e61-4463-ad41-ae3326f01310",
+      "creator_id": "cap-after-c5-t3-a1-human-03",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.3532,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.0,
+        "punctuation_density": 0.027522935779816515,
+        "punctuation_simplicity": 0.7706422018348624,
+        "repetition": 0.37356321839080464,
+        "sentence_count": 4,
+        "sentence_length_spread": 0.8882105351861661,
+        "style_score": 0.2662,
+        "type_token_ratio": 0.6758620689655173,
+        "word_count": 145
+      },
+      "style_score": 0.2662,
+      "text_length": 795,
+      "timestamp": "2026-11-14T02:08:58+00:00"
+    },
+    "elapsed_seconds": 0.0008955420926213264,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 4",
+    "method": "GET",
+    "path": "/content/2e53ab92-2922-4c08-a9ef-370f971d4a23",
+    "sent_at_utc": "2026-11-14T02:08:59.870898+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1024",
+      "X-Request-ID": "863947fe-3186-45c4-aab5-a673c73a9762"
+    },
+    "request_id": "863947fe-3186-45c4-aab5-a673c73a9762",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "2e53ab92-2922-4c08-a9ef-370f971d4a23",
+          "creator_id": "cap-after-c5-t3-a1-human-04",
+          "event": "appeal",
+          "reasoning": "  Capstone review 4: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.3954,
+      "confidence": 0.3954,
+      "content_id": "2e53ab92-2922-4c08-a9ef-370f971d4a23",
+      "creator_id": "cap-after-c5-t3-a1-human-04",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.4097,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.16602391043278608,
+        "punctuation_density": 0.053691275167785234,
+        "punctuation_simplicity": 0.5525727069351231,
+        "repetition": 0.48148148148148145,
+        "sentence_count": 7,
+        "sentence_length_spread": 0.6671808716537712,
+        "style_score": 0.338,
+        "type_token_ratio": 0.6111111111111112,
+        "word_count": 108
+      },
+      "style_score": 0.338,
+      "text_length": 552,
+      "timestamp": "2026-11-14T02:08:58+00:00"
+    },
+    "elapsed_seconds": 0.0010192496702075005,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 5",
+    "method": "GET",
+    "path": "/content/d540c917-7aeb-460e-81b7-5851068fad92",
+    "sent_at_utc": "2026-11-14T02:08:59.871926+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1008",
+      "X-Request-ID": "69cb72da-2d60-406c-ba76-42861d08e3ce"
+    },
+    "request_id": "69cb72da-2d60-406c-ba76-42861d08e3ce",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "d540c917-7aeb-460e-81b7-5851068fad92",
+          "creator_id": "cap-after-c5-t3-a1-human-05",
+          "event": "appeal",
+          "reasoning": "  Capstone review 5: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.6497,
+      "confidence": 0.6497,
+      "content_id": "d540c917-7aeb-460e-81b7-5851068fad92",
+      "creator_id": "cap-after-c5-t3-a1-human-05",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.7577,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.0,
+        "punctuation_density": 0.04195804195804196,
+        "punctuation_simplicity": 0.6503496503496503,
+        "repetition": 0.29227053140096626,
+        "sentence_count": 3,
+        "sentence_length_spread": 0.8615573303015565,
+        "style_score": 0.2178,
+        "type_token_ratio": 0.7246376811594203,
+        "word_count": 69
+      },
+      "style_score": 0.2178,
+      "text_length": 354,
+      "timestamp": "2026-11-14T02:08:59+00:00"
+    },
+    "elapsed_seconds": 0.0009070406667888165,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 6",
+    "method": "GET",
+    "path": "/content/b56b28fd-81b0-4e70-96aa-756abacb8138",
+    "sent_at_utc": "2026-11-14T02:08:59.872841+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1024",
+      "X-Request-ID": "7afba04e-f7cb-43b6-aaa5-2c75045bf0b9"
+    },
+    "request_id": "7afba04e-f7cb-43b6-aaa5-2c75045bf0b9",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "b56b28fd-81b0-4e70-96aa-756abacb8138",
+          "creator_id": "cap-after-c5-t3-a1-human-06",
+          "event": "appeal",
+          "reasoning": "  Capstone review 6: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.5545,
+      "confidence": 0.5545,
+      "content_id": "b56b28fd-81b0-4e70-96aa-756abacb8138",
+      "creator_id": "cap-after-c5-t3-a1-human-06",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.5829,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.38795621995783924,
+        "punctuation_density": 0.01937046004842615,
+        "punctuation_simplicity": 0.8385794995964487,
+        "repetition": 0.2640449438202247,
+        "sentence_count": 4,
+        "sentence_length_spread": 0.48963502403372866,
+        "style_score": 0.4409,
+        "type_token_ratio": 0.7415730337078652,
+        "word_count": 89
+      },
+      "style_score": 0.4409,
+      "text_length": 501,
+      "timestamp": "2026-11-14T02:08:59+00:00"
+    },
+    "elapsed_seconds": 0.0008469591848552227,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 7",
+    "method": "GET",
+    "path": "/content/6202a273-38ec-4c10-a17b-5d2f6f4ccd97",
+    "sent_at_utc": "2026-11-14T02:08:59.873697+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1010",
+      "X-Request-ID": "e818b952-4be6-4e1e-9ff5-26c0245872e9"
+    },
+    "request_id": "e818b952-4be6-4e1e-9ff5-26c0245872e9",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "6202a273-38ec-4c10-a17b-5d2f6f4ccd97",
+          "creator_id": "cap-after-c5-t3-a1-human-07",
+          "event": "appeal",
+          "reasoning": "  Capstone review 7: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.5606,
+      "confidence": 0.5606,
+      "content_id": "6202a273-38ec-4c10-a17b-5d2f6f4ccd97",
+      "creator_id": "cap-after-c5-t3-a1-human-07",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.5745,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.5,
+        "punctuation_density": 0.035343035343035345,
+        "punctuation_simplicity": 0.7054747054747055,
+        "repetition": 0.3790560471976401,
+        "sentence_count": 2,
+        "sentence_length_spread": 0.008849557522123894,
+        "style_score": 0.5048,
+        "type_token_ratio": 0.672566371681416,
+        "word_count": 113
+      },
+      "style_score": 0.5048,
+      "text_length": 592,
+      "timestamp": "2026-11-14T02:08:59+00:00"
+    },
+    "elapsed_seconds": 0.0008451668545603752,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 8",
+    "method": "GET",
+    "path": "/content/26d1b848-0b04-432b-a5a3-5c710f9c3e69",
+    "sent_at_utc": "2026-11-14T02:08:59.874548+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1023",
+      "X-Request-ID": "a71b2eb4-219a-47ff-9a2e-24adbe709f93"
+    },
+    "request_id": "a71b2eb4-219a-47ff-9a2e-24adbe709f93",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "26d1b848-0b04-432b-a5a3-5c710f9c3e69",
+          "creator_id": "cap-after-c5-t3-a1-human-08",
+          "event": "appeal",
+          "reasoning": "  Capstone review 8: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.5581,
+      "confidence": 0.5581,
+      "content_id": "26d1b848-0b04-432b-a5a3-5c710f9c3e69",
+      "creator_id": "cap-after-c5-t3-a1-human-08",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.5825,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.420697370644045,
+        "punctuation_density": 0.03232323232323232,
+        "punctuation_simplicity": 0.7306397306397306,
+        "repetition": 0.3473520249221185,
+        "sentence_count": 4,
+        "sentence_length_spread": 0.46344210348476406,
+        "style_score": 0.4607,
+        "type_token_ratio": 0.6915887850467289,
+        "word_count": 107
+      },
+      "style_score": 0.4607,
+      "text_length": 598,
+      "timestamp": "2026-11-14T02:08:59+00:00"
+    },
+    "elapsed_seconds": 0.0007815002463757992,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 9",
+    "method": "GET",
+    "path": "/content/600e2a4c-3425-47bd-951e-064f61c9fea8",
+    "sent_at_utc": "2026-11-14T02:08:59.875336+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "996",
+      "X-Request-ID": "9b18d4d4-6451-4b2f-ab5b-f7710e197784"
+    },
+    "request_id": "9b18d4d4-6451-4b2f-ab5b-f7710e197784",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "600e2a4c-3425-47bd-951e-064f61c9fea8",
+          "creator_id": "cap-after-c5-t3-a1-human-09",
+          "event": "appeal",
+          "reasoning": "  Capstone review 9: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.7081,
+      "confidence": 0.7081,
+      "content_id": "600e2a4c-3425-47bd-951e-064f61c9fea8",
+      "creator_id": "cap-after-c5-t3-a1-human-09",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.7648,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.26494047860054226,
+        "punctuation_density": 0.018823529411764704,
+        "punctuation_simplicity": 0.8431372549019608,
+        "repetition": 0.6,
+        "sentence_count": 3,
+        "sentence_length_spread": 0.5880476171195662,
+        "style_score": 0.4811,
+        "type_token_ratio": 0.54,
+        "word_count": 100
+      },
+      "style_score": 0.4811,
+      "text_length": 524,
+      "timestamp": "2026-11-14T02:08:59+00:00"
+    },
+    "elapsed_seconds": 0.0007766671478748322,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "persisted lookup 10",
+    "method": "GET",
+    "path": "/content/5b09c49c-3a2d-4550-bdb8-bf28e051cf2b",
+    "sent_at_utc": "2026-11-14T02:08:59.876118+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "1022",
+      "X-Request-ID": "a66504db-e6e7-4819-99cc-27a99a7dfe04"
+    },
+    "request_id": "a66504db-e6e7-4819-99cc-27a99a7dfe04",
+    "response_json": {
+      "appeals": [
+        {
+          "content_id": "5b09c49c-3a2d-4550-bdb8-bf28e051cf2b",
+          "creator_id": "cap-after-c5-t3-a1-human-10",
+          "event": "appeal",
+          "reasoning": "  Capstone review 10: please consider my drafts.  ",
+          "status": "under_review",
+          "timestamp": "2026-11-14T02:08:59+00:00"
+        }
+      ],
+      "combined_score": 0.5475,
+      "confidence": 0.5475,
+      "content_id": "5b09c49c-3a2d-4550-bdb8-bf28e051cf2b",
+      "creator_id": "cap-after-c5-t3-a1-human-10",
+      "detector_model": "gpt2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell how this writing was created. No conclusion about the writer should be drawn from this result. You can request a review.",
+      "model_score": 0.566,
+      "status": "under_review",
+      "style_metrics": {
+        "evenness": 0.4729379744287563,
+        "punctuation_density": 0.047058823529411764,
+        "punctuation_simplicity": 0.607843137254902,
+        "repetition": 0.3842975206611571,
+        "sentence_count": 4,
+        "sentence_length_spread": 0.421649620456995,
+        "style_score": 0.4733,
+        "type_token_ratio": 0.6694214876033058,
+        "word_count": 121
+      },
+      "style_score": 0.4733,
+      "text_length": 626,
+      "timestamp": "2026-11-14T02:08:59+00:00"
+    },
+    "elapsed_seconds": 0.0006999592296779156,
+    "request_body_bytes": 0
+  },
+  {
+    "name": "unknown appeal after restart",
+    "method": "POST",
+    "path": "/appeal",
+    "sent_at_utc": "2026-11-14T02:08:59.876830+00:00",
+    "request_json": {
+      "content_id": "00000000-0000-4000-8000-000000000099",
+      "reasoning": "  Capstone review 99: please consider my drafts.  "
+    },
+    "status_code": 404,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "85",
+      "X-Request-ID": "e7fe255f-316c-4536-8134-3a77e1b13a81"
+    },
+    "request_id": "e7fe255f-316c-4536-8134-3a77e1b13a81",
+    "response_json": {
+      "error": "content_not_found",
+      "message": "No submission exists with this content_id."
+    },
+    "elapsed_seconds": 0.001126833725720644,
+    "request_body_bytes": 121
+  },
+  {
+    "name": "health after appeals/lookups",
+    "method": "GET",
+    "path": "/health",
+    "sent_at_utc": "2026-11-14T02:08:59.877963+00:00",
+    "status_code": 200,
+    "response_headers": {
+      "Server": "gunicorn",
+      "Date": "Sat, 14 Nov 2026 02:08:59 GMT",
+      "Connection": "close",
+      "Content-Type": "application/json",
+      "Content-Length": "98",
+      "X-Request-ID": "771c00c8-03b6-41f3-9e1a-131b6fa19d58"
+    },
+    "request_id": "771c00c8-03b6-41f3-9e1a-131b6fa19d58",
+    "response_json": {
+      "detector_loaded": false,
+      "detector_model": "gpt2",
+      "log_entries": 21,
+      "ok": true,
+      "rate_limiting": true
+    },
+    "elapsed_seconds": 0.0007107080891728401,
+    "request_body_bytes": 0
+  }
+]
